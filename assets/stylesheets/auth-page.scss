@@ -1,0 +1,100 @@
+@import '~/assets/stylesheets/default';
+
+.title-header {
+  color: gray;
+  font-size: $font-size-md;
+  font-weight: $font-weight-boldest;
+}
+
+.title-action {
+  color: #294160;
+  font-size: $font-size-md;
+}
+
+.form-group {
+  box-shadow: none;
+}
+
+.form-password {
+  position: relative;
+  width: 250px;
+}
+
+.data-password {
+  width: 58%;
+}
+
+.form-control-password,
+.form-control-email {
+  width: 250px;
+}
+
+.pure {
+  border-bottom: 1px solid #8280a8;
+  opacity: 0.3;
+}
+
+.label {
+  color: #8280a8;
+  font-size: $font-size-xs;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+.btn-primary {
+  min-width: 100px;
+  font-size: $font-size-xs;
+}
+
+.password-recovery-link {
+  box-shadow: none;
+  text-decoration: none !important;
+  right: 0;
+  top: 20px;
+  cursor: pointer;
+  font-size: $font-size-xs;
+}
+
+.color-password {
+  color: #8280a8;
+}
+
+.color-icon {
+  color: $default-color;
+}
+
+input:-webkit-autofill {
+  -webkit-animation-name: autofill;
+  -webkit-animation-fill-mode: both;
+}
+
+.form-control {
+  display: inline-block;
+  width: 250px;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.width-password {
+  width: 93% !important;
+  border-bottom: 0;
+}
+
+.width-email {
+  width: 93% !important;
+  border-bottom: 0;
+}
+
+.data-email {
+  width: 100%;
+}
+
+.btn-light {
+  min-width: 100px;
+  background: #e8ecef !important;
+  font-size: $font-size-xs;
+  color: gray;
+}

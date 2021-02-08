@@ -1,0 +1,72 @@
+//green
+.btn-green {
+  background-color: $default-color;
+  box-shadow: none !important;
+  color: white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-light;
+  height: 42px;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background-color: $secondary-color;
+  }
+}
+
+//red
+.btn-red {
+  background-color: $danger-color !important;
+  box-shadow: none !important;
+  color: white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-light;
+  height: 42px;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background-color: $secondary-color !important;
+  }
+}
+
+//bordered
+.btn-bordered {
+  background-color: white !important;
+  box-shadow: none !important;
+  border: 2px $default-color solid;
+  color: $default-color !important;
+  font-size: $font-size-md;
+  font-weight: $font-weight-light;
+  height: 42px;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background-color: $secondary-color !important;
+    color: white !important;
+    border: 2px $secondary-color solid !important;
+  }
+}
+
