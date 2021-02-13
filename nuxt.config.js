@@ -23,6 +23,7 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
     [
       'nuxt-fontawesome',
       {
@@ -48,6 +49,50 @@ export default {
       },
     ],
   ],
+
+  loading: {
+    color: '#00908c',
+    failedColor: '#ff2c61',
+    height: '2px',
+  },
+
+  router: {
+    middleware: ['auth'],
+  },
+
+  auth: {
+    cookie: {
+      options: {
+        expires: 365,
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/sign-in',
+            method: 'post',
+            propertyName: 'account.token',
+          },
+          logout: false,
+        },
+        autoFetchUser: false,
+        tokenType: false,
+      },
+    },
+
+    redirect: {
+      login: '/sign-in',
+      logout: '/sign-in',
+      home: false,
+    },
+
+    resetOnError: true,
+
+    rewriteRedirects: false,
+  },
 
   axios: {},
 

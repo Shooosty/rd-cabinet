@@ -63,14 +63,14 @@
             type="submit"
             class="btn btn-primary mt-3 justify-content-center"
             :disabled="isLoading"
-            :label="Вход"
+            label="Вход"
           />
         </div>
         <div class="ml-1">
           <LinkButton
             to="/sign-up"
             class="btn btn-light mt-3 justify-content-center"
-            :label="Зарегистрироваться"
+            label="Зарегистрироваться"
             span-class="d-block"
           />
         </div>
@@ -115,13 +115,7 @@ export default {
       this.isLoading = true
 
       try {
-        await this.SIGN_IN(Object.assign({}, this.user)).then(() =>
-          this.$toast.success(this.$t('toasts.auth.signed_in'), '', {
-            position: 'topRight',
-            timeout: 4200,
-            icon: 'icon-default',
-          })
-        )
+        await this.SIGN_IN(Object.assign({}, this.user))
         this.errors = null
       } catch (e) {
         this.errors = e
