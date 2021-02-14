@@ -74,7 +74,7 @@ export default {
           login: {
             url: '/auth/sign-in',
             method: 'post',
-            propertyName: 'account.token',
+            propertyName: 'token',
           },
           logout: false,
         },
