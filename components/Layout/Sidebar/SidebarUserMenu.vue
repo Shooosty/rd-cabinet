@@ -13,7 +13,7 @@
               <b-nav-item href="/security" @click="hide">
                 <span> Пароль и безопасность </span>
               </b-nav-item>
-              <b-nav-item href="#" @click="$nuxt.$auth.logout && hide">
+              <b-nav-item @click.prevent="$nuxt.$auth.logout">
                 <span> Выйти </span>
               </b-nav-item>
             </b-nav>
