@@ -16,7 +16,7 @@ export const actions = {
         data: { email, password },
       })
       .then((response) => {
-        const user = response.data.account
+        const user = response.data.user
         this.$auth.setUser(user)
         this.$router.push({ path: '/my_orders' })
       })

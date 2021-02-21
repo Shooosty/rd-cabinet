@@ -13,7 +13,10 @@ export default {
 
   css: [],
 
-  plugins: [{ src: '~/plugins/vue-tabs', ssr: false }],
+  plugins: [
+    { src: '~/plugins/vue-tabs', ssr: false },
+    { src: '~/plugins/vuex-persist', ssr: false },
+  ],
 
   components: true,
 
@@ -38,6 +41,7 @@ export default {
               'faLock',
               'faPhone',
               'faTrash',
+              'faEnvelope',
               'faMoneyBillWave',
               'faWindowClose',
               'faCartArrowDown',

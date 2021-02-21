@@ -1,14 +1,12 @@
 <template>
-  <div class="container d-flex align-items-stretch">
-    <div class="shadow-lg bg-white">
-      <div class="pl-3">
-        <div class="logo">
-          <div class="d-flex flex-column ml-2">
-            <span class="title-name">RHINODESIGN</span>
-            <span class="title-direction">My Cabinet</span>
-          </div>
-          <slot></slot>
+  <div class="guest d-flex align-items-stretch">
+    <div class="group d-flex justify-content-center shadow-lg bg-white">
+      <div class="sign-content p-5">
+        <div class="d-flex flex-column mb-3">
+          <span class="title-name">RHINODESIGN</span>
+          <span class="title-direction">My Cabinet</span>
         </div>
+        <slot></slot>
       </div>
     </div>
     <div class="d-none d-md-block auth-image"></div>
@@ -18,8 +16,8 @@
 <style scoped lang="scss">
 @import '~/assets/stylesheets/default';
 
-.content {
-  width: 320px;
+.sign-content {
+  max-width: 525px;
 }
 
 .title-name {
@@ -30,19 +28,18 @@
 
 .title-direction {
   color: gray;
-  font-size: $font-size-md;
-  font-weight: $font-weight-boldest;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
 }
 
-.container {
+.guest {
   height: 100vh;
 }
 
 .group {
-  border-radius: 0 16px 16px 0;
   height: 100%;
   overflow: auto;
-  flex: 1 0 410px;
+  flex: 1 1 425px;
 }
 
 .auth-image {
@@ -50,6 +47,6 @@
   background-size: cover;
   background-position: center;
   height: 100%;
-  flex: 0 0 63%;
+  flex: 1 1 50%;
 }
 </style>

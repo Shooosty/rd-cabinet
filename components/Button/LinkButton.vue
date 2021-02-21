@@ -1,7 +1,7 @@
 <template>
   <n-link
     :to="to"
-    class="btn ml-2 d-inline-flex align-items-center justify-content-between pt-0 pb-0"
+    class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
     :class="type(btnClass)"
   >
     <span
