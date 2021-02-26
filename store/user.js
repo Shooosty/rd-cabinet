@@ -10,18 +10,6 @@ export const getters = { ...commonGetters }
 export const mutations = { ...commonMutations }
 
 export const actions = {
-  SIGN_IN(commit, { email, password }) {
-    return this.$auth
-      .loginWith('local', {
-        data: { email, password },
-      })
-      .then((response) => {
-        const user = response.data.user
-        this.$auth.setUser(user)
-        this.$router.push({ path: '/my_orders' })
-      })
-  },
-
   async GET_ALL({ commit }, params = {}) {
     commit('CLEAR')
     const config = {
@@ -72,12 +60,5 @@ export const actions = {
       .then((response) => {
         commit('REMOVE', object)
       })
-  },
-
-  RESET_PASSWORD({ email }) {
-    const config = {
-      headers: { Authorization: `Bearer ${this.$auth.user.token}` },
-    }
-    return this.$axios.$post('/user/password', config, { email })
   },
 }

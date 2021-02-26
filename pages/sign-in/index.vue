@@ -55,19 +55,13 @@
       </div>
       <div class="d-flex mt-5">
         <div>
-          <PrimaryButton
-            type="submit"
-            class="btn-green"
-            :disabled="isLoading"
-            label="Вход"
-          />
+          <PrimaryButton type="submit" :disabled="isLoading" label="Вход" />
         </div>
         <div>
           <LinkButton
             to="/sign-up"
-            class="btn-bordered"
+            btn-class="secondary"
             label="Зарегистрироваться"
-            span-class="d-block"
           />
         </div>
       </div>
@@ -89,10 +83,12 @@ export default {
   data() {
     return {
       errors: null,
+
       user: {
         email: '',
         password: '',
       },
+
       isLoading: false,
     }
   },
@@ -105,7 +101,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('user', ['SIGN_IN']),
+    ...mapActions('auth', ['SIGN_IN']),
 
     async sendForm() {
       this.isLoading = true

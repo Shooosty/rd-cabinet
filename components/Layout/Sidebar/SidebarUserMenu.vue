@@ -6,12 +6,15 @@
         <div class="p-3">
           <nav class="mb-3">
             <b-nav vertical>
-              <!-- сделать накст ссылки -->
-              <b-nav-item href="/personal_data" @click="hide">
-                <span>Личные данные</span>
+              <b-nav-item>
+                <n-link to="/personal_data" @click="hide">
+                  <span>Личные данные</span>
+                </n-link>
               </b-nav-item>
-              <b-nav-item href="/security" @click="hide">
-                <span> Пароль и безопасность </span>
+              <b-nav-item>
+                <n-link to="/security" @click="hide">
+                  <span> Пароль и безопасность </span>
+                </n-link>
               </b-nav-item>
               <b-nav-item @click.prevent="$nuxt.$auth.logout">
                 <span> Выйти </span>

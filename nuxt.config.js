@@ -40,6 +40,7 @@ export default {
               'faUser',
               'faLock',
               'faPhone',
+              'faCheck',
               'faTrash',
               'faEnvelope',
               'faMoneyBillWave',
@@ -90,7 +91,7 @@ export default {
     redirect: {
       login: '/sign-in',
       logout: '/sign-in',
-      home: false,
+      home: '/my_orders',
     },
 
     resetOnError: true,

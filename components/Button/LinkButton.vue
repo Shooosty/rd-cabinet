@@ -10,7 +10,7 @@
       :class="[icon ? 'ml-2 d-none' : '']"
       v-text="label"
     />
-    <span v-if="icon">
+    <span v-if="icon" class="ml-auto">
       <fa :icon="['fas', `${icon}`]" />
     </span>
   </n-link>
@@ -55,10 +55,4 @@ export default {
 @import '~/assets/stylesheets/default';
 @import '~/assets/stylesheets/button';
 @import '~/assets/stylesheets/media';
-
-.btn-label-none {
-  justify-content: center;
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-}
 </style>
