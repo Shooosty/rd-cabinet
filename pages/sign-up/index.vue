@@ -33,7 +33,6 @@
               <div class="d-flex">
                 <input
                   v-model="user.email"
-                  autofocus
                   class="form-control width-email"
                   required
                   type="email"
