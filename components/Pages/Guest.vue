@@ -1,8 +1,10 @@
 <template>
   <div class="guest d-flex align-items-stretch">
-    <div class="group d-flex justify-content-center shadow-lg bg-white">
+    <div
+      class="group d-flex justify-content-center align-items-center shadow-lg bg-white"
+    >
       <div class="sign-content p-5">
-        <div class="d-flex flex-column mb-3">
+        <div class="d-flex flex-column mb-5">
           <span class="title-name">RHINODESIGN</span>
           <span class="title-direction">My Cabinet</span>
         </div>
@@ -21,15 +23,15 @@
 }
 
 .title-name {
-  color: gray;
-  font-size: $font-size-md;
+  color: $secondary-color;
+  font-size: $font-size-xl;
   font-weight: $font-weight-boldest;
 }
 
 .title-direction {
   color: gray;
   font-size: $font-size-sm;
-  font-weight: $font-weight-normal;
+  font-weight: $font-weight-light;
 }
 
 .guest {
