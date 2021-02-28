@@ -5,15 +5,24 @@
       <b-list-group>
         <b-list-group-item>
           <b> Имя: </b>
-          <span> {{ user.name }} </span>
+          <b-form-input
+            v-model="editedUser.name"
+            :placeholder="user.name"
+          ></b-form-input>
         </b-list-group-item>
         <b-list-group-item>
           <b> E-mail: </b>
-          <span> {{ user.email }} </span>
+          <b-form-input
+            v-model="editedUser.email"
+            :placeholder="user.email"
+          ></b-form-input>
         </b-list-group-item>
         <b-list-group-item>
           <b> Телефон: </b>
-          <span> {{ user.phone }} </span>
+          <b-form-input
+            v-model="editedUser.phone"
+            :placeholder="user.phone"
+          ></b-form-input>
         </b-list-group-item>
       </b-list-group>
     </div>
@@ -33,12 +42,24 @@ export default {
 
   data() {
     return {
+      editedUser: {
+        name: '',
+        email: '',
+        phone: '',
+      },
+
       actions: [
         {
-          label: 'Редактировать',
-          btnClass: 'secondary',
-          to: '/personal_data/edit',
-          icon: 'edit',
+          label: 'Отмена',
+          btnClass: 'danger',
+          to: '/personal_data',
+          icon: 'window-close',
+        },
+        {
+          label: 'Сохранить',
+          btnClass: 'success',
+          to: '/personal_data',
+          icon: 'check',
         },
       ],
     }

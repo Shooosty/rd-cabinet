@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a v-b-toggle.sidebar-right>user12345@mail.ru</a>
+    <a v-b-toggle.sidebar-right>{{ userEmail }}</a>
     <b-sidebar id="sidebar-right" right shadow>
       <template #default="{ hide }">
         <div class="p-3">
@@ -30,6 +30,12 @@
 <script>
 export default {
   name: 'NavbarUserMenu',
+
+  computed: {
+    userEmail() {
+      return this.$auth.user.email
+    },
+  },
 }
 </script>
 

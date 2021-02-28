@@ -8,12 +8,12 @@
       </span>
     </div>
     <div class="d-flex justify-content-end">
-      <link-button
+      <LinkButton
         v-for="action in actions"
         :key="action.label"
         :label="action.label"
         :icon="action.icon"
-        :to="action.path"
+        :to="action.to"
         :btn-class="action.btnClass"
       />
     </div>

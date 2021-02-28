@@ -17,27 +17,16 @@ export const actions = {
     }
     const response = await this.$axios.get('/users/all', config, params)
     commit('SET_PAGINATION_META', response.headers)
-    commit('SET', response.data)
+    commit('SET', response)
   },
 
   GET({ commit }, objectId) {
     const config = {
       headers: { Authorization: `Bearer ${this.$auth.user.token}` },
     }
-    return this.$axios.$get(`/user/${objectId}`, config).then((response) => {
-      commit('ADD_OR_UPDATE', response.data)
+    return this.$axios.$get(`/users/${objectId}`, config).then((response) => {
+      commit('SET', response)
     })
-  },
-
-  CREATE({ commit }, object) {
-    const config = {
-      headers: { Authorization: `Bearer ${this.$auth.user.token}` },
-    }
-    return this.$axios
-      .$post('/user/new', config, { user: object })
-      .then((response) => {
-        commit('ADD_OR_UPDATE', response.data)
-      })
   },
 
   UPDATE({ commit }, object) {
@@ -45,9 +34,9 @@ export const actions = {
       headers: { Authorization: `Bearer ${this.$auth.user.token}` },
     }
     return this.$axios
-      .$put(`/user/update/${object.id}`, config, { user: object })
+      .$put(`/users/update/${object.id}`, config, { user: object })
       .then((response) => {
-        commit('ADD_OR_UPDATE', response.data)
+        commit('ADD_OR_UPDATE', response)
       })
   },
 
@@ -56,7 +45,7 @@ export const actions = {
       headers: { Authorization: `Bearer ${this.$auth.user.token}` },
     }
     return this.$axios
-      .$delete(`/user/delete/${object.id}`, config)
+      .$delete(`/users/delete/${object.id}`, config)
       .then((response) => {
         commit('REMOVE', object)
       })

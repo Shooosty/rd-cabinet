@@ -46,6 +46,26 @@
           <div class="pure"></div>
         </div>
 
+        <div class="form-control-email mt-3 d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">телефон</div>
+              <div class="d-flex">
+                <input
+                  v-model="user.phone"
+                  class="form-control width-email"
+                  required
+                  type="tel"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'phone']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
         <div class="mt-3 form-password">
           <div class="d-flex flex-column">
             <div class="d-flex">
@@ -128,6 +148,7 @@ export default {
         name: '',
         email: '',
         password: '',
+        phone: '',
         role: 'user',
       },
       acceptPassword: '',

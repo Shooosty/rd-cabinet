@@ -12,14 +12,16 @@ export const actions = {
       })
       .then((response) => {
         const user = response.data.user
+        const id = response.data.id
         this.$auth.setUser(user)
+        localStorage.setItem('userId', id)
         this.$router.push({ path: '/my_orders' })
       })
   },
 
-  SIGN_UP(commit, { name, email, password, role }) {
+  SIGN_UP(commit, { name, email, phone, password, role }) {
     return this.$axios
-      .post('/auth/sign-up', { name, email, password, role })
+      .post('/auth/sign-up', { name, email, phone, password, role })
       .then((response) => {
         this.$router.push({ path: '/sign-in' })
       })
