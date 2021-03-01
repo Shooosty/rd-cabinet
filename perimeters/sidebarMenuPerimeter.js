@@ -1,4 +1,4 @@
-import BasePerimeter from 'perimeters/basePerimeter.js'
+import BasePerimeter from './basePerimeter'
 export default new BasePerimeter({
   purpose: 'sidebarMenu',
   govern: {
