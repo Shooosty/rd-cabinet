@@ -164,7 +164,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', ['SIGN_UP']),
+    ...mapActions('user', ['SIGN_UP']),
 
     async sendForm() {
       if (this.acceptPassword === this.user.password) {

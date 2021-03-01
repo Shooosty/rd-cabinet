@@ -1,21 +1,22 @@
 <template>
-  <li class="nav-item d-flex user-select-none">
-    <n-link
-      class="nav-link d-flex align-items-center"
-      active-class="active"
-      :to="route"
-    >
-      <span v-if="icon !== null" class="icon-muted">
-        <icon :icon="['fal', icon]" />
-      </span>
-      <span class="nav-item-label ml-3 text-nowrap">
-        {{ title }}
-      </span>
-    </n-link>
-  </li>
+  <div v-show="$isAllowed(govern)">
+    <li class="nav-item d-flex user-select-none">
+      <n-link
+        class="nav-link d-flex align-items-center"
+        active-class="active"
+        :to="route"
+      >
+        <span class="nav-item-label ml-3 text-nowrap">
+          {{ title }}
+        </span>
+      </n-link>
+    </li>
+  </div>
 </template>
 
 <script>
+import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
+
 export default {
   props: {
     route: {
@@ -30,31 +31,39 @@ export default {
       type: String,
       default: null,
     },
+    govern: {
+      type: String,
+      default: null,
+    },
   },
+
+  perimeters: [SidebarMenuPerimeter],
 }
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/stylesheets/default';
+
 .nav-item {
   width: 100%;
 }
 
 .nav-link {
-  font-weight: normal;
-  color: #232424;
-  font-size: 18px;
+  font-weight: $font-weight-normal;
+  color: $secondary-color;
+  font-size: $font-size-md;
   height: 52px;
   width: 100%;
 
   &.active {
     background-color: #f6f7f9;
-    color: #00908c;
-    border-right: solid 4px #00908c;
+    color: $default-color;
+    border-right: solid 4px $default-color;
   }
 
   &:hover {
     background-color: #f6f7f9;
-    color: #00908c;
+    color: $default-color;
   }
 }
 </style>

@@ -16,6 +16,7 @@ export default {
   plugins: [
     { src: '~/plugins/vue-tabs', ssr: false },
     { src: '~/plugins/vuex-persist', ssr: false },
+    { src: '~/plugins/vue-kindergarten', ssr: false },
   ],
 
   components: true,
@@ -62,7 +63,7 @@ export default {
   },
 
   router: {
-    middleware: ['auth'],
+    middleware: ['auth', 'vue-kindergarten'],
   },
 
   auth: {

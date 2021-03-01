@@ -1,8 +1,9 @@
 <template>
   <ul class="pt-2">
-    <nav-item
+    <NavItem
       v-for="item in menu"
       :key="item.route"
+      :govern="item.govern"
       :title="item.title"
       :route="item.route"
       :icon="item.icon"
@@ -18,6 +19,7 @@ export default {
   components: {
     NavItem,
   },
+
   props: {
     menu: {
       type: Array,

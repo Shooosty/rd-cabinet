@@ -49,7 +49,7 @@ export default {
   border: none;
 }
 .card-title {
-  font-size: $font-size-xxl;
+  font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   color: $secondary-color;
   border-bottom: $default-color solid 4px;

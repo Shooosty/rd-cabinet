@@ -10,12 +10,38 @@ export const getters = { ...commonGetters }
 export const mutations = { ...commonMutations }
 
 export const actions = {
-  async GET_ALL({ commit }, params = {}) {
-    commit('CLEAR')
+  SIGN_IN(commit, { email, password }) {
+    return this.$auth
+      .loginWith('local', {
+        data: { email, password },
+      })
+      .then((response) => {
+        const user = response.data.user
+        const id = response.data.id
+        this.$auth.setUser(user)
+        localStorage.setItem('userId', id)
+        this.$router.push({ path: '/my_orders' })
+      })
+  },
+
+  SIGN_UP(commit, { name, email, phone, password, role }) {
+    return this.$axios
+      .post('/auth/sign-up', { name, email, phone, password, role })
+      .then((response) => {
+        this.$router.push({ path: '/sign-in' })
+      })
+  },
+
+  RESET_PASSWORD({ email }) {
     const config = {
       headers: { Authorization: `Bearer ${this.$auth.user.token}` },
     }
-    const response = await this.$axios.get('/users/all', config, params)
+    return this.$axios.$post('/user/password', config, { email })
+  },
+
+  async GET_ALL({ commit }) {
+    commit('CLEAR')
+    const response = await this.$axios.get('/users')
     commit('SET_PAGINATION_META', response.headers)
     commit('SET', response)
   },
@@ -34,7 +60,7 @@ export const actions = {
       headers: { Authorization: `Bearer ${this.$auth.user.token}` },
     }
     return this.$axios
-      .$put(`/users/update/${object.id}`, config, { user: object })
+      .$put(`/users/${object.id}`, config, { user: object })
       .then((response) => {
         commit('ADD_OR_UPDATE', response)
       })

@@ -4,7 +4,7 @@
       <div
         class="sidebar-menu-container bg-white align-content-start pl-2 pt-3"
       >
-        <sidebar-menu :menu="menu" />
+        <SidebarMenu :menu="menu" />
       </div>
     </div>
   </div>
@@ -17,9 +17,39 @@ export default {
   data() {
     return {
       menu: [
-        { title: 'Мои заказы', route: '/my_orders' },
-        { title: 'Мои проекты', route: '/my_projects' },
-        { title: 'Мои бонусы', route: '/my_bonuses' },
+        // users
+        {
+          title: 'Мои заказы',
+          route: '/my_orders',
+          govern: 'viewSidebarMenuItemForUser',
+        },
+        {
+          title: 'Мои проекты',
+          route: '/my_projects',
+          govern: 'viewSidebarMenuItemForUser',
+        },
+        {
+          title: 'Мои бонусы',
+          route: '/my_bonuses',
+          govern: 'viewSidebarMenuItemForUser',
+        },
+        // admins
+        {
+          title: 'Все клиенты',
+          route: '/admins/all_users',
+          govern: 'viewSidebarMenuItemForAdmin',
+        },
+        {
+          title: 'Все заказы',
+          route: '/admins/all_orders',
+          govern: 'viewSidebarMenuItemForAdmin',
+        },
+        // super-admins
+        {
+          title: 'Управление',
+          route: '/admins/admin_manage',
+          govern: 'viewSidebarMenuItemForSuperAdmin',
+        },
       ],
     }
   },

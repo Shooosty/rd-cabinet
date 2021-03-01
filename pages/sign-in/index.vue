@@ -101,7 +101,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('auth', ['SIGN_IN']),
+    ...mapActions('user', ['SIGN_IN']),
 
     async sendForm() {
       this.isLoading = true
