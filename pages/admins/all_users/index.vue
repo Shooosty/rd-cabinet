@@ -3,12 +3,7 @@
     <page-header card-title="Список пользователей" />
     <div class="mt-3 card-body bg-white">
       <div class="d-flex">
-        <DataTable
-          :items="users"
-          :fields="fields"
-          :page-name="pageName"
-          borderless
-        />
+        <DataTable :items="users" :fields="fields" :page-name="pageName" />
       </div>
     </div>
   </div>
@@ -38,9 +33,13 @@ export default {
 
   computed: {
     ...mapGetters({
-      users: 'user/all',
+      items: 'user/all',
       pagination: 'user/pagination',
     }),
+
+    users() {
+      return this.items.data
+    },
   },
 
   methods: {

@@ -1,5 +1,13 @@
 <template>
-  <b-table small hover :items="items" :fields="fields" bordered striped>
+  <b-table
+    small
+    hover
+    :items="items"
+    :fields="fields"
+    borderless
+    striped
+    :responsive="true"
+  >
     <template #cell(id)="data">
       <nuxt-link :to="`${pageName}/${data.value}`" class="table-link">{{
         data.value

@@ -41,9 +41,9 @@ export const actions = {
 
   async GET_ALL({ commit }) {
     commit('CLEAR')
-    const response = await this.$axios.get('/users')
+    const response = await this.$axios.get('/users/')
     commit('SET_PAGINATION_META', response.headers)
-    commit('SET', response)
+    commit('SET', response.data)
   },
 
   GET({ commit }, objectId) {
