@@ -17,6 +17,7 @@ export const actions = {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
       },
     }
     const response = await this.$axios.get('/orders/', config)
@@ -26,7 +27,10 @@ export const actions = {
 
   GET({ commit }, objectId) {
     const config = {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-type': 'application/json',
+      },
     }
     return this.$axios.$get(`/orders/${objectId}`, config).then((response) => {
       commit('SET', response)
