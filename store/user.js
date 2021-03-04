@@ -9,8 +9,6 @@ export const state = () => ({
 export const getters = { ...commonGetters }
 export const mutations = { ...commonMutations }
 
-const token = localStorage.getItem('auth._token.local')
-
 export const actions = {
   SIGN_IN(commit, { email, password }) {
     return this.$auth
@@ -35,50 +33,33 @@ export const actions = {
   },
 
   RESET_PASSWORD({ email }) {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-    return this.$axios.$post('/user/password', config, { email })
+    return this.$axios.$post('/user/password', { email })
   },
 
   async GET_ALL({ commit }) {
     commit('CLEAR')
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    const response = await this.$axios.get('/users/', config)
+    const response = await this.$axios.get('/users/')
     commit('SET_PAGINATION_META', response.headers)
     commit('SET', response.data)
   },
 
   GET({ commit }, objectId) {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-    return this.$axios.$get(`/users/${objectId}`, config).then((response) => {
+    return this.$axios.$get(`/users/${objectId}`).then((response) => {
       commit('SET', response)
     })
   },
 
   UPDATE({ commit }, object) {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    }
     return this.$axios
-      .$put(`/users/${object.id}`, config, { user: object })
+      .$put(`/users/${object.id}`, { user: object })
       .then((response) => {
         commit('ADD_OR_UPDATE', response)
       })
   },
 
   REMOVE({ commit }, object) {
-    const config = {
-      headers: { Authorization: `Bearer ${token}` },
-    }
     return this.$axios
-      .$delete(`/users/delete/${object.id}`, config)
+      .$delete(`/users/delete/${object.id}`)
       .then((response) => {
         commit('REMOVE', object)
       })
