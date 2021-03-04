@@ -1,3 +1,4 @@
+import local from '@nuxtjs/auth/lib/schemes/local'
 import commonGetters from '~/helpers/getters-helper'
 import commonMutations from '~/helpers/mutations-helper'
 
@@ -12,7 +13,12 @@ export const mutations = { ...commonMutations }
 export const actions = {
   async GET_ALL({ commit }) {
     commit('CLEAR')
-    const response = await this.$axios.get('/orders/')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('auth._token.local')}`,
+      },
+    }
+    const response = await this.$axios.get('/orders/', config)
     commit('SET_PAGINATION_META', response.headers)
     commit('SET', response.data)
   },

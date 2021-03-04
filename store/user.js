@@ -41,7 +41,12 @@ export const actions = {
 
   async GET_ALL({ commit }) {
     commit('CLEAR')
-    const response = await this.$axios.get('/users/')
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('auth._token.local')}`,
+      },
+    }
+    const response = await this.$axios.get('/users/', config)
     commit('SET_PAGINATION_META', response.headers)
     commit('SET', response.data)
   },
