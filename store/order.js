@@ -1,4 +1,3 @@
-import local from '@nuxtjs/auth/lib/schemes/local'
 import commonGetters from '~/helpers/getters-helper'
 import commonMutations from '~/helpers/mutations-helper'
 
@@ -10,12 +9,14 @@ export const state = () => ({
 export const getters = { ...commonGetters }
 export const mutations = { ...commonMutations }
 
+const token = localStorage.getItem('auth._token.local')
+
 export const actions = {
   async GET_ALL({ commit }) {
     commit('CLEAR')
     const config = {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('auth._token.local')}`,
+        Authorization: `Bearer ${token}`,
       },
     }
     const response = await this.$axios.get('/orders/', config)
@@ -25,7 +26,7 @@ export const actions = {
 
   GET({ commit }, objectId) {
     const config = {
-      headers: { Authorization: `Bearer ${this.$auth.user.token}` },
+      headers: { Authorization: `Bearer ${token}` },
     }
     return this.$axios.$get(`/orders/${objectId}`, config).then((response) => {
       commit('SET', response)
@@ -34,7 +35,7 @@ export const actions = {
 
   UPDATE({ commit }, object) {
     const config = {
-      headers: { Authorization: `Bearer ${this.$auth.user.token}` },
+      headers: { Authorization: `Bearer ${token}` },
     }
     return this.$axios
       .$put(`/orders/${object.id}`, config, { order: object })
@@ -45,7 +46,7 @@ export const actions = {
 
   REMOVE({ commit }, object) {
     const config = {
-      headers: { Authorization: `Bearer ${this.$auth.user.token}` },
+      headers: { Authorization: `Bearer ${token}` },
     }
     return this.$axios
       .$delete(`/orders/delete/${object.id}`, config)
