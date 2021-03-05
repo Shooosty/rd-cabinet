@@ -10,7 +10,6 @@
               <div class="d-flex">
                 <input
                   v-model="user.email"
-                  autofocus
                   class="form-control width-email"
                   required
                   type="email"
@@ -90,13 +89,6 @@ export default {
       },
 
       isLoading: false,
-    }
-  },
-
-  mounted() {
-    const input = document.querySelector('[autofocus]')
-    if (input) {
-      input.focus()
     }
   },
 
