@@ -15,6 +15,7 @@
         :icon="action.icon"
         :to="action.to"
         :btn-class="action.btnClass"
+        :fn="action.click"
       />
     </div>
   </div>

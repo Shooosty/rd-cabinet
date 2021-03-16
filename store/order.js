@@ -27,7 +27,7 @@ export const actions = {
     return this.$axios
       .$put(`/orders/${object.id}`, { order: object })
       .then((response) => {
-        commit('ADD_OR_UPDATE', response)
+        commit('UPDATE', response)
       })
   },
 

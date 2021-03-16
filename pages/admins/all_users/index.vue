@@ -1,6 +1,6 @@
 <template>
   <div v-show="$isAllowed('viewSidebarMenuItemForAdmin')">
-    <page-header card-title="Список пользователей" />
+    <page-header card-title="Список пользователей" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <div class="d-flex">
         <DataTable :items="users" :fields="fields" :page-name="pageName" />
@@ -28,6 +28,14 @@ export default {
     return {
       fields: ['name', 'email', 'phone', 'role'],
       pageName: 'all_users',
+      actions: [
+        {
+          label: 'Добавить',
+          btnClass: 'success',
+          to: '/admins/all_users/new',
+          icon: 'plus',
+        },
+      ],
     }
   },
 

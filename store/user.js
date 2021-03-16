@@ -50,11 +50,9 @@ export const actions = {
   },
 
   UPDATE({ commit }, object) {
-    return this.$axios
-      .$put(`/users/${object.id}`, { user: object })
-      .then((response) => {
-        commit('ADD_OR_UPDATE', response)
-      })
+    return this.$axios.$put(`/users/${object.id}`, object).then((response) => {
+      commit('UPDATE', response)
+    })
   },
 
   REMOVE({ commit }, object) {

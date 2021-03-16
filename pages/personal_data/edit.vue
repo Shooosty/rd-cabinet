@@ -11,13 +11,6 @@
           ></b-form-input>
         </b-list-group-item>
         <b-list-group-item>
-          <b> E-mail: </b>
-          <b-form-input
-            v-model="editedUser.email"
-            :placeholder="user.email"
-          ></b-form-input>
-        </b-list-group-item>
-        <b-list-group-item>
           <b> Телефон: </b>
           <b-form-input
             v-model="editedUser.phone"
@@ -30,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 
 export default {
@@ -43,8 +36,8 @@ export default {
   data() {
     return {
       editedUser: {
+        id: localStorage.getItem('userId'),
         name: '',
-        email: '',
         phone: '',
       },
 
@@ -60,6 +53,11 @@ export default {
           btnClass: 'success',
           to: '/personal_data',
           icon: 'check',
+          click: () => {
+            this.update(this.editedUser).then(() => {
+              this.$router.push({ path: '/personal_data' })
+            })
+          },
         },
       ],
     }
@@ -72,6 +70,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      update: 'user/UPDATE',
+    }),
+
     async fetchUser() {
       const id = localStorage.getItem('userId')
       await this.$store.dispatch('user/GET', id)

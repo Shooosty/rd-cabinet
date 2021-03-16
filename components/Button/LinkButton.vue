@@ -1,5 +1,25 @@
 <template>
+  <a
+    v-if="fn"
+    :href="to"
+    class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+    :class="type(btnClass)"
+    @click.prevent="fn && fn.call()"
+  >
+    <span
+      v-if="label"
+      class="d-lg-inline-block"
+      :class="[icon ? 'ml-2 d-none' : '']"
+      v-text="label"
+    />
+
+    <span v-if="icon" class="ml-auto">
+      <fa :icon="['fas', `${icon}`]" />
+    </span>
+  </a>
+
   <n-link
+    v-else
     :to="to"
     class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
     :class="type(btnClass)"
@@ -10,6 +30,7 @@
       :class="[icon ? 'ml-2 d-none' : '']"
       v-text="label"
     />
+
     <span v-if="icon" class="ml-auto">
       <fa :icon="['fas', `${icon}`]" />
     </span>
@@ -34,6 +55,10 @@ export default {
     to: {
       type: [String, Object],
       default: '#',
+    },
+    fn: {
+      type: Function,
+      default: null,
     },
   },
 
