@@ -9,6 +9,7 @@ export default {
 
   CLEAR(state) {
     state.items = []
+    state.item = {}
     state.pagination = {}
   },
 

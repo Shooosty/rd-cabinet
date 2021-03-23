@@ -19,6 +19,7 @@ export const actions = {
   },
 
   GET({ commit }, objectId) {
+    commit('CLEAR')
     return this.$axios.$get(`/orders/${objectId}`).then((response) => {
       commit('SET_ITEM', response.data)
     })
@@ -32,11 +33,9 @@ export const actions = {
   },
 
   UPDATE({ commit }, object) {
-    return this.$axios
-      .$put(`/orders/${object.id}`, { order: object })
-      .then((response) => {
-        commit('UPDATE', response.data)
-      })
+    return this.$axios.$put(`/orders/${object.id}`, object).then((response) => {
+      commit('UPDATE', response)
+    })
   },
 
   DELETE({ commit }, object) {

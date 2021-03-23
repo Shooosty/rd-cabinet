@@ -45,6 +45,7 @@ export const actions = {
   },
 
   GET({ commit }, objectId) {
+    commit('CLEAR')
     return this.$axios.$get(`/users/${objectId}`).then((response) => {
       commit('SET_ITEM', response.data)
     })
