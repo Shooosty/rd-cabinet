@@ -127,11 +127,7 @@
 
         <div class="d-flex justify-content-center mt-5">
           <div>
-            <PrimaryButton
-              type="submit"
-              :disabled="isLoading"
-              label="Зарегистрировать"
-            />
+            <PrimaryButton type="submit" label="Зарегистрировать" />
           </div>
         </div>
       </form>
@@ -183,7 +179,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      items: 'user/all',
+      items: 'user/items',
       pagination: 'user/pagination',
     }),
 

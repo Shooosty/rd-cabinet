@@ -1,16 +1,15 @@
 export default {
-  SET(state, data) {
-    state.list = data
+  SET_ITEMS(state, data) {
+    state.items = data
+  },
+
+  SET_ITEM(state, data) {
+    state.item = data
   },
 
   CLEAR(state) {
-    state.list = []
+    state.items = []
     state.pagination = {}
-  },
-
-  UPDATE(state, data) {
-    state.list = []
-    state.list.push(data)
   },
 
   SET_PAGINATION_META(state, headers) {
@@ -22,12 +21,15 @@ export default {
     }
   },
 
-  REMOVE(state, data) {
-    const index = state.list.findIndex((item) => item.id === data.id)
-    state.list.splice(index, 1)
+  CREATE(state, data) {
+    state.item = data
   },
 
-  SORT_BY_PROP(state, prop) {
-    state.list.sort((a, b) => a[prop] - b[prop])
+  UPDATE(state, data) {
+    state.item = data
+  },
+
+  DELETE(state) {
+    state.item = {}
   },
 }

@@ -33,7 +33,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      items: 'order/all',
+      items: 'order/items',
       pagination: 'order/pagination',
     }),
 

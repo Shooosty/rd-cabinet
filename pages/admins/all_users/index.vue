@@ -41,7 +41,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      items: 'user/all',
+      items: 'user/items',
       pagination: 'user/pagination',
     }),
 

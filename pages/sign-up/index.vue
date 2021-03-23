@@ -115,11 +115,7 @@
       </div>
       <div class="d-flex mt-5">
         <div>
-          <PrimaryButton
-            type="submit"
-            :disabled="isLoading"
-            label="Зарегистрироваться"
-          />
+          <PrimaryButton type="submit" label="Зарегистрироваться" />
         </div>
         <div>
           <LinkButton to="/sign-in" btn-class="danger" label="Отмена" />
@@ -151,7 +147,6 @@ export default {
         role: 'user',
       },
       acceptPassword: '',
-      isLoading: false,
     }
   },
 
@@ -160,15 +155,15 @@ export default {
 
     async sendForm() {
       if (this.acceptPassword === this.user.password) {
-        this.isLoading = true
-
         try {
           await this.SIGN_UP(Object.assign({}, this.user))
           this.errors = null
         } catch (e) {
           this.errors = e
         } finally {
-          this.isLoading = false
+          if (this.errors == null) {
+            setTimeout(() => this.$router.push({ path: '/sign-in' }), 2500)
+          }
         }
       } else {
         this.errors = 'Пароли не совпадают!'

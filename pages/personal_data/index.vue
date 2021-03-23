@@ -33,6 +33,7 @@ export default {
 
   data() {
     return {
+      userId: this.$auth.user.ID,
       actions: [
         {
           label: 'Редактировать',
@@ -46,14 +47,13 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'user/all',
+      user: 'user/item',
     }),
   },
 
   methods: {
     async fetchUser() {
-      const id = localStorage.getItem('userId')
-      await this.$store.dispatch('user/GET', id)
+      await this.$store.dispatch('user/GET', this.userId)
     },
   },
 }

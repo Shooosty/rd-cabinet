@@ -35,6 +35,7 @@ export default {
 
   data() {
     return {
+      userId: this.$auth.user.ID,
       editedUser: {
         id: localStorage.getItem('userId'),
         name: '',
@@ -65,7 +66,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'user/all',
+      user: 'user/item',
     }),
   },
 
@@ -75,8 +76,7 @@ export default {
     }),
 
     async fetchUser() {
-      const id = localStorage.getItem('userId')
-      await this.$store.dispatch('user/GET', id)
+      await this.$store.dispatch('user/GET', this.userId)
     },
   },
 }
