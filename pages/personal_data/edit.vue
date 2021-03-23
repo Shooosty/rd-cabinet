@@ -7,14 +7,14 @@
           <b> Имя: </b>
           <b-form-input
             v-model="editedUser.name"
-            :placeholder="user.name"
+            :placeholder="userName"
           ></b-form-input>
         </b-list-group-item>
         <b-list-group-item>
           <b> Телефон: </b>
           <b-form-input
             v-model="editedUser.phone"
-            :placeholder="user.phone"
+            :placeholder="userPhone"
           ></b-form-input>
         </b-list-group-item>
       </b-list-group>
@@ -37,9 +37,9 @@ export default {
     return {
       userId: this.$auth.user.ID,
       editedUser: {
-        id: this.userId,
-        name: '',
-        phone: '',
+        id: this.$auth.user.ID,
+        name: this.userName,
+        phone: this.userPhone,
       },
 
       actions: [
@@ -68,6 +68,14 @@ export default {
     ...mapGetters({
       user: 'user/item',
     }),
+
+    userName() {
+      return this.user?.name
+    },
+
+    userPhone() {
+      return this.user?.phone
+    },
   },
 
   methods: {

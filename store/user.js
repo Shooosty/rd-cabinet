@@ -52,7 +52,7 @@ export const actions = {
 
   UPDATE({ commit }, object) {
     return this.$axios.$put(`/users/${object.id}`, object).then((response) => {
-      commit('UPDATE', response.data)
+      commit('UPDATE', response)
     })
   },
 
