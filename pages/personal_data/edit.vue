@@ -37,7 +37,7 @@ export default {
     return {
       userId: this.$auth.user.ID,
       editedUser: {
-        id: localStorage.getItem('userId'),
+        id: this.userId,
         name: '',
         phone: '',
       },
