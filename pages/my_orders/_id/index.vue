@@ -15,15 +15,7 @@ export default {
 
   data() {
     return {
-      actions: [
-        { label: 'Оплатить', to: '#', icon: 'money-bill-wave' },
-        {
-          label: 'Отменить',
-          btnClass: 'danger',
-          to: '#',
-          icon: 'window-close',
-        },
-      ],
+      actions: [{ label: 'Оплатить', to: '#', icon: 'money-bill-wave' }],
     }
   },
 }

@@ -1,6 +1,6 @@
 <template>
   <div v-show="$isAllowed('viewSidebarMenuItemForAdmin')">
-    <page-header card-title="Все заказы" />
+    <page-header card-title="Все заказы" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <div class="d-flex">
         <DataTable :items="orders" :fields="fields" :page-name="pageName" />
@@ -28,6 +28,14 @@ export default {
     return {
       fields: ['id', 'name', 'user_id'],
       pageName: 'all_orders',
+      actions: [
+        {
+          label: 'Создать',
+          btnClass: 'success',
+          to: '/admins/all_orders/new',
+          icon: 'plus',
+        },
+      ],
     }
   },
 

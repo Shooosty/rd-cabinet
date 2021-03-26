@@ -24,11 +24,6 @@ export default {
           govern: 'viewSidebarMenuItemForUser',
         },
         {
-          title: 'Мои проекты',
-          route: '/my_projects',
-          govern: 'viewSidebarMenuItemForUser',
-        },
-        {
           title: 'Мои бонусы',
           route: '/my_bonuses',
           govern: 'viewSidebarMenuItemForUser',

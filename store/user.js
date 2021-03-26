@@ -19,7 +19,9 @@ export const actions = {
       .then((response) => {
         const user = response.data.user
         this.$auth.setUser(user)
-        this.$router.push({ path: '/my_orders' })
+        if (user.role === 'user') {
+          this.$router.push({ path: '/my_orders' })
+        }
       })
   },
 

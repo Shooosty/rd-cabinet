@@ -1,11 +1,6 @@
 <template>
   <div>
-    <page-card
-      :tabs="tabs"
-      :actions="actions"
-      is-card-page
-      card-title="Мои заказы"
-    />
+    <page-card :tabs="tabs" is-card-page card-title="Мои заказы" />
   </div>
 </template>
 
@@ -19,8 +14,6 @@ export default {
 
   data() {
     return {
-      actions: [{ label: 'Создать', to: '#', icon: 'plus' }],
-
       tabs: [
         {
           title: 'Активные заказы',
