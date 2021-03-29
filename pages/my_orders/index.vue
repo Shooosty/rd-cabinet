@@ -1,16 +1,19 @@
 <template>
-  <div>
+  <div v-show="$isAllowed('viewSidebarMenuItemForUser')">
     <page-card :tabs="tabs" is-card-page card-title="Мои заказы" />
   </div>
 </template>
 
 <script>
 import PageCard from '~/components/Pages/Card/PageCard'
+import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
 
 export default {
   components: {
     PageCard,
   },
+
+  perimeters: [SidebarMenuPerimeter],
 
   data() {
     return {

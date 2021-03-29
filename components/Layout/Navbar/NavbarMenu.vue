@@ -3,20 +3,23 @@
     <ul class="d-flex align-items-top p-0 m-0 list-unstyled">
       <li
         v-show="$isAllowed('viewSidebarMenuItemForUser')"
-        class="nav-item user-select-none mr-3"
+        class="nav-item user-select-none mr-3 d-none d-lg-flex d-sm-flex d-xl-flex"
       >
-        <icon-button icon="question-circle" to="/faq" />
+        <IconButton icon="question-circle" to="/faq" />
       </li>
       <li
         v-show="$isAllowed('viewSidebarMenuItemForUser')"
-        class="nav-item user-select-none mr-3"
+        class="nav-item user-select-none mr-3 d-none d-lg-flex d-sm-flex d-xl-flex"
       >
-        <icon-button icon="shopping-cart" to="/my_cart" />
+        <IconButton icon="shopping-cart" to="/my_cart" />
       </li>
-      <li class="nav-item user-select-none p-0 m-0 mr-3">
-        <sidebar-user-menu class="pr-3" />
+      <li
+        class="nav-item user-select-none p-0 m-0 mr-3 d-none d-lg-flex d-sm-flex d-xl-flex"
+      >
+        <SidebarUserMenu class="pr-3" />
       </li>
     </ul>
+    <MobileSidebar class="d-block d-lg-none d-sm-none d-xl-none" />
   </div>
 </template>
 
@@ -24,9 +27,10 @@
 import SidebarUserMenu from '~/components/Layout/Sidebar/SidebarUserMenu'
 import IconButton from '~/components/Button/IconButton'
 import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
+import MobileSidebar from '~/components/Layout/Sidebar/SidebarMobile'
 
 export default {
-  components: { IconButton, SidebarUserMenu },
+  components: { IconButton, MobileSidebar, SidebarUserMenu },
 
   perimeters: [SidebarMenuPerimeter],
 }

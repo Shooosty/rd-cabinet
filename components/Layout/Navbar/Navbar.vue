@@ -8,12 +8,13 @@
     <div>
       <b-img v-bind="mainProps" src="~@/assets/images/logo.svg"></b-img>
     </div>
-    <navbar-menu />
+    <NavbarMenu />
   </b-navbar>
 </template>
 
 <script>
 import NavbarMenu from '~/components/Layout/Navbar/NavbarMenu'
+
 export default {
   components: { NavbarMenu },
 

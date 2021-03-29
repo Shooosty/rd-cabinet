@@ -14,6 +14,7 @@
 import SidebarMenu from '~/components/Layout/Sidebar/SidebarMenu'
 export default {
   components: { SidebarMenu },
+
   data() {
     return {
       menu: [

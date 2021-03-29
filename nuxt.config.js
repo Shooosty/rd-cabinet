@@ -49,6 +49,8 @@ export default {
               'faCartArrowDown',
               'faShoppingCart',
               'faQuestionCircle',
+              'faSave',
+              'faBars',
             ],
           },
         ],

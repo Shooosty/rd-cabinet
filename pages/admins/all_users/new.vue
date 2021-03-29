@@ -1,6 +1,6 @@
 <template>
   <div v-show="$isAllowed('viewSidebarMenuItemForAdmin')">
-    <page-header card-title="Добавить нового сотрудника" :actions="actions" />
+    <PageHeader card-title="Добавить нового сотрудника" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <form @submit.prevent="sendForm">
         <div v-if="errors" class="alert alert-danger" role="alert">

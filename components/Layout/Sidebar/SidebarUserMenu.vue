@@ -1,6 +1,9 @@
 <template>
   <div>
-    <a v-b-toggle.sidebar-right>{{ userEmail }}</a>
+    <a v-b-toggle.sidebar-right>
+      <fa :icon="['fas', 'user']" />
+      {{ userEmail }}
+    </a>
     <b-sidebar id="sidebar-right" right shadow>
       <template #default="{ hide }">
         <div class="p-3">
