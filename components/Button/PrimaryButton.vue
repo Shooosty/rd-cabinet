@@ -16,10 +16,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '~/assets/stylesheets/default';
-@import '~/assets/stylesheets/button';
-@import '~/assets/stylesheets/media';
-
 .btn {
   min-width: 82px;
 }

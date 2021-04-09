@@ -14,4 +14,3 @@ export default {}
 @import '~/assets/stylesheets/default';
 @import '~/assets/stylesheets/button';
 </style>
-

@@ -3,8 +3,14 @@
     <page-header :card-title="cardTitle" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <vue-tabs>
-        <v-tab v-for="tab in tabs" :key="tab.title" :title="tab.title">
-          <card :cards="tab.card" :resource-name="tab.resourceName" />
+        <v-tab title="Активные">
+          <Card :cards="activeItems" :resource-name="resourceName" />
+        </v-tab>
+        <v-tab title="Закрытые">
+          <Card :cards="closedItems" :resource-name="resourceName" />
+        </v-tab>
+        <v-tab title="Все">
+          <Card :cards="items" :resource-name="resourceName" />
         </v-tab>
       </vue-tabs>
     </div>
@@ -26,15 +32,31 @@ export default {
       type: String,
       required: true,
     },
-    tabs: {
-      type: Array[Object],
+    resourceName: {
+      type: String,
       required: true,
+    },
+    items: {
+      type: Array[Object],
+      default() {
+        return []
+      },
     },
     actions: {
       type: Array[Object],
       default() {
         return []
       },
+    },
+  },
+
+  computed: {
+    activeItems() {
+      return this.items.filter((order) => order.status === 'new' || 'active')
+    },
+
+    closedItems() {
+      return this.items.filter((order) => order.status === 'closed')
     },
   },
 }

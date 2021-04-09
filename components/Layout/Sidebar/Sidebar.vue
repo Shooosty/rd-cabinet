@@ -22,29 +22,29 @@ export default {
         {
           title: 'Мои заказы',
           route: '/my_orders',
-          govern: 'viewSidebarMenuItemForUser',
+          govern: 'viewForEmployerAndUser',
         },
         {
           title: 'Мои бонусы',
           route: '/my_bonuses',
-          govern: 'viewSidebarMenuItemForUser',
+          govern: 'viewForUser',
         },
         // admins
         {
           title: 'Все клиенты',
           route: '/admins/all_users',
-          govern: 'viewSidebarMenuItemForAdmin',
+          govern: 'viewForAdmin',
         },
         {
           title: 'Все заказы',
           route: '/admins/all_orders',
-          govern: 'viewSidebarMenuItemForAdmin',
+          govern: 'viewForAdmin',
         },
         // super-admins
         {
           title: 'Управление',
           route: '/admins/admin_manage',
-          govern: 'viewSidebarMenuItemForSuperAdmin',
+          govern: 'viewForSuperAdmin',
         },
       ],
     }

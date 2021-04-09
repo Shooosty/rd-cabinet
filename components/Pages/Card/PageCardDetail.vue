@@ -1,21 +1,27 @@
 <template>
   <div>
-    <page-header :card-title="cardTitle" :actions="actions" />
+    <PageHeader :card-title="cardTitle" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <vue-tabs v-if="isOrderPage">
         <v-tab title="Основная информация">
-          <general-order />
+          <GeneralOrder :resource="resource" />
         </v-tab>
         <v-tab title="Дополнительно">
-          <secondary-order />
+          <SecondaryOrder :resource="resource" />
+        </v-tab>
+        <v-tab title="Фотографии">
+          <PhotoOrder :resource="resource" />
+        </v-tab>
+        <v-tab title="Администрирование">
+          <AdminOrder :resource="resource" />
         </v-tab>
       </vue-tabs>
       <vue-tabs v-if="isProjectPage">
         <v-tab title="Основная информация">
-          <general-project />
+          <GeneralProject />
         </v-tab>
         <v-tab title="Файлы">
-          <project-files />
+          <ProjectFiles />
         </v-tab>
       </vue-tabs>
     </div>
@@ -26,6 +32,8 @@
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import GeneralOrder from '~/components/Pages/Order/GeneralOrder'
 import SecondaryOrder from '~/components/Pages/Order/SecondaryOrder'
+import PhotoOrder from '~/components/Pages/Order/PhotoOrder'
+import AdminOrder from '~/components/Pages/Order/AdminOrder'
 import ProjectFiles from '~/components/Pages/Project/ProjectFiles'
 import GeneralProject from '~/components/Pages/Project/GeneralProject'
 
@@ -36,6 +44,8 @@ export default {
     SecondaryOrder,
     ProjectFiles,
     GeneralProject,
+    PhotoOrder,
+    AdminOrder,
   },
 
   props: {
@@ -51,8 +61,8 @@ export default {
       type: Boolean,
       default: false,
     },
-    tabs: {
-      type: Array[Object],
+    resource: {
+      type: Object,
       required: true,
     },
     actions: {

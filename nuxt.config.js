@@ -11,12 +11,17 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
 
-  css: [],
+  css: [
+    'bootstrap/dist/css/bootstrap.css',
+    'bootstrap-vue/dist/bootstrap-vue.css',
+    '~/assets/stylesheets/app.scss',
+  ],
 
   plugins: [
-    { src: '~/plugins/vue-tabs', ssr: false },
-    { src: '~/plugins/vuex-persist', ssr: false },
-    { src: '~/plugins/vue-kindergarten', ssr: false },
+    { src: '~/plugins/vue-tabs', mode: 'client' },
+    { src: '~/plugins/vuex-persist', mode: 'client' },
+    { src: '~/plugins/vue-kindergarten', mode: 'client' },
+    { src: '~/plugins/vue2-datepicker', mode: 'client' },
   ],
 
   components: true,
@@ -38,8 +43,11 @@ export default {
             icons: [
               'faPlus',
               'faEdit',
+              'faCalendar',
               'faUser',
               'faLock',
+              'faClock',
+              'faInfoCircle',
               'faPhone',
               'faCheck',
               'faTrash',

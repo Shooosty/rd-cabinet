@@ -1,5 +1,5 @@
 <template>
-  <div v-show="$isAllowed('viewSidebarMenuItemForAdmin')">
+  <div v-show="$isAllowed('viewForAdmin')">
     <page-header card-title="Все заказы" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <div class="d-flex">
@@ -12,13 +12,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
-import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 import DataTable from '~/components/Table/DataTable'
 
 export default {
   components: { DataTable, PageHeader },
 
-  perimeters: [SidebarMenuPerimeter],
+  perimeters: [ViewPerimeter],
 
   async fetch() {
     await this.fetchOrders()
@@ -41,13 +41,9 @@ export default {
 
   computed: {
     ...mapGetters({
-      items: 'order/items',
+      orders: 'order/items',
       pagination: 'order/pagination',
     }),
-
-    orders() {
-      return this.items.data
-    },
   },
 
   methods: {

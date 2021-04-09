@@ -1,0 +1,88 @@
+@import 'vue-multiselect/dist/vue-multiselect.min';
+@import 'default';
+
+.multiselect__option--selected.multiselect__option--highlight,
+.multiselect__option--highlight {
+  background-color: $secondary-color;
+
+  &::after {
+    background-color: $secondary-color;
+  }
+}
+
+// MultiSelect Styles
+.multiselect {
+  min-height: 18px;
+  width: 100%;
+}
+
+.multiselect__tags {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 1.8rem 0 1rem;
+}
+
+.multiselect__placeholder,
+.multiselect__single,
+.multiselect__input {
+  padding: 0;
+  margin: 0;
+}
+
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-size: 14px;
+  color: $default-color;
+  font-weight: $font-weight-boldest;
+}
+
+.multiselect__content-wrapper {
+  margin-top: 0.3rem;
+  border-radius: 5px;
+  box-shadow: 6px 1px 10px -3px rgba(0, 0, 0, 0.2);
+
+  .multiselect__option {
+    span {
+      font-weight: $font-weight-normal;
+    }
+  }
+}
+
+.multiselect__select {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  right: 9px;
+  top: calc(50% - 9px);
+  padding: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 512' %3E%3Cpath fill='%238181a5' d='M119.5 326.9L3.5 209.1c-4.7-4.7-4.7-12.3 0-17l7.1-7.1c4.7-4.7 12.3-4.7 17 0L128 287.3l100.4-102.2c4.7-4.7 12.3-4.7 17 0l7.1 7.1c4.7 4.7 4.7 12.3 0 17L136.5 327c-4.7 4.6-12.3 4.6-17-.1z' class=''%3E%3C/path%3E%3C/svg%3E")
+  no-repeat;
+  background-size: 8px;
+  background-position: center;
+  transition: transform 0.2s ease;
+}
+
+.multiselect__select::before {
+  content: '';
+  position: relative;
+  margin-top: 0;
+  border: none;
+}
+
+.multiselect--active .multiselect__select {
+  transform: scaleY(-1);
+}
+
+.multiselect--active:not(.multiselect--above) .multiselect__current,
+.multiselect--active:not(.multiselect--above) .multiselect__input,
+.multiselect--active:not(.multiselect--above) .multiselect__tags {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.with-label {
+  height: 18px;
+  font-weight: $font-weight-normal;
+}

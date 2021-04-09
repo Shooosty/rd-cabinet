@@ -1,6 +1,6 @@
 <template>
-  <page-card-detail
-    :tabs="tabs"
+  <PageCardDetail
+    :resource="order"
     :actions="actions"
     is-order-page
     card-title="Заказ №1"
@@ -8,15 +8,32 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 
 export default {
   components: { PageCardDetail },
 
+  async fetch() {
+    await this.fetchOrder()
+  },
+
   data() {
     return {
       actions: [{ label: 'Оплатить', to: '#', icon: 'money-bill-wave' }],
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      order: 'order/item',
+    }),
+  },
+
+  methods: {
+    async fetchOrder() {
+      await this.$store.dispatch('order/GET', this.$route.params.id)
+    },
   },
 }
 </script>

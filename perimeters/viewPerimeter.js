@@ -1,16 +1,22 @@
 import BasePerimeter from '~/perimeters/basePerimeter'
 export default new BasePerimeter({
-  purpose: 'sidebarMenu',
+  purpose: 'view',
   govern: {
     'can route': () => true,
-    'can viewSidebarMenuItemForAdmin'() {
+    'can viewForAdmin'() {
       return this.isAdmin() || this.isSuperAdmin()
     },
-    'can viewSidebarMenuItemForUser'() {
+
+    'can viewForUser'() {
       return this.isUser()
     },
-    'can viewSidebarMenuItemForSuperAdmin'() {
+
+    'can viewForSuperAdmin'() {
       return this.isSuperAdmin()
+    },
+
+    'can viewForEmployerAndUser'() {
+      return this.isPhotographer() || this.isDesigner() || this.isUser()
     },
   },
 })

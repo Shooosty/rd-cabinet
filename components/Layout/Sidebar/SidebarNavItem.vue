@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   props: {
@@ -37,7 +37,7 @@ export default {
     },
   },
 
-  perimeters: [SidebarMenuPerimeter],
+  perimeters: [ViewPerimeter],
 }
 </script>
 

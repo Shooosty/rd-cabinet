@@ -76,8 +76,3 @@ export default {
   },
 }
 </script>
-<style lang="scss" scoped>
-@import '~/assets/stylesheets/default';
-@import '~/assets/stylesheets/button';
-@import '~/assets/stylesheets/media';
-</style>

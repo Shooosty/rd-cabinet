@@ -2,8 +2,16 @@
   <div class="mt-3 card-body bg-white">
     <b-list-group>
       <b-list-group-item>
-        <b> Заметка: </b>
-        <span> {{ resource.description }} </span>
+        <b> Клиент: </b>
+        <span> ? </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Фотограф: </b>
+        <span> ? </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Дизайнер: </b>
+        <span> ? </span>
       </b-list-group-item>
     </b-list-group>
   </div>

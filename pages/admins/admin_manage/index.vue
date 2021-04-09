@@ -1,5 +1,5 @@
 <template>
-  <div v-show="$isAllowed('viewSidebarMenuItemForSuperAdmin')">
+  <div v-show="$isAllowed('viewForSuperAdmin')">
     <page-header card-title="Администрирование" />
     <div class="mt-3 card-body bg-white">
       <span> adm/manage </span>
@@ -9,12 +9,12 @@
 
 <script>
 import PageHeader from '~/components/Pages/Card/PageHeader'
-import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: { PageHeader },
 
-  perimeters: [SidebarMenuPerimeter],
+  perimeters: [ViewPerimeter],
 }
 </script>
 

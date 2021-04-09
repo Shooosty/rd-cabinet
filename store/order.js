@@ -15,7 +15,7 @@ export const actions = {
     commit('CLEAR')
     const response = await this.$axios.get('/orders/', params)
     commit('SET_PAGINATION_META', response.headers)
-    commit('SET_ITEMS', response.data)
+    commit('SET_ITEMS', response.data.data)
   },
 
   GET({ commit }, objectId) {
@@ -29,7 +29,38 @@ export const actions = {
     commit('CLEAR')
     const response = await this.$axios.get(`/users/${objectId}/orders`)
     commit('SET_PAGINATION_META', response.headers)
-    commit('SET_ITEMS', response.data)
+    commit('SET_ITEMS', response.data.data)
+  },
+
+  async GET_ALL_FOR_PHOTOGRAPHER({ commit }, objectId) {
+    commit('CLEAR')
+    const response = await this.$axios.get(`/photographers/${objectId}/orders`)
+    commit('SET_PAGINATION_META', response.headers)
+    commit('SET_ITEMS', response.data.data)
+  },
+
+  async GET_ALL_FOR_DESIGNER({ commit }, objectId) {
+    commit('CLEAR')
+    const response = await this.$axios.get(`/designers/${objectId}/orders`)
+    commit('SET_PAGINATION_META', response.headers)
+    commit('SET_ITEMS', response.data.data)
+  },
+
+  CREATE({ commit }, object) {
+    const order = {
+      owner: object.owner,
+      status: object.status,
+      contract: object.contract,
+      photographer_id: object.photographerId.ID,
+      designer_id: object.designerId.ID,
+      address: object.address,
+      user_id: object.userId.ID,
+      datetime: object.datetime,
+      description: object.description,
+    }
+    return this.$axios.$post('/orders/', order).then((response) => {
+      commit('CREATE', response.data)
+    })
   },
 
   UPDATE({ commit }, object) {

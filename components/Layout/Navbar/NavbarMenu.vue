@@ -2,13 +2,13 @@
   <div class="navbar-nav flex-row align-items-center justify-content-end w-100">
     <ul class="d-flex align-items-top p-0 m-0 list-unstyled">
       <li
-        v-show="$isAllowed('viewSidebarMenuItemForUser')"
+        v-if="this.$auth.user.role === 'user'"
         class="nav-item user-select-none mr-3 d-none d-lg-flex d-sm-flex d-xl-flex"
       >
         <IconButton icon="question-circle" to="/faq" />
       </li>
       <li
-        v-show="$isAllowed('viewSidebarMenuItemForUser')"
+        v-if="this.$auth.user.role === 'user'"
         class="nav-item user-select-none mr-3 d-none d-lg-flex d-sm-flex d-xl-flex"
       >
         <IconButton icon="shopping-cart" to="/my_cart" />
@@ -26,12 +26,9 @@
 <script>
 import SidebarUserMenu from '~/components/Layout/Sidebar/SidebarUserMenu'
 import IconButton from '~/components/Button/IconButton'
-import SidebarMenuPerimeter from '~/perimeters/sidebarMenuPerimeter'
 import MobileSidebar from '~/components/Layout/Sidebar/SidebarMobile'
 
 export default {
   components: { IconButton, MobileSidebar, SidebarUserMenu },
-
-  perimeters: [SidebarMenuPerimeter],
 }
 </script>
