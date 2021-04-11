@@ -26,7 +26,12 @@ export default {
 
   data() {
     return {
-      fields: ['name', 'email', 'phone', 'role'],
+      fields: [
+        { key: 'name', label: 'Имя' },
+        { key: 'email', label: 'Логин' },
+        { key: 'phone', label: 'Телефон' },
+        { key: 'role', label: 'Роль' },
+      ],
       pageName: 'all_users',
       actions: [
         {
