@@ -26,7 +26,11 @@ export default {
 
   data() {
     return {
-      fields: ['id', 'name', 'user_id'],
+      fields: [
+        { key: 'datetime', label: 'Дата съемки' },
+        { key: 'owner', label: 'Ответственный' },
+        { key: 'status', label: 'Статус' },
+      ],
       pageName: 'all_orders',
       actions: [
         {
