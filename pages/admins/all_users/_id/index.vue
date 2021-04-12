@@ -1,9 +1,5 @@
 <template>
-  <PageCardDetail
-    :resource="user"
-    :actions="actions"
-    :card-title="user.email"
-  />
+  <PageCardDetail :resource="user" :card-title="user.email" is-user-page />
 </template>
 
 <script>
@@ -15,19 +11,6 @@ export default {
 
   async fetch() {
     await this.fetchUser()
-  },
-
-  data() {
-    return {
-      actions: [
-        {
-          label: 'Редактировать',
-          btnClass: 'secondary',
-          to: `${this.$route.path}/edit`,
-          icon: 'edit',
-        },
-      ],
-    }
   },
 
   computed: {

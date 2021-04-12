@@ -16,12 +16,22 @@
           <AdminOrder :resource="resource" />
         </v-tab>
       </vue-tabs>
+
       <vue-tabs v-if="isProjectPage">
         <v-tab title="Основная информация">
           <GeneralProject />
         </v-tab>
         <v-tab title="Файлы">
           <ProjectFiles />
+        </v-tab>
+      </vue-tabs>
+
+      <vue-tabs v-if="isUserPage">
+        <v-tab title="Основная информация">
+          <UserGeneral :resource="resource" />
+        </v-tab>
+        <v-tab title="Заказы">
+          <UserOrders :resource="resource" />
         </v-tab>
       </vue-tabs>
     </div>
@@ -31,6 +41,8 @@
 <script>
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import GeneralOrder from '~/components/Pages/Order/GeneralOrder'
+import UserGeneral from '~/components/Pages/User/UserGeneral'
+import UserOrders from '~/components/Pages/User/USerOrders'
 import SecondaryOrder from '~/components/Pages/Order/SecondaryOrder'
 import PhotoOrder from '~/components/Pages/Order/PhotoOrder'
 import AdminOrder from '~/components/Pages/Order/AdminOrder'
@@ -46,6 +58,8 @@ export default {
     GeneralProject,
     PhotoOrder,
     AdminOrder,
+    UserGeneral,
+    UserOrders,
   },
 
   props: {
@@ -58,6 +72,10 @@ export default {
       default: false,
     },
     isProjectPage: {
+      type: Boolean,
+      default: false,
+    },
+    isUserPage: {
       type: Boolean,
       default: false,
     },
