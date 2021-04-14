@@ -56,6 +56,10 @@ export default {
           icon: 'check',
           click: () => {
             this.update(this.editedUser).then(() => {
+              this.$notification.success('Данные успешно изменены', {
+                timer: 5,
+                position: 'bottomCenter',
+              })
               this.$router.push({ path: '/personal_data' })
             })
           },

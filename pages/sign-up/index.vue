@@ -162,11 +162,18 @@ export default {
           this.errors = e
         } finally {
           if (this.errors == null) {
-            setTimeout(() => this.$router.push({ path: '/sign-in' }), 2500)
+            setTimeout(() => this.$router.push({ path: '/sign-in' }), 2000)
+            this.$notification.success('Вы успешно зарегистрировались', {
+              timer: 3,
+              position: 'bottomCenter',
+            })
           }
         }
       } else {
-        this.errors = 'Пароли не совпадают!'
+        this.$notification.error('Введенные данные некорректны', {
+          timer: 3,
+          position: 'bottomCenter',
+        })
       }
     },
   },
