@@ -1,6 +1,6 @@
 <template>
   <div v-show="$isAllowed('viewForAdmin')">
-    <page-header card-title="Все заказы" :actions="actions" />
+    <PageHeader card-title="Все заказы" :actions="actions" />
     <div class="mt-3 card-body bg-white">
       <div class="d-flex">
         <DataTable :items="orders" :fields="fields" :page-name="pageName" />

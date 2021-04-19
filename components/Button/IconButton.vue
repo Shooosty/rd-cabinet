@@ -33,7 +33,7 @@ export default {
   transform: scale(1.2);
   transition: transform 0.2s ease-out;
   &:hover {
-    color: $default-color;
+    color: $success-color;
     transform: scale(1.6);
     transition: transform 0.2s ease-in;
   }

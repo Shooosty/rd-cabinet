@@ -1,6 +1,6 @@
 @media (max-width: 767px) {
   .btn {
-    background-color: $default-color;
+    background-color: $success-color;
     color: white;
     font-size: $font-size-md;
     font-weight: $font-weight-light;
@@ -13,7 +13,7 @@
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .btn {
-    background-color: $default-color;
+    background-color: $success-color;
     color: white;
     font-size: $font-size-md;
     font-weight: $font-weight-light;
@@ -27,7 +27,7 @@
 }
 @media (min-width: 992px) and (max-width: 1199px) {
   .btn {
-    background-color: $default-color;
+    background-color: $success-color;
     color: white;
     font-size: $font-size-md;
     font-weight: $font-weight-light;
@@ -41,7 +41,7 @@
 }
 @media (min-width: 1200px) {
   .btn {
-    background-color: $default-color;
+    background-color: $success-color;
     color: white;
     font-size: $font-size-md;
     font-weight: $font-weight-light;

@@ -1,6 +1,6 @@
 //green
 .btn-green {
-  background-color: $default-color;
+  background-color: $success-color;
   color: white;
 
   &:hover {
@@ -24,8 +24,8 @@
 //bordered
 .btn-bordered {
   background-color: white !important;
-  border: 2px $default-color solid;
-  color: $default-color !important;
+  border: 2px $success-color solid;
+  color: $success-color !important;
 
   &:hover {
     background-color: $secondary-color !important;

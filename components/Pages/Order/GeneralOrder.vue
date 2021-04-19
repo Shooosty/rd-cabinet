@@ -7,15 +7,15 @@
       </b-list-group-item>
       <b-list-group-item>
         <b> Дата: </b>
-        <span> {{ resource.datetime }} </span>
+        <span> {{ date }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Время: </b>
-        <span> {{ resource.datetime }} </span>
+        <span> {{ time }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Статус: </b>
-        <span> {{ resource.status }} </span>
+        <span> {{ status }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Договор: </b>
@@ -31,6 +31,29 @@ export default {
     resource: {
       type: Object,
       required: true,
+    },
+  },
+
+  computed: {
+    date() {
+      return this.$dayjs(this.resource?.datetime).format('DD.MM.YYYY')
+    },
+
+    time() {
+      return this.$dayjs(this.resource?.datetime).format('HH:mm')
+    },
+
+    status() {
+      switch (this.resource?.status) {
+        case 'new':
+          return 'новый'
+        case 'active':
+          return 'в работе'
+        case 'close':
+          return 'закрыт'
+        default:
+          return ''
+      }
     },
   },
 }

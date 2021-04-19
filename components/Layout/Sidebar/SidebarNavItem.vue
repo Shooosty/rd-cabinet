@@ -57,13 +57,13 @@ export default {
 
   &.active {
     background-color: #f6f7f9;
-    color: $default-color;
-    border-right: solid 4px $default-color;
+    color: $success-color;
+    border-right: solid 4px $success-color;
   }
 
   &:hover {
     background-color: #f6f7f9;
-    color: $default-color;
+    color: $success-color;
   }
 }
 </style>

@@ -17,6 +17,10 @@
         data.value
       }}</nuxt-link>
     </template>
+
+    <template #cell(datetime)="data">
+      <i> {{ parseDateTime(data.value) }} </i>
+    </template>
   </b-table>
 </template>
 
@@ -40,6 +44,10 @@ export default {
   methods: {
     onRowSelected(item) {
       this.$router.push(`${this.pageName}/${item[0].ID}`)
+    },
+
+    parseDateTime(value) {
+      return this.$dayjs(value).format('DD.MM.YYYY')
     },
   },
 }

@@ -66,19 +66,12 @@ export default {
       this.$router.push(`/${this.resourceName}/${id}`)
     },
 
-    parseDate(date) {
-      const dateValue = new Date(date)
-      const month = dateValue.getMonth() + 1
-      const day = dateValue.getDate()
-      const year = dateValue.getFullYear()
-      return day + '.' + month + '.' + year
+    parseDate(value) {
+      return this.$dayjs(value).format('DD.MM.YYYY')
     },
 
-    parseTime(date) {
-      const dateValue = new Date(date)
-      const hour = dateValue.getHours()
-      const minute = dateValue.getMinutes()
-      return hour + ':' + minute
+    parseTime(value) {
+      return this.$dayjs(value).format('HH:mm')
     },
 
     parseStatus(status) {

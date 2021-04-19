@@ -53,7 +53,7 @@ export default {
   font-size: $font-size-xl;
   font-weight: $font-weight-bold;
   color: $secondary-color;
-  border-bottom: $default-color solid 4px;
+  border-bottom: $success-color solid 4px;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;

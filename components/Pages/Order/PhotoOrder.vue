@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>info</div>
     <div
       v-for="(form, index) in peoplePhotos"
       :key="index"
@@ -21,19 +20,50 @@
         >
           <b-card-body>
             <b-card-text>
-              <input v-model="form.name" type="text" :name="`name-${index}`" />
-              <input
-                v-model="form.sureName"
-                type="text"
-                :name="`surename-${index}`"
-              />
-              <input
-                v-model="form.middleName"
-                type="text"
-                :name="`middlename-${index}`"
-              />
-              <div class="d-flex justify-content-end">
-                <IconButton icon="trash" @click.native="removeCard(index)" />
+              <b-row>
+                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                  <div>
+                    <b-form-input
+                      v-model="form.sureName"
+                      type="text"
+                      :name="`surename-${index}`"
+                      placeholder="Фамилия"
+                    />
+                  </div>
+                </b-col>
+                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                  <div>
+                    <b-form-input
+                      v-model="form.name"
+                      type="text"
+                      :name="`name-${index}`"
+                      placeholder="Имя"
+                    />
+                  </div>
+                </b-col>
+                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                  <div>
+                    <b-form-input
+                      v-model="form.middleName"
+                      type="text"
+                      :name="`middlename-${index}`"
+                      placeholder="Отчество"
+                    />
+                  </div>
+                </b-col>
+              </b-row>
+
+              <div class="mt-3">
+                <FileDropzone ref="photos" :options="options" />
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex justify-content-start mt-3">
+                  <IconButton icon="save" @click.native="savePeople(index)" />
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                  <IconButton icon="trash" @click.native="removeCard(index)" />
+                </div>
               </div>
             </b-card-text>
           </b-card-body>
@@ -47,10 +77,11 @@
 </template>
 
 <script>
+import FileDropzone from '@/components/Inputs/FileDropzone'
 import IconButton from '~/components/Button/IconButton'
 
 export default {
-  components: { IconButton },
+  components: { FileDropzone, IconButton },
 
   data() {
     return {
@@ -62,7 +93,18 @@ export default {
         photos: '',
         description: '',
       },
+
       peoplePhotos: [],
+
+      options: {
+        acceptedFiles: 'image/*',
+        url: `#`,
+        maxFiles: 30,
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        sendFile: this.uploadPhotos,
+        dictRemoveFile: 'удалить',
+      },
     }
   },
 
@@ -71,8 +113,8 @@ export default {
       this.peoplePhotos.push(Object.assign({}, this.defaultFormModels))
     },
 
-    removeCard(i) {
-      this.peoplePhotos.splice(i - 1, i)
+    removeCard(index) {
+      this.peoplePhotos.splice(index, 1)
     },
   },
 }

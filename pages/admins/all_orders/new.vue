@@ -130,8 +130,17 @@ export default {
               if (this.errors == null) {
                 setTimeout(
                   () => this.$router.push({ path: '/admins/all_orders' }),
-                  2500
+                  2000
                 )
+                this.$notification.success('Создан новый заказ', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              } else {
+                this.$notification.error('Не удалось создать заказ', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
               }
             }
           },

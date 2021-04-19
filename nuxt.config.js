@@ -35,6 +35,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
+    '@nuxtjs/dayjs',
     [
       'nuxt-fontawesome',
       {
@@ -53,6 +54,7 @@ export default {
               'faPhone',
               'faCheck',
               'faTrash',
+              'faFileDownload',
               'faEnvelope',
               'faMoneyBillWave',
               'faWindowClose',
@@ -67,6 +69,13 @@ export default {
       },
     ],
   ],
+
+  dayjs: {
+    locales: ['ru'],
+    defaultLocale: 'ru',
+    defaultTimeZone: 'Europe/Moscow',
+    plugins: ['utc', 'timezone'],
+  },
 
   loading: {
     color: '#00908c',
