@@ -8,10 +8,13 @@
     >
       <b-card no-body class="mb-1">
         <b-card-header header-tag="header" class="p-1" role="tab">
-          <b-button
-            v-b-toggle="`collapse-${index}`"
-            class="photo-container-button"
-          ></b-button>
+          <div class="d-flex justify-content-end">
+            <IconButton
+              v-b-toggle="`collapse-${index}`"
+              icon="chevron-down"
+              class="collapse-button"
+            />
+          </div>
         </b-card-header>
         <b-collapse
           :id="`collapse-${index}`"
@@ -54,7 +57,11 @@
               </b-row>
 
               <div class="mt-3">
-                <FileDropzone ref="photos" :options="options" />
+                <FileDropzone
+                  :ref="`photos-${index}`"
+                  :options="options"
+                  :name="`photos-${index}`"
+                />
               </div>
 
               <div class="d-flex align-items-center justify-content-between">
@@ -100,6 +107,7 @@ export default {
         acceptedFiles: 'image/*',
         url: `#`,
         maxFiles: 30,
+        icon: 'file-download',
         autoProcessQueue: false,
         addRemoveLinks: true,
         sendFile: this.uploadPhotos,
@@ -121,7 +129,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.photo-container-button {
-  width: 100%;
+.collapse-button {
+  &:active {
+    transition: transform 0.2s ease-out;
+    transform: rotate(90deg);
+  }
+}
+
+.collapsed > .collapse-button {
+  transform: rotate(90deg);
 }
 </style>

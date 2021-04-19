@@ -4,16 +4,16 @@
     <div class="mt-3 card-body bg-white">
       <vue-tabs v-if="isOrderPage">
         <v-tab title="Основная информация">
-          <GeneralOrder :resource="resource" />
+          <GeneralOrder :resource.sync="resource" />
         </v-tab>
         <v-tab title="Дополнительно">
-          <SecondaryOrder :resource="resource" />
+          <SecondaryOrder :resource.sync="resource" />
         </v-tab>
         <v-tab title="Фотографии">
-          <PhotoOrder :resource="resource" />
+          <PhotoOrder :resource.sync="resource" />
         </v-tab>
         <v-tab title="Администрирование">
-          <AdminOrder :resource="resource" />
+          <AdminOrder :resource.sync="resource" />
         </v-tab>
       </vue-tabs>
 
@@ -28,10 +28,10 @@
 
       <vue-tabs v-if="isUserPage">
         <v-tab title="Основная информация">
-          <UserGeneral :resource="resource" />
+          <UserGeneral :resource.sync="resource" />
         </v-tab>
         <v-tab title="Заказы">
-          <UserOrders :resource="resource" />
+          <UserOrders :resource.sync="resource" />
         </v-tab>
       </vue-tabs>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <PageCardDetail :resource="user" :card-title="user.email" is-user-page />
+  <PageCardDetail :resource.sync="user" :card-title="user.email" is-user-page />
 </template>
 
 <script>

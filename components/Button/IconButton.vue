@@ -1,5 +1,16 @@
 <template>
   <n-link
+    v-if="to"
+    :to="to"
+    class="d-inline-flex align-items-center justify-content-center icon mr-3 p-0"
+  >
+    <span>
+      <fa :icon="['fas', `${icon}`]" />
+    </span>
+  </n-link>
+
+  <n-link
+    v-else
     :to="to"
     class="d-inline-flex align-items-center justify-content-center icon mr-3 p-0"
   >

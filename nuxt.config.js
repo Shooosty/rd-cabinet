@@ -63,6 +63,8 @@ export default {
               'faQuestionCircle',
               'faSave',
               'faBars',
+              'faChevronDown',
+              'faChevronUp',
             ],
           },
         ],

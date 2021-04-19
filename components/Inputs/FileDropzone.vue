@@ -7,7 +7,7 @@
     :use-custom-slot="true"
     class="dropzone d-flex justify-content-center align-items-center"
   >
-    <fa :icon="['fas', `${options.icon}`]" />
+    <fa :icon="['fas', `${options.icon}`]" class="dropzone-icon" />
 
     <span class="dropzone-text">
       {{ options.text }}

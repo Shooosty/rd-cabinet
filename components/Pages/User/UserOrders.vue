@@ -1,40 +1,50 @@
 <template>
   <div v-show="$isAllowed('viewForAdmin')">
-    <PageCard
-      :items="orders"
-      :resource-name="resourceName"
-      is-card-page
-      card-title="Заказы пользователя"
-    />
+    <div class="mt-3 card-body bg-white">
+      <div class="d-flex">
+        <DataTable :items="orders" :fields="fields" :page-name="pageName" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import PageCard from '~/components/Pages/Card/PageCard'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
+import DataTable from '~/components/Table/DataTable'
 
 export default {
   components: {
-    PageCard,
+    DataTable,
   },
 
   props: {
     resource: {
       type: Object,
-      required: true,
+      default: () => {},
     },
   },
 
   perimeters: [ViewPerimeter],
 
   async fetch() {
-    await this.fetchOrders()
+    if (this.resource.role === 'photographer') {
+      await this.$store.dispatch('order/GET_ALL_FOR_PHOTOGRAPHER', this.id)
+    } else if (this.resource.role === 'designer') {
+      await this.$store.dispatch('order/GET_ALL_FOR_DESIGNER', this.id)
+    } else {
+      await this.$store.dispatch('order/GET_ALL_FOR_USER', this.id)
+    }
   },
 
   data() {
     return {
-      resourceName: 'my_orders',
+      fields: [
+        { key: 'datetime', label: 'Дата съемки' },
+        { key: 'owner', label: 'Ответственный' },
+        { key: 'status', label: 'Статус' },
+      ],
+      pageName: 'all_orders',
     }
   },
 
@@ -46,18 +56,6 @@ export default {
 
     id() {
       return this.resource?.ID
-    },
-  },
-
-  methods: {
-    async fetchOrders() {
-      if (this.resource?.owner === 'photographer') {
-        await this.$store.dispatch('order/GET_ALL_FOR_PHOTOGRAPHER', this.id)
-      } else if (this.resource?.owner === 'designer') {
-        await this.$store.dispatch('order/GET_ALL_FOR_DESIGNER', this.id)
-      } else {
-        await this.$store.dispatch('order/GET_ALL_FOR_USER', this.id)
-      }
     },
   },
 }
