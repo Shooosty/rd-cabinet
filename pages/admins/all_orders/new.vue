@@ -9,6 +9,7 @@
             <date-picker
               id="datetime"
               v-model="newOrder.datetime"
+              v-model.trim="$v.newOrder.datetime.$model"
               type="datetime"
               placeholder="Выберите дату и время"
             ></date-picker>
@@ -19,6 +20,7 @@
               <b-form-input
                 id="address"
                 v-model="newOrder.address"
+                v-model.trim="$v.newOrder.address.$model"
                 placeholder="Введите адрес"
               />
             </div>
@@ -38,6 +40,7 @@
               <label>Выберите клиента</label>
               <multiselect
                 v-model="newOrder.userId"
+                v-model.trim="$v.newOrder.userId.$model"
                 :options="clients"
                 placeholder="email"
                 label="email"
@@ -50,6 +53,7 @@
               <label>Выберите фотографа</label>
               <multiselect
                 v-model="newOrder.photographerId"
+                v-model.trim="$v.newOrder.photographerId.$model"
                 :options="photographers"
                 placeholder="фотограф"
                 label="email"
@@ -62,6 +66,7 @@
               <label>Выберите дизайнера</label>
               <multiselect
                 v-model="newOrder.designerId"
+                v-model.trim="$v.newOrder.designerId.$model"
                 :options="designers"
                 placeholder="дизайнер"
                 label="email"
@@ -86,6 +91,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
+import { maxLength, minLength, required } from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
@@ -99,6 +105,8 @@ export default {
 
   data() {
     return {
+      error: null,
+      submitStatus: null,
       newOrder: {
         owner: 'photographer',
         status: 'new',
@@ -114,6 +122,29 @@ export default {
         description: '',
       },
 
+      validations: {
+        newOrder: {
+          address: {
+            required,
+            minLength: minLength(8),
+            maxLength: maxLength(64),
+          },
+          datetime: {
+            required,
+            // доработать
+          },
+          userId: {
+            required,
+          },
+          photographerId: {
+            required,
+          },
+          designerId: {
+            required,
+          },
+        },
+      },
+
       actions: [
         {
           label: 'Сохранить',
@@ -121,26 +152,35 @@ export default {
           to: '/admins/all_orders/new',
           icon: 'save',
           click: () => {
-            try {
-              this.create(Object.assign({}, this.newOrder))
-              this.errors = null
-            } catch (e) {
-              this.errors = e
-            } finally {
-              if (this.errors == null) {
-                setTimeout(
-                  () => this.$router.push({ path: '/admins/all_orders' }),
-                  2000
-                )
-                this.$notification.success('Создан новый заказ', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
-              } else {
-                this.$notification.error('Не удалось создать заказ', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
+            this.$v.$touch()
+            if (this.$v.$invalid) {
+              this.submitStatus = 'ERROR'
+              this.$notification.error('Введенные данные некорректны', {
+                timer: 3,
+                position: 'bottomCenter',
+              })
+            } else {
+              try {
+                this.error = null
+                this.create(Object.assign({}, this.newOrder))
+              } catch (e) {
+                this.error = e
+              } finally {
+                if (this.error == null) {
+                  setTimeout(
+                    () => this.$router.push({ path: '/admins/all_orders' }),
+                    2000
+                  )
+                  this.$notification.success('Создан новый заказ', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                } else {
+                  this.$notification.error('Не удалось создать заказ', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                }
               }
             }
           },

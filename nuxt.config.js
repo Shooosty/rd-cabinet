@@ -22,8 +22,8 @@ export default {
     { src: '~/plugins/vuex-persist', mode: 'client' },
     { src: '~/plugins/vue-kindergarten', mode: 'client' },
     { src: '~/plugins/vue2-datepicker', mode: 'client' },
-    { src: '~/plugins/vee-validate', mode: 'client' },
     { src: '~/plugins/vue-notification', mode: 'client' },
+    { src: '~/plugins/vuelidate', mode: 'client' },
   ],
 
   components: true,

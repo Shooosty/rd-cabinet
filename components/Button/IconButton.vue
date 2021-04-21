@@ -9,15 +9,14 @@
     </span>
   </n-link>
 
-  <n-link
+  <a
     v-else
-    :to="to"
-    class="d-inline-flex align-items-center justify-content-center icon mr-3 p-0"
+    class="d-inline-flex align-items-center justify-content-center icon p-0"
   >
     <span>
       <fa :icon="['fas', `${icon}`]" />
     </span>
-  </n-link>
+  </a>
 </template>
 
 <script>
@@ -29,7 +28,7 @@ export default {
     },
     to: {
       type: [String, Object],
-      default: '#',
+      default: null,
     },
   },
 }

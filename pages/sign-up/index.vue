@@ -1,9 +1,6 @@
 <template>
   <Guest>
     <form @submit.prevent="sendForm">
-      <div v-if="errors" class="alert alert-danger" role="alert">
-        {{ errors }}
-      </div>
       <div class="form-group">
         <div class="form-control-email d-flex flex-column">
           <div class="d-flex">
@@ -12,6 +9,7 @@
               <div class="d-flex">
                 <input
                   v-model="user.name"
+                  v-model.trim="$v.user.name.$model"
                   class="form-control width-email"
                   required
                   type="text"
@@ -32,6 +30,7 @@
               <div class="d-flex">
                 <input
                   v-model="user.email"
+                  v-model.trim="$v.user.email.$model"
                   class="form-control width-email"
                   required
                   type="email"
@@ -52,6 +51,7 @@
               <div class="d-flex">
                 <input
                   v-model="user.phone"
+                  v-model.trim="$v.user.phone.$model"
                   class="form-control width-email"
                   required
                   type="tel"
@@ -73,6 +73,7 @@
                 <div class="form-control-password d-flex">
                   <input
                     v-model="user.password"
+                    v-model.trim="$v.user.password.$model"
                     class="form-control width-password"
                     required
                     type="password"
@@ -97,6 +98,7 @@
                 <div class="form-control-password d-flex">
                   <input
                     v-model="acceptPassword"
+                    v-model.trim="$v.acceptPassword.$model"
                     class="form-control width-password"
                     required
                     type="password"
@@ -127,18 +129,31 @@
 
 <script>
 import { mapActions } from 'vuex'
+import {
+  required,
+  minLength,
+  maxLength,
+  sameAs,
+  numeric,
+} from 'vuelidate/lib/validators'
 import PrimaryButton from '~/components/Button/PrimaryButton'
 import LinkButton from '~/components/Button/LinkButton'
 import Guest from '~/components/Pages/Guest'
 
 export default {
-  components: { Guest, LinkButton, PrimaryButton },
+  components: {
+    Guest,
+    LinkButton,
+    PrimaryButton,
+  },
+
   auth: 'guest',
   layout: 'guest',
 
   data() {
     return {
-      errors: null,
+      error: null,
+      submitStatus: null,
       user: {
         name: '',
         email: '',
@@ -150,18 +165,60 @@ export default {
     }
   },
 
+  validations: {
+    acceptPassword: {
+      required,
+      minLength: minLength(6),
+      maxLength: maxLength(64),
+      sameAsPassword: sameAs(function () {
+        return this.user.password
+      }),
+    },
+
+    user: {
+      name: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(19),
+      },
+      phone: {
+        required,
+        numeric,
+        minLength: minLength(6),
+        maxLength: maxLength(14),
+      },
+      email: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(64),
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+        maxLength: maxLength(64),
+      },
+    },
+  },
+
   methods: {
     ...mapActions('user', ['SIGN_UP']),
 
     async sendForm() {
-      if (this.acceptPassword === this.user.password) {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        this.submitStatus = 'ERROR'
+        this.$notification.error('Введенные данные некорректны', {
+          timer: 3,
+          position: 'bottomCenter',
+        })
+      } else {
         try {
+          this.error = null
           await this.SIGN_UP(Object.assign({}, this.user))
-          this.errors = null
         } catch (e) {
-          this.errors = e
+          this.error = e
         } finally {
-          if (this.errors == null) {
+          if (this.error == null) {
             setTimeout(() => this.$router.push({ path: '/sign-in' }), 2000)
             this.$notification.success('Вы успешно зарегистрировались', {
               timer: 3,
@@ -169,11 +226,6 @@ export default {
             })
           }
         }
-      } else {
-        this.$notification.error('Введенные данные некорректны', {
-          timer: 3,
-          position: 'bottomCenter',
-        })
       }
     },
   },

@@ -12,7 +12,7 @@
             <IconButton
               v-b-toggle="`collapse-${index}`"
               icon="chevron-down"
-              class="collapse-button"
+              class="collapse-button mr-3"
             />
           </div>
         </b-card-header>
