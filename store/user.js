@@ -35,6 +35,15 @@ export const actions = {
     })
   },
 
+  SIGN_UP_EMPLOYEE({ commit }, object) {
+    return this.$axios.post('/auth/sign-up-employee', {
+      name: object.name,
+      email: object.email,
+      role: object.role,
+      phone: object.phone,
+    })
+  },
+
   RESET_PASSWORD({ commit }, email) {
     return this.$axios.$post('/auth/reset_password', { email })
   },

@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       menu: [
-        // users
+        // users && all
         {
           title: 'Мои заказы',
           route: '/my_orders',
@@ -41,6 +41,26 @@ export default {
           title: 'Мои бонусы',
           route: '/my_bonuses',
           govern: 'viewForUser',
+        },
+        {
+          title: 'Мои профиль',
+          route: '/personal_data',
+          govern: 'viewForEmployerAndUser',
+        },
+        {
+          title: 'F.A.Q.',
+          route: '/faq',
+          govern: 'viewForUser',
+        },
+        {
+          title: 'Корзина',
+          route: '/my_cart',
+          govern: 'viewForUser',
+        },
+        {
+          title: 'Пароль и безопасноть',
+          route: '/security',
+          govern: 'viewForEmployerAndUser',
         },
         // admins
         {

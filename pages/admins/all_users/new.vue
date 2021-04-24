@@ -67,54 +67,6 @@
             <div class="pure"></div>
           </div>
 
-          <div class="mt-3 form-password">
-            <div class="d-flex flex-column">
-              <div class="d-flex">
-                <div class="data-password flex-column">
-                  <div class="label">Пароль</div>
-                  <div class="form-control-password d-flex">
-                    <input
-                      v-model="newUser.password"
-                      class="form-control width-password"
-                      required
-                      type="password"
-                    />
-                    <div class="d-flex align-items-center ml-auto">
-                      <div class="d-flex align-items-center ml-auto">
-                        <fa class="color-icon" :icon="['fas', 'lock']" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pure"></div>
-            </div>
-          </div>
-
-          <div class="mt-3 form-password">
-            <div class="d-flex flex-column">
-              <div class="d-flex">
-                <div class="data-password flex-column">
-                  <div class="label">Повторите пароль</div>
-                  <div class="form-control-password d-flex">
-                    <input
-                      v-model="acceptPassword"
-                      class="form-control width-password"
-                      required
-                      type="password"
-                    />
-                    <div class="d-flex align-items-center ml-auto">
-                      <div class="d-flex align-items-center ml-auto">
-                        <fa class="color-icon" :icon="['fas', 'check']" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="pure"></div>
-            </div>
-          </div>
-
           <div class="mt-3">
             <div class="label mb-1">Укажите роль пользователя</div>
             <div class="d-flex flex-column">
@@ -150,7 +102,6 @@ export default {
       newUser: {
         name: '',
         email: '',
-        password: '',
         phone: '',
         role: '',
       },
@@ -172,22 +123,31 @@ export default {
           to: '/admins/all_users',
           icon: 'save',
           click: () => {
-            if (
-              this.acceptPassword === this.newUser.password &&
-              this.newUser.role !== 'superadmin'
-            ) {
+            if (this.newUser.role !== 'superadmin') {
               this.isLoading = true
 
               try {
-                this.SIGN_UP(Object.assign({}, this.newUser))
+                this.SIGN_UP_EMPLOYEE(Object.assign({}, this.newUser))
                 this.errors = null
               } catch (e) {
                 this.errors = e
               } finally {
-                this.isLoading = false
+                if (this.error == null) {
+                  setTimeout(
+                    () => this.$router.push({ path: '/admins/all_users' }),
+                    2000
+                  )
+                  this.$notification.success('Создан сотрудник', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                } else {
+                  this.$notification.error('Не удалось создать сотрудника', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                }
               }
-            } else {
-              this.errors = 'Пароли не совпадают!'
             }
           },
         },
@@ -209,7 +169,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('user', ['SIGN_UP']),
+    ...mapActions('user', ['SIGN_UP_EMPLOYEE']),
 
     async fetchUsers() {
       await this.$store.dispatch('user/GET_ALL')

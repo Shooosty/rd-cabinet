@@ -216,7 +216,7 @@ export default {
           this.error = null
           await this.SIGN_UP(Object.assign({}, this.user))
         } catch (e) {
-          this.error = e
+          this.error = e.response.data
         } finally {
           if (this.error == null) {
             setTimeout(() => this.$router.push({ path: '/sign-in' }), 2000)
@@ -224,6 +224,17 @@ export default {
               timer: 3,
               position: 'bottomCenter',
             })
+          } else if (
+            this.error.message ===
+            'pq: duplicate key value violates unique constraint "users_email_uindex"'
+          ) {
+            this.$notification.error(
+              'Пользователь с такой почтой уже зарегистрирован',
+              {
+                timer: 3,
+                position: 'bottomCenter',
+              }
+            )
           }
         }
       }

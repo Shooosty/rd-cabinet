@@ -9,7 +9,6 @@
             <date-picker
               id="datetime"
               v-model="newOrder.datetime"
-              v-model.trim="$v.newOrder.datetime.$model"
               type="datetime"
               placeholder="Выберите дату и время"
             ></date-picker>
@@ -20,7 +19,6 @@
               <b-form-input
                 id="address"
                 v-model="newOrder.address"
-                v-model.trim="$v.newOrder.address.$model"
                 placeholder="Введите адрес"
               />
             </div>
@@ -40,7 +38,6 @@
               <label>Выберите клиента</label>
               <multiselect
                 v-model="newOrder.userId"
-                v-model.trim="$v.newOrder.userId.$model"
                 :options="clients"
                 placeholder="email"
                 label="email"
@@ -53,7 +50,6 @@
               <label>Выберите фотографа</label>
               <multiselect
                 v-model="newOrder.photographerId"
-                v-model.trim="$v.newOrder.photographerId.$model"
                 :options="photographers"
                 placeholder="фотограф"
                 label="email"
@@ -66,7 +62,6 @@
               <label>Выберите дизайнера</label>
               <multiselect
                 v-model="newOrder.designerId"
-                v-model.trim="$v.newOrder.designerId.$model"
                 :options="designers"
                 placeholder="дизайнер"
                 label="email"
