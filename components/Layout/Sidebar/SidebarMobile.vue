@@ -45,7 +45,7 @@ export default {
         {
           title: 'Мои профиль',
           route: '/personal_data',
-          govern: 'viewForEmployerAndUser',
+          govern: 'viewForAll',
         },
         {
           title: 'F.A.Q.',
@@ -60,7 +60,7 @@ export default {
         {
           title: 'Пароль и безопасноть',
           route: '/security',
-          govern: 'viewForEmployerAndUser',
+          govern: 'viewForAll',
         },
         // admins
         {

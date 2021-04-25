@@ -46,6 +46,7 @@ export default {
     color: $success-color;
     transform: scale(1.6);
     transition: transform 0.2s ease-in;
+    cursor: pointer;
   }
 }
 </style>

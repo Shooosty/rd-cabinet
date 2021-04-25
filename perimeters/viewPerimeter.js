@@ -18,5 +18,14 @@ export default new BasePerimeter({
     'can viewForEmployerAndUser'() {
       return this.isPhotographer() || this.isDesigner() || this.isUser()
     },
+
+    'can viewForAll'() {
+      return (
+        this.isPhotographer() ||
+        this.isDesigner() ||
+        this.isUser() ||
+        this.isSuperAdmin()
+      )
+    },
   },
 })
