@@ -6,7 +6,7 @@ export default class basePerimeter extends Perimeter {
   }
 
   isAdmin() {
-    return this.child && this.child.role === 'admin'
+    return this.child && this.child.role === 'manager'
   }
 
   isSuperAdmin() {
