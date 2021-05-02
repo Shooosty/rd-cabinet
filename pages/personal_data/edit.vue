@@ -22,26 +22,21 @@ export default {
 
   data() {
     return {
+      error: null,
       userId: this.$auth.user.ID,
 
       actions: [
-        {
-          label: 'Отмена',
-          btnClass: 'danger',
-          to: '/personal_data',
-          icon: 'window-close',
-        },
         {
           label: 'Сохранить',
           btnClass: 'success',
           to: '/personal_data',
           icon: 'save',
-          click: () => {
+          click: async () => {
             try {
-              this.update(this.resource)
-              this.errors = null
+              this.error = null
+              await this.update(this.resource)
             } catch (e) {
-              this.errors = e
+              this.error = e
             } finally {
               if (this.error == null) {
                 setTimeout(
@@ -60,6 +55,12 @@ export default {
               }
             }
           },
+        },
+        {
+          label: 'Отмена',
+          btnClass: 'secondary',
+          to: '/personal_data',
+          icon: 'window-close',
         },
       ],
     }

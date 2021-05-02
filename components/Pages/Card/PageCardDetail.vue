@@ -31,9 +31,9 @@
 
       <vue-tabs v-if="isUserPage">
         <v-tab title="Основная информация">
-          <UserGeneral :resource.sync="resource" />
+          <UserGeneral :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
-        <v-tab title="Заказы">
+        <v-tab v-if="!isEditPage" title="Заказы">
           <UserOrders :resource.sync="resource" />
         </v-tab>
       </vue-tabs>

@@ -8,7 +8,8 @@
             <label for="datetime">Дата и время фотосъемки</label>
             <date-picker
               id="datetime"
-              v-model="newOrder.datetime"
+              v-model="order.datetime"
+              v-model.trim="$v.order.datetime.$model"
               type="datetime"
               placeholder="Выберите дату и время"
             />
@@ -18,7 +19,8 @@
               <label for="address">Адрес фотосъемки</label>
               <b-form-input
                 id="address"
-                v-model="newOrder.address"
+                v-model="order.address"
+                v-model.trim="$v.order.address.$model"
                 placeholder="Введите адрес"
               />
             </div>
@@ -37,7 +39,8 @@
             <div>
               <label>Выберите клиента</label>
               <multiselect
-                v-model="newOrder.userId"
+                v-model="order.userId"
+                v-model.trim="$v.order.userId.$model"
                 :options="clients"
                 placeholder="email"
                 label="email"
@@ -49,7 +52,8 @@
             <div>
               <label>Выберите фотографа</label>
               <multiselect
-                v-model="newOrder.photographerId"
+                v-model="order.photographerId"
+                v-model.trim="$v.order.photographerId.$model"
                 :options="photographers"
                 placeholder="фотограф"
                 label="email"
@@ -61,7 +65,8 @@
             <div>
               <label>Выберите дизайнера</label>
               <multiselect
-                v-model="newOrder.designerId"
+                v-model="order.designerId"
+                v-model.trim="$v.order.designerId.$model"
                 :options="designers"
                 placeholder="дизайнер"
                 label="email"
@@ -72,7 +77,8 @@
         </b-row>
         <div class="mt-5">
           <b-form-textarea
-            v-model="newOrder.description"
+            v-model="order.description"
+            v-model.trim="$v.order.description.$model"
             placeholder="Поле для заметок.."
             rows="3"
             max-rows="8"
@@ -98,46 +104,46 @@ export default {
     await this.fetchUsers()
   },
 
+  validations: {
+    order: {
+      address: {
+        required,
+        minLength: minLength(8),
+        maxLength: maxLength(64),
+      },
+      datetime: {
+        required,
+        // доработать
+      },
+      userId: {
+        required,
+      },
+      photographerId: {
+        required,
+      },
+      designerId: {
+        required,
+      },
+      description: {
+        maxLength: maxLength(256),
+      },
+    },
+  },
+
   data() {
     return {
       error: null,
-      submitStatus: null,
-      newOrder: {
+      order: {
         owner: 'photographer',
         status: 'new',
         photographerId: '',
         designerId: '',
-        photos: [],
         contract: '',
         docs: '',
-        objectType: '',
         address: '',
         userId: '',
         datetime: '',
         description: '',
-      },
-
-      validations: {
-        newOrder: {
-          address: {
-            required,
-            minLength: minLength(8),
-            maxLength: maxLength(64),
-          },
-          datetime: {
-            required,
-            // доработать
-          },
-          userId: {
-            required,
-          },
-          photographerId: {
-            required,
-          },
-          designerId: {
-            required,
-          },
-        },
       },
 
       actions: [
@@ -146,10 +152,9 @@ export default {
           btnClass: 'success',
           to: '/admins/all_orders/new',
           icon: 'save',
-          click: () => {
+          click: async () => {
             this.$v.$touch()
             if (this.$v.$invalid) {
-              this.submitStatus = 'ERROR'
               this.$notification.error('Введенные данные некорректны', {
                 timer: 3,
                 position: 'bottomCenter',
@@ -157,9 +162,14 @@ export default {
             } else {
               try {
                 this.error = null
-                this.create(Object.assign({}, this.newOrder))
+                const newOrder = this.order
+                newOrder.designerId = newOrder.designerId.ID
+                newOrder.photographerId = newOrder.photographerId.ID
+                newOrder.userId = newOrder.userId.ID
+
+                await this.create(Object.assign({}, newOrder))
               } catch (e) {
-                this.error = e
+                this.error = e.response.data
               } finally {
                 if (this.error == null) {
                   setTimeout(
@@ -179,6 +189,12 @@ export default {
               }
             }
           },
+        },
+        {
+          label: 'Отмена',
+          btnClass: 'secondary',
+          to: '/admins/all_orders',
+          icon: 'window-close',
         },
       ],
     }

@@ -3,9 +3,9 @@
     v-if="resource"
     :resource.sync="resource"
     :actions="actions"
-    is-order-page
+    is-user-page
     is-edit-page
-    card-title="Заказ №1"
+    :card-title="resource.email"
   />
 </template>
 
@@ -21,7 +21,7 @@ export default {
   mixins: [ResourceMixin],
 
   async fetch() {
-    await this.fetchOrder()
+    await this.fetchUser()
   },
 
   data() {
@@ -31,26 +31,22 @@ export default {
         {
           label: 'Сохранить',
           btnClass: 'success',
-          to: '/admins/all_orders',
           icon: 'save',
           click: async () => {
             try {
               this.error = null
-              const updatedOrder = this.resource
-              // updatedOrder.designerId = updatedOrder.designerId.ID
-              // updatedOrder.photographerId = updatedOrder.photographerId.ID
-              // updatedOrder.userId = updatedOrder.userId.ID
+              const updatedUser = this.resource
 
-              await this.update(Object.assign({}, updatedOrder))
+              await this.update(Object.assign({}, updatedUser))
             } catch (e) {
               this.error = e.response.data
             } finally {
               if (this.error == null) {
                 setTimeout(
-                  () => this.$router.push({ path: '/admins/all_orders' }),
+                  () => this.$router.push({ path: '/admins/all_users' }),
                   2000
                 )
-                this.$notification.success('Данные заказа обновлены', {
+                this.$notification.success('Данные пользователя обновлены', {
                   timer: 3,
                   position: 'bottomCenter',
                 })
@@ -66,13 +62,13 @@ export default {
         {
           label: 'Удалить',
           btnClass: 'danger',
-          to: `/admins/all_orders/${this.$route.params.id}`,
+          to: `/admins/all_users/${this.$route.params.id}`,
           icon: 'trash',
         },
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to: `/admins/all_orders/${this.$route.params.id}`,
+          to: `/admins/all_users/${this.$route.params.id}`,
           icon: 'window-close',
         },
       ],
@@ -81,7 +77,7 @@ export default {
 
   computed: {
     ...mapGetters({
-      getResource: 'order/itemById',
+      getResource: 'user/itemById',
     }),
 
     ...ResourceHelper,
@@ -89,11 +85,11 @@ export default {
 
   methods: {
     ...mapActions({
-      update: 'order/UPDATE',
+      update: 'user/UPDATE',
     }),
 
-    async fetchOrder() {
-      await this.$store.dispatch('order/GET', this.$route.params.id)
+    async fetchUser() {
+      await this.$store.dispatch('user/GET', this.$route.params.id)
     },
   },
 }

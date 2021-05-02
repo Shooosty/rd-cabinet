@@ -3,8 +3,8 @@
     v-if="resource"
     :resource.sync="resource"
     :actions="actions"
-    is-order-page
     card-title="Заказ №1"
+    is-order-page
   />
 </template>
 

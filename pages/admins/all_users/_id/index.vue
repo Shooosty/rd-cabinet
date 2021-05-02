@@ -2,6 +2,7 @@
   <PageCardDetail
     v-if="resource"
     :resource.sync="resource"
+    :actions="actions"
     :card-title="resource.email"
     is-user-page
   />
@@ -20,6 +21,19 @@ export default {
 
   async fetch() {
     await this.fetchUser()
+  },
+
+  data() {
+    return {
+      actions: [
+        {
+          label: 'Редактировать',
+          btnClass: 'secondary',
+          to: `${this.$route.path}/edit`,
+          icon: 'edit',
+        },
+      ],
+    }
   },
 
   computed: {

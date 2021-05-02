@@ -127,7 +127,7 @@
           <PrimaryButton type="submit" label="Зарегистрироваться" />
         </div>
         <div>
-          <LinkButton to="/sign-in" btn-class="danger" label="Отмена" />
+          <LinkButton to="/sign-in" btn-class="secondary" label="Отмена" />
         </div>
       </div>
     </form>

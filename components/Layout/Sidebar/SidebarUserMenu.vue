@@ -9,18 +9,21 @@
         <div class="p-3">
           <nav class="mb-3">
             <b-nav vertical>
-              <b-nav-item>
+              <b-nav-item class="p-2">
                 <n-link to="/personal_data" @click="hide">
                   <span>Личные данные</span>
                 </n-link>
               </b-nav-item>
-              <b-nav-item>
+              <b-nav-item class="p-2">
                 <n-link to="/security" @click="hide">
                   <span> Пароль и безопасность </span>
                 </n-link>
               </b-nav-item>
-              <b-nav-item @click.prevent="$nuxt.$auth.logout">
-                <span> Выйти </span>
+              <b-nav-item class="d-flex justify-content-center mt-2">
+                <PrimaryButton
+                  label="Выйти"
+                  @click.native="$nuxt.$auth.logout"
+                />
               </b-nav-item>
             </b-nav>
           </nav>
@@ -31,8 +34,11 @@
 </template>
 
 <script>
+import PrimaryButton from '~/components/Button/PrimaryButton'
+
 export default {
   name: 'NavbarUserMenu',
+  components: { PrimaryButton },
 
   computed: {
     userEmail() {
@@ -43,13 +49,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/stylesheets/default';
+
 a {
   text-decoration: none;
   cursor: pointer;
-  color: #33333c;
+  color: $secondary-color;
 
   &:hover {
-    color: #00908c;
+    color: $success-color;
   }
 }
 </style>

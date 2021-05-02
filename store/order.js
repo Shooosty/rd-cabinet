@@ -45,30 +45,19 @@ export const actions = {
   },
 
   CREATE({ commit }, object) {
-    const order = {
-      owner: object.owner,
-      status: object.status,
-      contract: object.contract,
-      photographer_id: object.photographerId.ID,
-      designer_id: object.designerId.ID,
-      address: object.address,
-      user_id: object.userId.ID,
-      datetime: object.datetime,
-      description: object.description,
-    }
-    return this.$axios.$post('/orders/', order).then((response) => {
+    return this.$axios.$post('/orders/', object).then((response) => {
       commit('CREATE_OR_UPDATE_ITEMS', response.data)
     })
   },
 
   UPDATE({ commit }, object) {
-    return this.$axios.$put(`/orders/${object.id}`, object).then((response) => {
+    return this.$axios.$put(`/orders/${object.ID}`, object).then((response) => {
       commit('CREATE_OR_UPDATE_ITEMS', response)
     })
   },
 
   DELETE({ commit }, object) {
-    return this.$axios.$delete(`/orders/${object.id}`).then((response) => {
+    return this.$axios.$delete(`/orders/${object.ID}`).then((response) => {
       commit('DELETE', object)
     })
   },

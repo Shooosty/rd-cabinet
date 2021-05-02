@@ -6,7 +6,7 @@
         <div class="form-control-email d-flex flex-column">
           <div class="d-flex">
             <div class="flex-column data-email">
-              <div class="label">e-mail</div>
+              <div class="label">E-mail</div>
               <div class="d-flex">
                 <input
                   v-model="user.email"
@@ -26,7 +26,7 @@
           <div class="d-flex flex-column">
             <div class="d-flex">
               <div class="data-password flex-column">
-                <div class="label">пароль</div>
+                <div class="label">Пароль</div>
                 <div class="form-control-password d-flex">
                   <input
                     v-model="user.password"
