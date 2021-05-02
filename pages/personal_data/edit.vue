@@ -1,33 +1,20 @@
 <template>
-  <div>
+  <div v-if="resource">
     <page-header card-title="Мои данные" :actions="actions" />
-    <div class="mt-3 card-body bg-white">
-      <b-list-group>
-        <b-list-group-item>
-          <b> Имя: </b>
-          <b-form-input
-            v-model="editedUser.name"
-            :placeholder="userName"
-          ></b-form-input>
-        </b-list-group-item>
-        <b-list-group-item>
-          <b> Телефон: </b>
-          <b-form-input
-            v-model="editedUser.phone"
-            :placeholder="userPhone"
-          ></b-form-input>
-        </b-list-group-item>
-      </b-list-group>
-    </div>
+    <UserGeneral :resource.sync="resource" is-edit-page />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
+import ResourceMixin from '~/mixins/resource-mixin'
+import UserGeneral from '~/components/Pages/User/UserGeneral'
 
 export default {
-  components: { PageHeader },
+  components: { UserGeneral, PageHeader },
+
+  mixins: [ResourceMixin],
 
   async fetch() {
     await this.fetchUser()
@@ -36,11 +23,6 @@ export default {
   data() {
     return {
       userId: this.$auth.user.ID,
-      editedUser: {
-        id: this.$auth.user.ID,
-        name: this.userName,
-        phone: this.userPhone,
-      },
 
       actions: [
         {
@@ -53,15 +35,30 @@ export default {
           label: 'Сохранить',
           btnClass: 'success',
           to: '/personal_data',
-          icon: 'check',
+          icon: 'save',
           click: () => {
-            this.update(this.editedUser).then(() => {
-              this.$notification.success('Данные успешно изменены', {
-                timer: 5,
-                position: 'bottomCenter',
-              })
-              this.$router.push({ path: '/personal_data' })
-            })
+            try {
+              this.update(this.resource)
+              this.errors = null
+            } catch (e) {
+              this.errors = e
+            } finally {
+              if (this.error == null) {
+                setTimeout(
+                  () => this.$router.push({ path: '/personal_data' }),
+                  2000
+                )
+                this.$notification.success('Данные успешно изменены', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              } else {
+                this.$notification.error('Не удалось сохранить данные', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              }
+            }
           },
         },
       ],
@@ -70,15 +67,11 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'user/item',
+      getResource: 'user/itemById',
     }),
 
-    userName() {
-      return this.user?.name
-    },
-
-    userPhone() {
-      return this.user?.phone
+    resourceComputed() {
+      return Object.assign({}, this.getResource(this.userId))
     },
   },
 
@@ -93,9 +86,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-.card-body {
-  border-radius: 5px;
-}
-</style>

@@ -1,13 +1,22 @@
 <template>
-  <PageCardDetail :resource.sync="user" :card-title="user.email" is-user-page />
+  <PageCardDetail
+    v-if="resource"
+    :resource.sync="resource"
+    :card-title="resource.email"
+    is-user-page
+  />
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
+import ResourceHelper from '~/helpers/resource-helper'
+import ResourceMixin from '~/mixins/resource-mixin'
 
 export default {
   components: { PageCardDetail },
+
+  mixins: [ResourceMixin],
 
   async fetch() {
     await this.fetchUser()
@@ -15,8 +24,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'user/item',
+      getResource: 'user/itemById',
     }),
+
+    ...ResourceHelper,
   },
 
   methods: {

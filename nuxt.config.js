@@ -19,7 +19,7 @@ export default {
 
   plugins: [
     { src: '~/plugins/vue-tabs', mode: 'client' },
-    { src: '~/plugins/vuex-persist', mode: 'client' },
+    { src: '~/plugins/vuex-persisted-state', mode: 'client' },
     { src: '~/plugins/vue-kindergarten', mode: 'client' },
     { src: '~/plugins/vue2-datepicker', mode: 'client' },
     { src: '~/plugins/vue-notification', mode: 'client' },

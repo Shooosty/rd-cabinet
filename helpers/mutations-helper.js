@@ -13,6 +13,25 @@ export default {
     state.pagination = {}
   },
 
+  CREATE_OR_UPDATE_ITEMS(state, data) {
+    let isUpdate = false
+    let items = []
+    items = state.items.map((item) => {
+      if (item.ID === data.ID) {
+        item = Object.assign({}, data)
+        isUpdate = true
+      }
+      return item
+    })
+
+    if (isUpdate) {
+      state.items = items
+      return
+    }
+
+    state.list.push(data)
+  },
+
   SET_PAGINATION_META(state, headers) {
     state.pagination = {
       page: parseInt(headers['x-page']),

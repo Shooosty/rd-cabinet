@@ -1,31 +1,20 @@
 <template>
-  <div>
+  <div v-if="resource">
     <page-header card-title="Мои данные" :actions="actions" />
-    <div class="mt-3 card-body bg-white">
-      <b-list-group>
-        <b-list-group-item>
-          <b> Имя: </b>
-          <span> {{ user.name }} </span>
-        </b-list-group-item>
-        <b-list-group-item>
-          <b> E-mail: </b>
-          <span> {{ user.email }} </span>
-        </b-list-group-item>
-        <b-list-group-item>
-          <b> Телефон: </b>
-          <span> {{ user.phone }} </span>
-        </b-list-group-item>
-      </b-list-group>
-    </div>
+    <UserGeneral :resource.sync="resource" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
+import ResourceMixin from '~/mixins/resource-mixin'
+import UserGeneral from '~/components/Pages/User/UserGeneral'
 
 export default {
-  components: { PageHeader },
+  components: { UserGeneral, PageHeader },
+
+  mixins: [ResourceMixin],
 
   async fetch() {
     await this.fetchUser()
@@ -34,6 +23,7 @@ export default {
   data() {
     return {
       userId: this.$auth.user.ID,
+
       actions: [
         {
           label: 'Редактировать',
@@ -47,8 +37,12 @@ export default {
 
   computed: {
     ...mapGetters({
-      user: 'user/item',
+      getResource: 'user/itemById',
     }),
+
+    resourceComputed() {
+      return Object.assign({}, this.getResource(this.userId))
+    },
   },
 
   methods: {
@@ -58,9 +52,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss">
-.card-body {
-  border-radius: 5px;
-}
-</style>

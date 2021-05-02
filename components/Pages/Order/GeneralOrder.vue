@@ -1,9 +1,9 @@
 <template>
-  <div class="mt-3 card-body bg-white">
+  <div v-if="!isEditPage" class="mt-3 card-body bg-white">
     <b-list-group>
       <b-list-group-item>
         <b> Адрес: </b>
-        <span> {{ resource.address }} </span>
+        <span> {{ address }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Дата: </b>
@@ -23,6 +23,35 @@
       </b-list-group-item>
     </b-list-group>
   </div>
+
+  <div v-else>
+    <b-list-group>
+      <b-list-group-item>
+        <label for="address">Адрес фотосъемки</label>
+        <b-form-input
+          id="address"
+          v-model="resource.address"
+          placeholder="Введите адрес"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
+        <label for="datetime">Дата и время фотосъемки</label>
+        <date-picker
+          id="datetime"
+          v-model="resource.datetime"
+          type="datetime"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
+        <label for="contract">Загрузите копию договора</label>
+        <b-form-file
+          id="contract"
+          placeholder="file.xls"
+          drop-placeholder="Перетащите файл сюда..."
+        />
+      </b-list-group-item>
+    </b-list-group>
+  </div>
 </template>
 
 <script>
@@ -32,9 +61,17 @@ export default {
       type: Object,
       required: true,
     },
+    isEditPage: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
+    address() {
+      return this.resource?.address
+    },
+
     date() {
       return this.$dayjs(this.resource?.datetime).format('DD.MM.YYYY')
     },
@@ -58,3 +95,12 @@ export default {
   },
 }
 </script>
+
+<style scoped lang="scss">
+.mx-datepicker {
+  width: 100%;
+  .mx-input {
+    height: 38px;
+  }
+}
+</style>

@@ -1,6 +1,7 @@
 <template>
   <PageCardDetail
-    :resource="order"
+    v-if="resource"
+    :resource.sync="resource"
     :actions="actions"
     is-order-page
     card-title="Заказ №1"
@@ -10,9 +11,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
+import ResourceHelper from '~/helpers/resource-helper'
+import ResourceMixin from '~/mixins/resource-mixin'
 
 export default {
   components: { PageCardDetail },
+
+  mixins: [ResourceMixin],
 
   async fetch() {
     await this.fetchOrder()
@@ -33,8 +38,10 @@ export default {
 
   computed: {
     ...mapGetters({
-      order: 'order/item',
+      getResource: 'order/itemById',
     }),
+
+    ...ResourceHelper,
   },
 
   methods: {

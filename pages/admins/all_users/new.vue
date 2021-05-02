@@ -52,9 +52,16 @@
               <div class="flex-column data-email">
                 <div class="label">Телефон</div>
                 <div class="d-flex">
+                  <span class="d-flex align-items-center">
+                    <span>+7 </span>
+                  </span>
                   <input
                     v-model="newUser.phone"
+                    v-phone
                     class="form-control width-email"
+                    placeholder="(555)555-55-55"
+                    autocomplete="tel"
+                    maxlength="10"
                     required
                     type="tel"
                   />
@@ -93,6 +100,8 @@ export default {
 
   async fetch() {
     await this.fetchUsers()
+
+    // todo зачем это тут?
   },
 
   data() {
@@ -108,8 +117,6 @@ export default {
 
       acceptPassword: '',
 
-      isLoading: false,
-
       roles: [
         { value: 'manager', text: 'Менеджер' },
         { value: 'photographer', text: 'Фотограф' },
@@ -124,8 +131,6 @@ export default {
           icon: 'save',
           click: () => {
             if (this.newUser.role !== 'superadmin') {
-              this.isLoading = true
-
               try {
                 this.SIGN_UP_EMPLOYEE(Object.assign({}, this.newUser))
                 this.errors = null

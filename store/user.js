@@ -3,7 +3,6 @@ import commonMutations from '~/helpers/mutations-helper'
 
 export const state = () => ({
   items: [],
-  item: {},
   pagination: {},
 })
 
@@ -31,7 +30,7 @@ export const actions = {
       email: object.email,
       role: object.role,
       password: object.password,
-      phone: object.phone,
+      phone: `+7${object.phone}`,
     })
   },
 
@@ -40,7 +39,7 @@ export const actions = {
       name: object.name,
       email: object.email,
       role: object.role,
-      phone: object.phone,
+      phone: `+7${object.phone}`,
     })
   },
 
@@ -56,20 +55,19 @@ export const actions = {
   },
 
   GET({ commit }, objectId) {
-    commit('CLEAR')
     return this.$axios.$get(`/users/${objectId}`).then((response) => {
-      commit('SET_ITEM', response.data)
+      commit('CREATE_OR_UPDATE_ITEMS', response.data)
     })
   },
 
   UPDATE({ commit }, object) {
-    return this.$axios.$put(`/users/${object.id}`, object).then((response) => {
-      commit('UPDATE', response)
+    return this.$axios.$put(`/users/${object.ID}`, object).then((response) => {
+      commit('CREATE_OR_UPDATE_ITEMS', response)
     })
   },
 
   DELETE({ commit }, object) {
-    return this.$axios.$delete(`/users/${object.id}`).then((response) => {
+    return this.$axios.$delete(`/users/${object.ID}`).then((response) => {
       commit('DELETE', object)
     })
   },

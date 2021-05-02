@@ -3,7 +3,7 @@
     <b-list-group>
       <b-list-group-item>
         <b> Заметка: </b>
-        <span> {{ resource.description }} </span>
+        <span> {{ description }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -15,6 +15,12 @@ export default {
     resource: {
       type: Object,
       required: true,
+    },
+  },
+
+  computed: {
+    description() {
+      return this.resource?.description
     },
   },
 }

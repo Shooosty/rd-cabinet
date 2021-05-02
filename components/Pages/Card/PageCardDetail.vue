@@ -4,16 +4,19 @@
     <div class="mt-3 card-body bg-white">
       <vue-tabs v-if="isOrderPage">
         <v-tab title="Основная информация">
-          <GeneralOrder :resource.sync="resource" />
+          <GeneralOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
         <v-tab title="Дополнительно">
-          <SecondaryOrder :resource.sync="resource" />
+          <SecondaryOrder
+            :resource.sync="resource"
+            :is-edit-page="isEditPage"
+          />
         </v-tab>
         <v-tab title="Фотографии">
-          <PhotoOrder :resource.sync="resource" />
+          <PhotoOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
         <v-tab title="Администрирование">
-          <AdminOrder :resource.sync="resource" />
+          <AdminOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
       </vue-tabs>
 
@@ -76,6 +79,10 @@ export default {
       default: false,
     },
     isUserPage: {
+      type: Boolean,
+      default: false,
+    },
+    isEditPage: {
       type: Boolean,
       default: false,
     },

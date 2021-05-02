@@ -11,7 +11,7 @@
               v-model="newOrder.datetime"
               type="datetime"
               placeholder="Выберите дату и время"
-            ></date-picker>
+            />
           </b-col>
           <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
             <div>
@@ -29,7 +29,7 @@
               id="contract"
               placeholder="Выберете файл или перетащите..."
               drop-placeholder="Перетащите файл сюда..."
-            ></b-form-file>
+            />
           </b-col>
         </b-row>
         <b-row>

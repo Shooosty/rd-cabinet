@@ -49,10 +49,17 @@
             <div class="flex-column data-email">
               <div class="label">телефон</div>
               <div class="d-flex">
+                <span class="d-flex align-items-center">
+                  <span>+7 </span>
+                </span>
                 <input
                   v-model="user.phone"
                   v-model.trim="$v.user.phone.$model"
+                  v-phone
+                  placeholder="(555)555-55-55"
                   class="form-control width-email"
+                  autocomplete="tel"
+                  maxlength="10"
                   required
                   type="tel"
                 />
