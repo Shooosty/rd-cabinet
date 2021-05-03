@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-for="(form, index) in peoplePhotos"
+      v-for="(form, index) in persons"
       :key="index"
       class="accordion"
       role="tablist"
@@ -27,9 +27,9 @@
                 <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
                   <div>
                     <b-form-input
-                      v-model="form.sureName"
+                      v-model="form.surname"
                       type="text"
-                      :name="`surename-${index}`"
+                      :name="`surname-${index}`"
                       placeholder="Фамилия"
                     />
                   </div>
@@ -66,10 +66,13 @@
 
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex justify-content-start mt-3">
-                  <IconButton icon="save" @click.native="savePeople(index)" />
+                  <IconButton icon="save" @click.native="savePerson(index)" />
                 </div>
                 <div class="d-flex justify-content-end mt-3">
-                  <IconButton icon="trash" @click.native="removeCard(index)" />
+                  <IconButton
+                    icon="trash"
+                    @click.native="removePerson(index)"
+                  />
                 </div>
               </div>
             </b-card-text>
@@ -84,7 +87,8 @@
 </template>
 
 <script>
-import FileDropzone from '@/components/Inputs/FileDropzone'
+import { mapActions } from 'vuex'
+import FileDropzone from '~/components/Inputs/FileDropzone'
 import IconButton from '~/components/Button/IconButton'
 
 export default {
@@ -94,19 +98,20 @@ export default {
     return {
       defaultFormModels: {
         name: '',
-        sureName: '',
+        surname: '',
         middleName: '',
         type: '',
         photos: '',
         description: '',
       },
 
-      peoplePhotos: [],
+      persons: [],
+      error: null,
 
       options: {
         acceptedFiles: 'image/*',
         url: `#`,
-        maxFiles: 30,
+        maxFiles: 10,
         icon: 'file-download',
         autoProcessQueue: false,
         addRemoveLinks: true,
@@ -117,11 +122,28 @@ export default {
   },
 
   methods: {
-    addCard() {
-      this.peoplePhotos.push(Object.assign({}, this.defaultFormModels))
+    ...mapActions({
+      create: 'person/CREATE',
+    }),
+
+    async fetchUsers() {
+      await this.$store.dispatch('person/GET_ALL')
     },
 
-    removeCard(index) {
+    addCard() {
+      this.persons.push(Object.assign({}, this.defaultFormModels))
+    },
+
+    async savePerson(index) {
+      try {
+        this.error = null
+        await this.create(Object.assign({}, this.persons[index]))
+      } catch (e) {
+        this.error = e.response.data
+      }
+    },
+
+    removePerson(index) {
       this.peoplePhotos.splice(index, 1)
     },
   },

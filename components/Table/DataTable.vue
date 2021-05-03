@@ -43,7 +43,7 @@ export default {
 
   methods: {
     onRowSelected(item) {
-      this.$router.push(`${this.pageName}/${item[0].ID}`)
+      this.$router.push(`/admins/${this.pageName}/${item[0].ID}`)
     },
 
     parseDateTime(value) {
