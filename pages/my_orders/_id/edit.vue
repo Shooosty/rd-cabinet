@@ -1,54 +1,58 @@
 <template>
-  <div v-if="resource">
-    <page-header card-title="Мои данные" :actions="actions" />
-    <UserGeneral :resource.sync="resource" is-edit-page />
-  </div>
+  <PageCardDetail
+    v-if="resource"
+    :resource.sync="resource"
+    :actions="actions"
+    is-order-page
+    is-edit-page
+    card-title="Заказ №1"
+  />
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import PageHeader from '~/components/Pages/Card/PageHeader'
+import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
+import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
-import UserGeneral from '~/components/Pages/User/UserGeneral'
 
 export default {
-  components: { UserGeneral, PageHeader },
+  components: { PageCardDetail },
 
   mixins: [ResourceMixin],
 
   async fetch() {
-    await this.fetchUser()
+    await this.fetchOrder()
   },
 
   data() {
     return {
       error: null,
-      userId: this.$auth.user.ID,
-
       actions: [
         {
           label: 'Сохранить',
           btnClass: 'success',
-          to: '/personal_data',
+          to: '/admins/all_orders',
           icon: 'save',
           click: async () => {
             try {
               this.error = null
-              await this.update(this.resource)
+              const updatedOrder = this.resource
+
+              await this.update(Object.assign({}, updatedOrder))
             } catch (e) {
-              this.error = e.response
+              this.error = e.response.data
             } finally {
               if (this.error == null) {
                 setTimeout(
-                  () => this.$router.push({ path: '/personal_data' }),
+                  () => this.$router.push({ path: '/admins/all_orders' }),
                   2000
                 )
-                this.$notification.success('Данные успешно изменены', {
+                this.$notification.success('Данные заказа обновлены', {
                   timer: 3,
                   position: 'bottomCenter',
                 })
               } else {
-                this.$notification.error('Не удалось сохранить данные', {
+                this.$notification.error('Не удалось обновить данные', {
                   timer: 3,
                   position: 'bottomCenter',
                 })
@@ -59,7 +63,7 @@ export default {
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to: '/personal_data',
+          to: `/admins/all_orders/${this.$route.params.id}`,
           icon: 'window-close',
         },
       ],
@@ -68,21 +72,19 @@ export default {
 
   computed: {
     ...mapGetters({
-      getResource: 'user/itemById',
+      getResource: 'order/itemById',
     }),
 
-    resourceComputed() {
-      return Object.assign({}, this.getResource(this.userId))
-    },
+    ...ResourceHelper,
   },
 
   methods: {
     ...mapActions({
-      update: 'user/UPDATE',
+      update: 'order/UPDATE',
     }),
 
-    async fetchUser() {
-      await this.$store.dispatch('user/GET', this.userId)
+    async fetchOrder() {
+      await this.$store.dispatch('order/GET', this.$route.params.id)
     },
   },
 }

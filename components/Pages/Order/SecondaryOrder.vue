@@ -1,9 +1,24 @@
 <template>
-  <div class="mt-3 card-body bg-white">
+  <div v-if="isEditPage" class="mt-3 card-body bg-white">
+    <b-list-group>
+      <b-list-group-item>
+        <label for="description">Заметка</label>
+        <b-form-textarea
+          id="description"
+          v-model="resource.description"
+          placeholder="Поле для заметок.."
+          rows="3"
+          max-rows="8"
+        />
+      </b-list-group-item>
+    </b-list-group>
+  </div>
+
+  <div v-else class="mt-3 card-body bg-white">
     <b-list-group>
       <b-list-group-item>
         <b> Заметка: </b>
-        <span> {{ description }} </span>
+        <span> {{ resource.description }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -16,11 +31,9 @@ export default {
       type: Object,
       required: true,
     },
-  },
-
-  computed: {
-    description() {
-      return this.resource?.description
+    isEditPage: {
+      type: Boolean,
+      default: false,
     },
   },
 }

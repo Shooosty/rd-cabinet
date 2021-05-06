@@ -1,6 +1,9 @@
 <template>
   <PageCardDetail
     v-if="resource"
+    :clients.sync="clients"
+    :designers.sync="designers"
+    :photographers.sync="photographers"
     :resource.sync="resource"
     :actions="actions"
     is-order-page
@@ -14,14 +17,16 @@ import { mapActions, mapGetters } from 'vuex'
 import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
+import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
 
 export default {
   components: { PageCardDetail },
 
-  mixins: [ResourceMixin],
+  mixins: [ResourceMixin, UsersGroupByRoleMixin],
 
   async fetch() {
     await this.fetchOrder()
+    await this.fetchUsers()
   },
 
   data() {
@@ -37,9 +42,9 @@ export default {
             try {
               this.error = null
               const updatedOrder = this.resource
-              // updatedOrder.designerId = updatedOrder.designerId.ID
-              // updatedOrder.photographerId = updatedOrder.photographerId.ID
-              // updatedOrder.userId = updatedOrder.userId.ID
+              updatedOrder.designerId = updatedOrder.designerId.ID
+              updatedOrder.photographerId = updatedOrder.photographerId.ID
+              updatedOrder.userId = updatedOrder.userId.ID
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {
@@ -66,8 +71,35 @@ export default {
         {
           label: 'Удалить',
           btnClass: 'danger',
-          to: `/admins/all_orders/${this.$route.params.id}`,
+          govern: 'viewForSuperAdmin',
           icon: 'trash',
+          click: async () => {
+            try {
+              this.error = null
+              await this.delete(this.resource.ID)
+            } catch (e) {
+              this.error = e.response.data
+            } finally {
+              if (this.error == null) {
+                setTimeout(
+                  () =>
+                    this.$router.push({
+                      path: '/admins/all_orders',
+                    }),
+                  2000
+                )
+                this.$notification.success('Заказ успешно удален', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              } else {
+                this.$notification.error('Не удалось удалить заказ', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              }
+            }
+          },
         },
         {
           label: 'Отмена',
@@ -82,6 +114,7 @@ export default {
   computed: {
     ...mapGetters({
       getResource: 'order/itemById',
+      users: 'user/items',
     }),
 
     ...ResourceHelper,
@@ -90,7 +123,12 @@ export default {
   methods: {
     ...mapActions({
       update: 'order/UPDATE',
+      delete: 'order/DELETE',
     }),
+
+    async fetchUsers() {
+      await this.$store.dispatch('user/GET_ALL')
+    },
 
     async fetchOrder() {
       await this.$store.dispatch('order/GET', this.$route.params.id)

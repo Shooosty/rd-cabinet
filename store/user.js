@@ -66,9 +66,9 @@ export const actions = {
     })
   },
 
-  DELETE({ commit }, object) {
-    return this.$axios.$delete(`/users/${object.ID}`).then((response) => {
-      commit('DELETE', object)
+  DELETE({ commit }, id) {
+    return this.$axios.$delete(`/users/${id}`).then(() => {
+      commit('DELETE')
     })
   },
 }

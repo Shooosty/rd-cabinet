@@ -1,5 +1,6 @@
 <template>
   <PageCardDetail
+    v-if="resource"
     :resource.sync="resource"
     :actions="actions"
     is-order-page
@@ -24,7 +25,21 @@ export default {
 
   data() {
     return {
-      actions: [{ label: 'Оплатить', to: '#', icon: 'money-bill-wave' }],
+      actions: [
+        {
+          label: 'Редактировать',
+          btnClass: 'secondary',
+          to: `${this.$route.path}/edit`,
+          govern: 'viewForEmployerAndUser',
+          icon: 'edit',
+        },
+        {
+          label: 'Оплатить',
+          to: '#',
+          icon: 'money-bill-wave',
+          govern: 'viewForUser',
+        },
+      ],
     }
   },
 

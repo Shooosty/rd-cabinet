@@ -30,7 +30,14 @@ export default {
           label: 'Редактировать',
           btnClass: 'secondary',
           to: `${this.$route.path}/edit`,
+          govern: 'viewForSuperAdmin',
           icon: 'edit',
+        },
+        {
+          label: 'К списку',
+          btnClass: 'black',
+          to: '/admins/all_users',
+          icon: 'arrow-left',
         },
       ],
     }

@@ -6,17 +6,23 @@
         <v-tab title="Основная информация">
           <GeneralOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
+        <v-tab title="Фотографии">
+          <PhotoOrder :resource.sync="resource" :is-edit-page="isEditPage" />
+        </v-tab>
+        <v-tab v-if="$isAllowed('viewForAdmin')" title="Администрирование">
+          <AdminOrder
+            :resource.sync="resource"
+            :clients.sync="clients"
+            :designers.sync="designers"
+            :photographers.sync="photographers"
+            :is-edit-page="isEditPage"
+          />
+        </v-tab>
         <v-tab title="Дополнительно">
           <SecondaryOrder
             :resource.sync="resource"
             :is-edit-page="isEditPage"
           />
-        </v-tab>
-        <v-tab title="Фотографии">
-          <PhotoOrder :resource.sync="resource" :is-edit-page="isEditPage" />
-        </v-tab>
-        <v-tab title="Администрирование">
-          <AdminOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
       </vue-tabs>
 
@@ -51,6 +57,7 @@ import PhotoOrder from '~/components/Pages/Order/PhotoOrder'
 import AdminOrder from '~/components/Pages/Order/AdminOrder'
 import ProjectFiles from '~/components/Pages/Project/ProjectFiles'
 import GeneralProject from '~/components/Pages/Project/GeneralProject'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: {
@@ -64,6 +71,8 @@ export default {
     UserGeneral,
     UserOrders,
   },
+
+  perimeters: [ViewPerimeter],
 
   props: {
     cardTitle: {
@@ -90,11 +99,21 @@ export default {
       type: Object,
       required: true,
     },
+    clients: {
+      type: [Array],
+      default: () => [],
+    },
+    photographers: {
+      type: [Array],
+      default: () => [],
+    },
+    designers: {
+      type: [Array],
+      default: () => [],
+    },
     actions: {
       type: Array[Object],
-      default() {
-        return []
-      },
+      default: () => [],
     },
   },
 }

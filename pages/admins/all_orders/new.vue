@@ -95,10 +95,14 @@ import Multiselect from 'vue-multiselect'
 import { maxLength, minLength, required } from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
+import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
 
 export default {
   components: { PageHeader, Multiselect },
+
   perimeters: [ViewPerimeter],
+
+  mixins: [UsersGroupByRoleMixin],
 
   async fetch() {
     await this.fetchUsers()
@@ -204,18 +208,6 @@ export default {
     ...mapGetters({
       users: 'user/items',
     }),
-
-    clients() {
-      return this.users.filter((users) => users.role === 'user')
-    },
-
-    photographers() {
-      return this.users.filter((users) => users.role === 'photographer')
-    },
-
-    designers() {
-      return this.users.filter((users) => users.role === 'designer')
-    },
   },
 
   methods: {

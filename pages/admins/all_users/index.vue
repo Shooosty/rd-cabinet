@@ -32,7 +32,9 @@ export default {
         { key: 'phone', label: 'Телефон' },
         { key: 'role', label: 'Роль' },
       ],
+
       pageName: 'all_users',
+
       actions: [
         {
           label: 'Добавить',

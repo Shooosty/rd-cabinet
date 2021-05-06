@@ -19,12 +19,22 @@ export default new BasePerimeter({
       return this.isPhotographer() || this.isDesigner() || this.isUser()
     },
 
+    'can viewForEmployerAndAdmins'() {
+      return (
+        this.isPhotographer() ||
+        this.isDesigner() ||
+        this.isSuperAdmin() ||
+        this.isAdmin()
+      )
+    },
+
     'can viewForAll'() {
       return (
         this.isPhotographer() ||
         this.isDesigner() ||
         this.isUser() ||
-        this.isSuperAdmin()
+        this.isSuperAdmin() ||
+        this.isAdmin()
       )
     },
   },

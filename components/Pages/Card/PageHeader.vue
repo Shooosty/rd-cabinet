@@ -14,6 +14,7 @@
         :label="action.label"
         :icon="action.icon"
         :to="action.to"
+        :govern="action.govern"
         :btn-class="action.btnClass"
         :fn="action.click"
       />

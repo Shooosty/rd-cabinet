@@ -1,7 +1,6 @@
 <template>
   <Guest>
     <form @submit.prevent="sendForm">
-      <div v-if="errors" class="alert alert-danger" role="alert">ошибка</div>
       <div class="form-group">
         <div class="form-control-email d-flex flex-column">
           <div class="d-flex">
@@ -54,7 +53,7 @@
       </div>
       <div class="d-flex mt-5">
         <div>
-          <PrimaryButton type="submit" :disabled="isLoading" label="Вход" />
+          <PrimaryButton type="submit" label="Вход" />
         </div>
         <div>
           <LinkButton
@@ -81,14 +80,12 @@ export default {
 
   data() {
     return {
-      errors: null,
+      error: null,
 
       user: {
         email: '',
         password: '',
       },
-
-      isLoading: false,
     }
   },
 
@@ -96,15 +93,18 @@ export default {
     ...mapActions('user', ['SIGN_IN']),
 
     async sendForm() {
-      this.isLoading = true
-
       try {
+        this.error = null
         await this.SIGN_IN(Object.assign({}, this.user))
-        this.errors = null
       } catch (e) {
-        this.errors = e
+        this.error = e.response.data
       } finally {
-        this.isLoading = false
+        if (this.error && this.error.message === 'record not found') {
+          this.$notification.error('Неправильный email или пароль', {
+            timer: 3,
+            position: 'bottomCenter',
+          })
+        }
       }
     },
   },

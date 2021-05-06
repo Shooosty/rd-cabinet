@@ -94,6 +94,17 @@ import IconButton from '~/components/Button/IconButton'
 export default {
   components: { FileDropzone, IconButton },
 
+  props: {
+    resource: {
+      type: Object,
+      required: true,
+    },
+    isEditPage: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
   data() {
     return {
       defaultFormModels: {

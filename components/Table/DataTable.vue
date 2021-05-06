@@ -1,5 +1,6 @@
 <template>
   <b-table
+    v-if="items.length"
     ref="selectableTable"
     small
     hover

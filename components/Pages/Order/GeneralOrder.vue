@@ -1,30 +1,5 @@
 <template>
-  <div v-if="!isEditPage" class="mt-3 card-body bg-white">
-    <b-list-group>
-      <b-list-group-item>
-        <b> Адрес: </b>
-        <span> {{ address }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Дата: </b>
-        <span> {{ date }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Время: </b>
-        <span> {{ time }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Статус: </b>
-        <span> {{ status }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Договор: </b>
-        <span> file.xls </span>
-      </b-list-group-item>
-    </b-list-group>
-  </div>
-
-  <div v-else>
+  <div v-if="isEditPage && $isAllowed('viewForEmployerAndAdmins')">
     <b-list-group>
       <b-list-group-item>
         <label for="address">Адрес фотосъемки</label>
@@ -52,10 +27,39 @@
       </b-list-group-item>
     </b-list-group>
   </div>
+
+  <div v-else class="mt-3 card-body bg-white">
+    <b-list-group>
+      <b-list-group-item>
+        <b> Адрес: </b>
+        <span> {{ resource.address }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Дата: </b>
+        <span> {{ date }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Время: </b>
+        <span> {{ time }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Статус: </b>
+        <span> {{ status }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Договор: </b>
+        <span> file.xls </span>
+      </b-list-group-item>
+    </b-list-group>
+  </div>
 </template>
 
 <script>
+import ViewPerimeter from '~/perimeters/viewPerimeter'
+
 export default {
+  perimeters: [ViewPerimeter],
+
   props: {
     resource: {
       type: Object,
@@ -68,10 +72,6 @@ export default {
   },
 
   computed: {
-    address() {
-      return this.resource?.address
-    },
-
     date() {
       return this.$dayjs(this.resource?.datetime).format('DD.MM.YYYY')
     },

@@ -1,43 +1,49 @@
 <template>
-  <a
-    v-if="fn"
-    :href="to"
-    class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
-    :class="type(btnClass)"
-    @click.prevent="fn && fn.call()"
-  >
-    <span
-      v-if="label"
-      class="d-lg-inline-block"
-      :class="[icon ? 'ml-2 d-none' : '']"
-      v-text="label"
-    />
+  <div v-show="$isAllowed(govern)">
+    <a
+      v-if="fn"
+      :govern="govern"
+      :href="to"
+      class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+      :class="type(btnClass)"
+      @click.prevent="fn && fn.call()"
+    >
+      <span
+        v-if="label"
+        class="d-lg-inline-block"
+        :class="[icon ? 'ml-2 d-none' : '']"
+        v-text="label"
+      />
 
-    <span v-if="icon" class="ml-auto">
-      <fa :icon="['fas', `${icon}`]" />
-    </span>
-  </a>
+      <span v-if="icon" class="ml-auto">
+        <fa :icon="['fas', `${icon}`]" />
+      </span>
+    </a>
 
-  <n-link
-    v-else
-    :to="to"
-    class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
-    :class="type(btnClass)"
-  >
-    <span
-      v-if="label"
-      class="d-lg-inline-block"
-      :class="[icon ? 'ml-2 d-none' : '']"
-      v-text="label"
-    />
+    <n-link
+      v-else
+      :govern="govern"
+      :to="to"
+      class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+      :class="type(btnClass)"
+    >
+      <span
+        v-if="label"
+        class="d-lg-inline-block"
+        :class="[icon ? 'ml-2 d-none' : '']"
+        v-text="label"
+      />
 
-    <span v-if="icon" class="ml-auto">
-      <fa :icon="['fas', `${icon}`]" />
-    </span>
-  </n-link>
+      <span v-if="icon" class="ml-auto">
+        <fa :icon="['fas', `${icon}`]" />
+      </span>
+    </n-link>
+  </div>
 </template>
 
 <script>
+import ViewPerimeter from '~/perimeters/viewPerimeter'
+
 export default {
   props: {
     label: {
@@ -60,7 +66,13 @@ export default {
       type: Function,
       default: null,
     },
+    govern: {
+      type: String,
+      default: 'viewForAll',
+    },
   },
+
+  perimeters: [ViewPerimeter],
 
   methods: {
     type(value) {
@@ -71,6 +83,8 @@ export default {
           return 'btn-red'
         case 'secondary':
           return 'btn-bordered'
+        case 'black':
+          return 'btn-black'
       }
     },
   },

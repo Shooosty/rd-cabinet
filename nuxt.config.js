@@ -65,6 +65,7 @@ export default {
               'faBars',
               'faChevronDown',
               'faChevronUp',
+              'faArrowLeft',
             ],
           },
         ],
@@ -115,7 +116,7 @@ export default {
     redirect: {
       login: '/sign-in',
       logout: '/sign-in',
-      home: '/my_orders',
+      home: '/',
     },
 
     resetOnError: true,

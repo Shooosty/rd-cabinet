@@ -34,6 +34,17 @@
   }
 }
 
+//secondary
+.btn-black {
+  background-color: $secondary-color !important;
+  color: white;
+
+  &:hover {
+    background-color: white !important;
+    color: $secondary-color !important;
+  }
+}
+
 .btn {
   height: 42px;
   font-size: $font-size-md;
