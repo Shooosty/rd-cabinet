@@ -7,7 +7,12 @@
           <GeneralOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
         <v-tab title="Фотографии">
-          <PhotoOrder :resource.sync="resource" :is-edit-page="isEditPage" />
+          <PhotoOrder
+            class="mt-3"
+            :resource.sync="resource"
+            :persons="persons"
+            :is-edit-page="isEditPage"
+          />
         </v-tab>
         <v-tab v-if="$isAllowed('viewForAdmin')" title="Администрирование">
           <AdminOrder
@@ -98,6 +103,10 @@ export default {
     resource: {
       type: Object,
       required: true,
+    },
+    persons: {
+      type: [Array],
+      default: () => [],
     },
     clients: {
       type: [Array],

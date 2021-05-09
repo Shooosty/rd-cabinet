@@ -5,6 +5,7 @@
     :clients.sync="clients"
     :designers.sync="designers"
     :photographers.sync="photographers"
+    :persons="persons"
     :actions="actions"
     card-title="Заказ №1"
     is-order-page
@@ -26,6 +27,7 @@ export default {
   async fetch() {
     await this.fetchOrder()
     await this.fetchUsers()
+    await this.fetchPersons()
   },
 
   data() {
@@ -51,6 +53,7 @@ export default {
     ...mapGetters({
       getResource: 'order/itemById',
       users: 'user/items',
+      persons: 'person/items',
     }),
 
     ...ResourceHelper,
@@ -63,6 +66,13 @@ export default {
 
     async fetchUsers() {
       await this.$store.dispatch('user/GET_ALL')
+    },
+
+    async fetchPersons() {
+      await this.$store.dispatch(
+        'person/GET_ALL_BY_ORDER_ID',
+        this.$route.params.id
+      )
     },
   },
 }

@@ -17,6 +17,13 @@ export const actions = {
     commit('SET_ITEMS', response.data.data)
   },
 
+  async GET_ALL_BY_ORDER_ID({ commit }, objectId) {
+    commit('CLEAR')
+    const response = await this.$axios.get(`/orders/${objectId}/persons`)
+    commit('SET_PAGINATION_META', response.headers)
+    commit('SET_ITEMS', response.data.data)
+  },
+
   GET({ commit }, objectId) {
     return this.$axios.$get(`/persons/${objectId}`).then((response) => {
       commit('CREATE_OR_UPDATE_ITEMS', response.data)
@@ -37,9 +44,9 @@ export const actions = {
       })
   },
 
-  DELETE({ commit }, object) {
-    return this.$axios.$delete(`/persons/${object.ID}`).then((response) => {
-      commit('DELETE', object)
+  DELETE({ commit }, id) {
+    return this.$axios.$delete(`/persons/${id}`).then(() => {
+      commit('DELETE')
     })
   },
 }

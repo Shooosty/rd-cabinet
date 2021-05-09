@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="isEditPage">
     <div
       v-for="(form, index) in persons"
       :key="index"
@@ -7,7 +7,14 @@
       role="tablist"
     >
       <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
+        <b-card-header
+          header-tag="header"
+          class="d-flex align-content-center justify-content-between p-1"
+          role="tab"
+        >
+          <div class="d-flex justify-content-start ml-2">
+            <span> {{ form.name }} </span>
+          </div>
           <div class="d-flex justify-content-end">
             <IconButton
               v-b-toggle="`collapse-${index}`"
@@ -58,7 +65,7 @@
 
               <div class="mt-3">
                 <FileDropzone
-                  :ref="`photos-${index}`"
+                  ref="photos"
                   :options="options"
                   :name="`photos-${index}`"
                 />
@@ -84,6 +91,45 @@
       <IconButton icon="plus" @click.native="addCard" />
     </div>
   </div>
+
+  <div v-else>
+    <div
+      v-for="(person, index) in persons"
+      :key="index"
+      class="accordion"
+      role="tablist"
+    >
+      <b-card no-body class="mb-1">
+        <b-card-header
+          header-tag="header"
+          class="d-flex align-content-center justify-content-between p-1"
+          role="tab"
+        >
+          <div class="d-flex justify-content-start ml-2">
+            <span :name="index">
+              {{ person.name }}
+            </span>
+          </div>
+          <div class="d-flex justify-content-end">
+            <IconButton
+              v-b-toggle="`collapse-${index}`"
+              icon="chevron-down"
+              class="collapse-button mr-3"
+            />
+          </div>
+        </b-card-header>
+        <b-collapse
+          :id="`collapse-${index}`"
+          accordion="my-accordion"
+          role="tabpanel"
+        >
+          <b-card-body>
+            <b-card-text> фотки </b-card-text>
+          </b-card-body>
+        </b-collapse>
+      </b-card>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -103,6 +149,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    persons: {
+      type: [Array],
+      default: () => [],
+    },
   },
 
   data() {
@@ -110,23 +160,23 @@ export default {
       defaultFormModels: {
         name: '',
         surname: '',
+        orderId: '',
         middleName: '',
         type: '',
-        photos: '',
+        photos: [],
         description: '',
       },
 
-      persons: [],
       error: null,
 
       options: {
         acceptedFiles: 'image/*',
         url: `#`,
-        maxFiles: 10,
+        maxFiles: 12,
         icon: 'file-download',
         autoProcessQueue: false,
         addRemoveLinks: true,
-        sendFile: this.uploadPhotos,
+        sendFile: this.updatePhotos,
         dictRemoveFile: 'удалить',
       },
     }
@@ -135,11 +185,10 @@ export default {
   methods: {
     ...mapActions({
       create: 'person/CREATE',
+      update: 'person/UPDATE',
+      delete: 'person/DELETE',
+      updatePhotos: 'photo/POST_PHOTOS',
     }),
-
-    async fetchUsers() {
-      await this.$store.dispatch('person/GET_ALL')
-    },
 
     addCard() {
       this.persons.push(Object.assign({}, this.defaultFormModels))
@@ -148,14 +197,35 @@ export default {
     async savePerson(index) {
       try {
         this.error = null
-        await this.create(Object.assign({}, this.persons[index]))
+        const newPerson = this.persons[index]
+        newPerson.orderId = this.resource.ID
+
+        // await this.$refs.photos[index].uploadPhotos()
+        if (this.isEditPage) {
+          await this.update(Object.assign({}, newPerson))
+        } else {
+          await this.create(Object.assign({}, newPerson))
+        }
       } catch (e) {
-        this.error = e.response.data
+        this.error = e.response
+      } finally {
+        if (this.error == null) {
+          this.$notification.success('Данные сохранены', {
+            timer: 3,
+            position: 'bottomCenter',
+          })
+        } else {
+          this.$notification.error('Не удалось сохранить данные', {
+            timer: 3,
+            position: 'bottomCenter',
+          })
+        }
       }
     },
 
     removePerson(index) {
-      this.peoplePhotos.splice(index, 1)
+      this.delete(this.persons[index].ID)
+      this.persons.splice(index, 1)
     },
   },
 }

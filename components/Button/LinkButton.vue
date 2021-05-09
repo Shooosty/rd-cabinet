@@ -1,5 +1,5 @@
 <template>
-  <div v-show="$isAllowed(govern)">
+  <div v-show="this.$auth.user ? $isAllowed(govern) : true">
     <a
       v-if="fn"
       :govern="govern"
