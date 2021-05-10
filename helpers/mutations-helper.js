@@ -5,7 +5,6 @@ export default {
 
   CLEAR(state) {
     state.items = []
-    state.item = {}
     state.pagination = {}
   },
 
@@ -22,10 +21,26 @@ export default {
 
     if (isUpdate) {
       state.items = items
+    }
+  },
+
+  CREATE_OR_UPDATE_PHOTOS(state, data) {
+    let isUpdate = false
+    let items = []
+    items = state.items.map((item) => {
+      if (item.url === data.url) {
+        item = Object.assign({}, data)
+        isUpdate = true
+      }
+      return item
+    })
+
+    if (isUpdate) {
+      state.items = items
       return
     }
 
-    state.list.push(data)
+    state.items.push(data)
   },
 
   SET_PAGINATION_META(state, headers) {

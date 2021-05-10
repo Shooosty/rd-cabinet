@@ -13,7 +13,9 @@
           role="tab"
         >
           <div class="d-flex justify-content-start ml-2">
-            <span> {{ form.name }} </span>
+            <span>
+              {{ form.surname }} {{ form.name }} {{ form.middleName }}
+            </span>
           </div>
           <div class="d-flex justify-content-end">
             <IconButton
@@ -64,11 +66,33 @@
               </b-row>
 
               <div class="mt-3">
-                <FileDropzone
+                <VueFileAgent
                   ref="photos"
-                  :options="options"
+                  :multiple="true"
+                  :deletable="true"
+                  :meta="true"
+                  :average-color="false"
+                  :help-text="'Выберите или перетащите фотографии'"
+                  :error-text="{
+                    type: 'Неправильный тип файла',
+                    size: 'Недопустимый размер файла',
+                  }"
+                  :accept="'image/*'"
+                  :max-size="'10MB'"
+                  :max-files="10"
                   :name="`photos-${index}`"
+                  @select="showButton"
                 />
+                <div
+                  v-if="isSavePhotosButtonShow"
+                  class="d-flex justify-content-center mt-2"
+                >
+                  <PrimaryButton
+                    label="Загрузить фотографии"
+                    :name="`button-${index}`"
+                    @click.native="savePhotos(index)"
+                  />
+                </div>
               </div>
 
               <div class="d-flex align-items-center justify-content-between">
@@ -107,7 +131,7 @@
         >
           <div class="d-flex justify-content-start ml-2">
             <span :name="index">
-              {{ person.name }}
+              {{ person.surname }} {{ person.name }} {{ person.middleName }}
             </span>
           </div>
           <div class="d-flex justify-content-end">
@@ -124,7 +148,18 @@
           role="tabpanel"
         >
           <b-card-body>
-            <b-card-text> фотки </b-card-text>
+            <b-card-text>
+              <div>
+                <b-img
+                  v-for="(image, i) in person.photos"
+                  :key="i"
+                  v-bind="imgProps"
+                  class="d-inline-flex align-content-center p-1 m-1"
+                  fluid
+                  :src="image"
+                />
+              </div>
+            </b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
@@ -133,12 +168,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import FileDropzone from '~/components/Inputs/FileDropzone'
+import { mapActions, mapState } from 'vuex'
 import IconButton from '~/components/Button/IconButton'
+import PrimaryButton from '~/components/Button/PrimaryButton'
 
 export default {
-  components: { FileDropzone, IconButton },
+  components: { PrimaryButton, IconButton },
 
   props: {
     resource: {
@@ -167,19 +202,19 @@ export default {
         description: '',
       },
 
-      error: null,
+      imgProps: { width: 75, height: 75 },
 
-      options: {
-        acceptedFiles: 'image/*',
-        url: `#`,
-        maxFiles: 12,
-        icon: 'file-download',
-        autoProcessQueue: false,
-        addRemoveLinks: true,
-        sendFile: this.updatePhotos,
-        dictRemoveFile: 'удалить',
-      },
+      error: null,
+      isSavePhotosButtonShow: false,
     }
+  },
+
+  computed: {
+    ...mapState('file', {
+      files: (state) => {
+        return state.items.map((r) => r.url)
+      },
+    }),
   },
 
   methods: {
@@ -187,11 +222,44 @@ export default {
       create: 'person/CREATE',
       update: 'person/UPDATE',
       delete: 'person/DELETE',
-      updatePhotos: 'photo/POST_PHOTOS',
+      updatePhotos: 'file/POST_FILES',
+      clearFiles: 'file/CLEAR_FILES',
     }),
+
+    showButton() {
+      this.isSavePhotosButtonShow = true
+    },
 
     addCard() {
       this.persons.push(Object.assign({}, this.defaultFormModels))
+    },
+
+    async savePhotos(index) {
+      for (const file of this.$refs.photos[index]._data.fileRecords) {
+        try {
+          this.error = null
+          await this.updatePhotos(file.file)
+        } catch (e) {
+          this.error = e.response
+        } finally {
+          await this.clearFiles()
+          this.isSavePhotosButtonShow = false
+          if (this.error == null) {
+            this.$notification.success(
+              `${file.file.name} сохранено на сервере`,
+              {
+                timer: 2,
+                position: 'bottomCenter',
+              }
+            )
+          } else {
+            this.$notification.error('Не удалось сохранить фотографию', {
+              timer: 3,
+              position: 'bottomCenter',
+            })
+          }
+        }
+      }
     },
 
     async savePerson(index) {
@@ -199,9 +267,9 @@ export default {
         this.error = null
         const newPerson = this.persons[index]
         newPerson.orderId = this.resource.ID
+        newPerson.photos = this.files
 
-        // await this.$refs.photos[index].uploadPhotos()
-        if (this.isEditPage) {
+        if (this.persons[index].ID) {
           await this.update(Object.assign({}, newPerson))
         } else {
           await this.create(Object.assign({}, newPerson))
@@ -224,8 +292,27 @@ export default {
     },
 
     removePerson(index) {
-      this.delete(this.persons[index].ID)
       this.persons.splice(index, 1)
+      if (this.persons[index].ID) {
+        try {
+          this.error = null
+          this.delete(this.persons[index].ID)
+        } catch (e) {
+          this.error = e.response
+        } finally {
+          if (this.error == null) {
+            this.$notification.success('Данные удалены', {
+              timer: 3,
+              position: 'bottomCenter',
+            })
+          } else {
+            this.$notification.error('Не удалось удалить данные', {
+              timer: 3,
+              position: 'bottomCenter',
+            })
+          }
+        }
+      }
     },
   },
 }

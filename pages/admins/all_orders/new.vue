@@ -27,10 +27,22 @@
           </b-col>
           <b-col xl="4" lg="4" md="12" sm="12" class="p-3">
             <label for="contract">Загрузите копию договора</label>
-            <b-form-file
-              id="contract"
-              placeholder="Выберете файл или перетащите..."
-              drop-placeholder="Перетащите файл сюда..."
+            <VueFileAgent
+              ref="contract"
+              :multiple="false"
+              :deletable="true"
+              :meta="true"
+              :theme="'list'"
+              :average-color="false"
+              :help-text="'Выберите или перетащите договор'"
+              :error-text="{
+                type: 'Неправильный тип файла',
+                size: 'Недопустимый размер файла',
+              }"
+              :accept="'.pdf, .doc'"
+              :max-size="'10MB'"
+              :max-files="1"
+              @select="saveContract"
             />
           </b-col>
         </b-row>
@@ -90,7 +102,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import { maxLength, minLength, required } from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
@@ -143,7 +155,6 @@ export default {
         photographerId: '',
         designerId: '',
         contract: '',
-        docs: '',
         address: '',
         userId: '',
         datetime: '',
@@ -170,6 +181,7 @@ export default {
                 newOrder.designerId = newOrder.designerId.ID
                 newOrder.photographerId = newOrder.photographerId.ID
                 newOrder.userId = newOrder.userId.ID
+                newOrder.contract = this.contractFile
 
                 await this.create(Object.assign({}, newOrder))
               } catch (e) {
@@ -208,12 +220,45 @@ export default {
     ...mapGetters({
       users: 'user/items',
     }),
+
+    ...mapState('file', {
+      contractFile: (state) => state.items[0].url,
+    }),
   },
 
   methods: {
     ...mapActions({
       create: 'order/CREATE',
+      updateContract: 'file/POST_FILES',
+      clearFiles: 'file/CLEAR_FILES',
     }),
+
+    async saveContract() {
+      try {
+        this.error = null
+        const file = this.$refs.contract._data.fileRecords[0].file
+        await this.updateContract(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        await this.clearFiles()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'bottomCenter',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'bottomCenter',
+          })
+        }
+      }
+    },
 
     async fetchUsers() {
       await this.$store.dispatch('user/GET_ALL')

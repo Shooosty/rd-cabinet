@@ -24,6 +24,7 @@ export default {
     { src: '~/plugins/vue2-datepicker', mode: 'client' },
     { src: '~/plugins/vue-notification', mode: 'client' },
     { src: '~/plugins/vuelidate', mode: 'client' },
+    { src: '~/plugins/vue-file-agent', mode: 'client' },
   ],
 
   components: true,

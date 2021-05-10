@@ -19,10 +19,22 @@
       </b-list-group-item>
       <b-list-group-item>
         <label for="contract">Загрузите копию договора</label>
-        <b-form-file
-          id="contract"
-          placeholder="file.xls"
-          drop-placeholder="Перетащите файл сюда..."
+        <VueFileAgent
+          ref="contract"
+          :multiple="false"
+          :deletable="true"
+          :meta="true"
+          :theme="'list'"
+          :average-color="false"
+          :help-text="'Выберите или перетащите договор'"
+          :error-text="{
+            type: 'Неправильный тип файла',
+            size: 'Недопустимый размер файла',
+          }"
+          :accept="'.pdf, .doc'"
+          :max-size="'10MB'"
+          :max-files="1"
+          @select="saveContract"
         />
       </b-list-group-item>
     </b-list-group>
@@ -48,13 +60,16 @@
       </b-list-group-item>
       <b-list-group-item>
         <b> Договор: </b>
-        <span> file.xls </span>
+        <a class="contractLink" :href="resource.contract" target="_blank">
+          Договор
+        </a>
       </b-list-group-item>
     </b-list-group>
   </div>
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
@@ -72,6 +87,10 @@ export default {
   },
 
   computed: {
+    ...mapState('file', {
+      contractFile: (state) => state.items[0].url,
+    }),
+
     date() {
       return this.$dayjs(this.resource?.datetime).format('DD.MM.YYYY')
     },
@@ -93,14 +112,56 @@ export default {
       }
     },
   },
+
+  methods: {
+    ...mapActions({
+      updateContract: 'file/POST_FILES',
+      clearFiles: 'file/CLEAR_FILES',
+    }),
+
+    async saveContract() {
+      try {
+        this.error = null
+        const file = this.$refs.contract._data.fileRecords[0].file
+        await this.updateContract(file)
+        this.resource.contract = this.contractFile
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        await this.clearFiles()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'bottomCenter',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'bottomCenter',
+          })
+        }
+      }
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/stylesheets/default';
+
 .mx-datepicker {
   width: 100%;
   .mx-input {
     height: 38px;
   }
+}
+
+.contractLink {
+  color: $success-color;
+  text-decoration: none;
 }
 </style>
