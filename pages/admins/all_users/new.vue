@@ -143,7 +143,7 @@ export default {
       acceptPassword: '',
 
       roles: [
-        { value: 'manager', text: 'Менеджер' },
+        { value: 'admin', text: 'Менеджер' },
         { value: 'photographer', text: 'Фотограф' },
         { value: 'designer', text: 'Дизайнер' },
       ],
