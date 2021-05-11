@@ -44,7 +44,7 @@ export const actions = {
   },
 
   RESET_PASSWORD({ commit }, email) {
-    return this.$axios.$post('/auth/reset_password', { email })
+    return this.$axios.$post('/auth/reset-password', { email })
   },
 
   async GET_ALL({ commit }, params = {}) {

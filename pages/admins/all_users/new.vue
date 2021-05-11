@@ -2,91 +2,89 @@
   <div v-show="$isAllowed('viewForAdmin')">
     <PageHeader card-title="Добавить нового сотрудника" :actions="actions" />
     <div class="mt-3 card-body bg-white">
-      <form>
-        <div class="form-group">
-          <div class="form-control-email d-flex flex-column">
-            <div class="d-flex">
-              <div class="flex-column data-email">
-                <div class="label">Имя</div>
-                <div class="d-flex">
-                  <input
-                    v-model="employee.name"
-                    v-model.trim="$v.employee.name.$model"
-                    class="form-control width-email"
-                    required
-                    type="text"
-                  />
-                  <div class="d-flex align-items-center ml-auto">
-                    <fa class="color-icon" :icon="['fas', 'user']" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="pure"></div>
-          </div>
-
-          <div class="form-control-email mt-3 d-flex flex-column">
-            <div class="d-flex">
-              <div class="flex-column data-email">
-                <div class="label">E-mail</div>
-                <div class="d-flex">
-                  <input
-                    v-model="employee.email"
-                    v-model.trim="$v.employee.email.$model"
-                    class="form-control width-email"
-                    required
-                    type="email"
-                  />
-                  <div class="d-flex align-items-center ml-auto">
-                    <fa class="color-icon" :icon="['fas', 'envelope']" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="pure"></div>
-          </div>
-
-          <div class="form-control-email mt-3 d-flex flex-column">
-            <div class="d-flex">
-              <div class="flex-column data-email">
-                <div class="label">Телефон</div>
-                <div class="d-flex">
-                  <span class="d-flex align-items-center">
-                    <span>+7 </span>
-                  </span>
-                  <input
-                    v-model="employee.phone"
-                    v-model.trim="$v.employee.phone.$model"
-                    class="form-control width-email"
-                    placeholder="(555)555-55-55"
-                    autocomplete="tel"
-                    maxlength="10"
-                    required
-                    type="tel"
-                  />
-                  <div class="d-flex align-items-center ml-auto">
-                    <fa class="color-icon" :icon="['fas', 'phone']" />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="pure"></div>
-          </div>
-
-          <div class="mt-3">
-            <div class="label mb-1">Укажите роль пользователя</div>
-            <div class="d-flex flex-column">
+      <div class="form-group">
+        <div class="form-control-email d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">Имя</div>
               <div class="d-flex">
-                <b-form-select
-                  v-model="employee.role"
-                  v-model.trim="$v.employee.role.$model"
-                  :options="roles"
+                <input
+                  v-model="employee.name"
+                  v-model.trim="$v.employee.name.$model"
+                  class="form-control width-email"
+                  required
+                  type="text"
                 />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'user']" />
+                </div>
               </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
+        <div class="form-control-email mt-3 d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">E-mail</div>
+              <div class="d-flex">
+                <input
+                  v-model="employee.email"
+                  v-model.trim="$v.employee.email.$model"
+                  class="form-control width-email"
+                  required
+                  type="email"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'envelope']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
+        <div class="form-control-email mt-3 d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">Телефон</div>
+              <div class="d-flex">
+                <span class="d-flex align-items-center">
+                  <span>+7 </span>
+                </span>
+                <input
+                  v-model="employee.phone"
+                  v-model.trim="$v.employee.phone.$model"
+                  class="form-control width-email"
+                  placeholder="(555)555-55-55"
+                  autocomplete="tel"
+                  maxlength="10"
+                  required
+                  type="tel"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'phone']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
+        <div class="mt-3">
+          <div class="label mb-1">Укажите роль пользователя</div>
+          <div class="d-flex flex-column">
+            <div class="d-flex">
+              <b-form-select
+                v-model="employee.role"
+                v-model.trim="$v.employee.role.$model"
+                :options="roles"
+              />
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -154,7 +152,6 @@ export default {
         {
           label: 'Зарегистрировать',
           btnClass: 'success',
-          to: '/admins/all_users',
           icon: 'save',
           click: async () => {
             this.$v.$touch()
