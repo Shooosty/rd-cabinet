@@ -235,6 +235,7 @@ export default {
     },
 
     async savePhotos(index) {
+      await this.clearFiles()
       for (const file of this.$refs.photos[index]._data.fileRecords) {
         try {
           this.error = null
@@ -277,6 +278,7 @@ export default {
       } catch (e) {
         this.error = e.response
       } finally {
+        await this.clearFiles()
         if (this.error == null) {
           this.$notification.success('Данные сохранены', {
             timer: 3,
@@ -300,6 +302,7 @@ export default {
         } catch (e) {
           this.error = e.response
         } finally {
+          await this.clearFiles()
           if (this.error == null) {
             this.$notification.success('Данные удалены', {
               timer: 3,
