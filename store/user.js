@@ -47,6 +47,14 @@ export const actions = {
     return this.$axios.$post('/auth/reset-password', { email })
   },
 
+  CHANGE_PASSWORD({ commit }, object) {
+    return this.$axios
+      .$put(`/users/${object.ID}/change-password`, object)
+      .then((response) => {
+        commit('CREATE_OR_UPDATE_ITEMS', response)
+      })
+  },
+
   async GET_ALL({ commit }, params = {}) {
     commit('CLEAR')
     const response = await this.$axios.get('/users/', params)

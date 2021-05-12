@@ -51,7 +51,7 @@
         <div class="form-control-email mt-3 d-flex flex-column">
           <div class="d-flex">
             <div class="flex-column data-email">
-              <div class="label">E-mail</div>
+              <div class="label">Подтвердите пароль</div>
               <div class="d-flex">
                 <input
                   v-model="acceptPassword"
@@ -119,7 +119,7 @@ export default {
 
       user: {
         ID: '',
-        email: '',
+        password: '',
         newPassword: '',
       },
 
@@ -142,9 +142,8 @@ export default {
                 this.error = null
                 const updatedUser = this.user
                 updatedUser.ID = this.$auth.user.ID
-                updatedUser.email = this.$auth.user.email
 
-                await this.update(Object.assign({}, updatedUser))
+                await this.changePassword(Object.assign({}, updatedUser))
               } catch (e) {
                 this.error = e.response
               } finally {
@@ -171,7 +170,7 @@ export default {
 
   methods: {
     ...mapActions({
-      update: 'user/UPDATE',
+      changePassword: 'user/CHANGE_PASSWORD',
     }),
   },
 }
