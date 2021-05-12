@@ -302,7 +302,7 @@ export default {
         } catch (e) {
           this.error = e.response
         } finally {
-          await this.clearFiles()
+          this.clearFiles()
           if (this.error == null) {
             this.$notification.success('Данные удалены', {
               timer: 3,
