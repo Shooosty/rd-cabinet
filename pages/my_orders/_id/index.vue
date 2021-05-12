@@ -22,6 +22,7 @@ export default {
 
   async fetch() {
     await this.fetchOrder()
+    await this.fetchPersons()
   },
 
   data() {

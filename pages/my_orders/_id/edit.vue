@@ -3,6 +3,7 @@
     v-if="resource"
     :resource.sync="resource"
     :actions="actions"
+    :persons="persons"
     is-order-page
     is-edit-page
     card-title="Заказ №1"
@@ -22,6 +23,7 @@ export default {
 
   async fetch() {
     await this.fetchOrder()
+    await this.fetchPersons()
   },
 
   data() {
@@ -73,6 +75,7 @@ export default {
   computed: {
     ...mapGetters({
       getResource: 'order/itemById',
+      persons: 'person/items',
     }),
 
     ...ResourceHelper,
@@ -85,6 +88,13 @@ export default {
 
     async fetchOrder() {
       await this.$store.dispatch('order/GET', this.$route.params.id)
+    },
+
+    async fetchPersons() {
+      await this.$store.dispatch(
+        'person/GET_ALL_BY_ORDER_ID',
+        this.$route.params.id
+      )
     },
   },
 }
