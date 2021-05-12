@@ -3,7 +3,7 @@
     v-if="resource"
     :resource.sync="resource"
     :actions="actions"
-    :persons="persons"
+    :persons.sync="persons"
     is-order-page
     card-title="Заказ №1"
   />

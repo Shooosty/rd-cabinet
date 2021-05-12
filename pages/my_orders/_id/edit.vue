@@ -3,7 +3,7 @@
     v-if="resource"
     :resource.sync="resource"
     :actions="actions"
-    :persons="persons"
+    :persons.sync="persons"
     is-order-page
     is-edit-page
     card-title="Заказ №1"
@@ -46,7 +46,7 @@ export default {
             } finally {
               if (this.error == null) {
                 setTimeout(
-                  () => this.$router.push({ path: '/admins/all_orders' }),
+                  () => this.$router.push({ path: '/my_orders' }),
                   2000
                 )
                 this.$notification.success('Данные заказа обновлены', {
@@ -65,7 +65,7 @@ export default {
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to: `/admins/all_orders/${this.$route.params.id}`,
+          to: `/my_orders/${this.$route.params.id}`,
           icon: 'window-close',
         },
       ],
