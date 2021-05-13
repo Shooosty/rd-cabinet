@@ -31,6 +31,22 @@
           track-by="email"
         />
       </b-list-group-item>
+      <b-list-group-item>
+        <label>Ответственный</label>
+        <multiselect
+          v-model="resource.owner"
+          :options="owners"
+          placeholder="ответственный"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
+        <label>Статус</label>
+        <multiselect
+          v-model="resource.status"
+          :options="statuses"
+          placeholder="статус заказа"
+        />
+      </b-list-group-item>
     </b-list-group>
   </div>
 
@@ -56,6 +72,14 @@
         <span> {{ chosenDesigner.name }} </span>
         <span>&bull;</span>
         <span> {{ chosenDesigner.email }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Ответственный: </b>
+        <span> {{ resource.owner }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Статус заказа: </b>
+        <span> {{ resource.status }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -88,6 +112,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  data() {
+    return {
+      owners: ['photogrpaher', 'manager', 'designer'],
+      statuses: ['active', 'close', 'inDesign', 'inPrint'],
+    }
   },
 
   computed: {

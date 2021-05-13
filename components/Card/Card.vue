@@ -34,7 +34,7 @@
                       <fa :icon="['fas', `info-circle`]" />
                     </icon>
                     <span class="ml-2">
-                      {{ parseStatus(card.status) }}
+                      {{ localizeStatus(card.status) }}
                     </span>
                   </div>
                 </b-card-text>
@@ -74,7 +74,7 @@ export default {
       return this.$dayjs(value).format('HH:mm')
     },
 
-    parseStatus(status) {
+    localizeStatus(status) {
       switch (status) {
         case 'new':
           return 'новый'
@@ -82,6 +82,12 @@ export default {
           return 'в работе'
         case 'close':
           return 'закрыт'
+        case 'inDesign':
+          return 'у дизайнера'
+        case 'inPrint':
+          return 'в печати'
+        default:
+          return ''
       }
     },
   },

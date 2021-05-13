@@ -1,15 +1,17 @@
 <template>
-  <PageCardDetail
-    v-if="resource"
-    :resource.sync="resource"
-    :clients.sync="clients"
-    :designers.sync="designers"
-    :photographers.sync="photographers"
-    :persons="persons"
-    :actions="actions"
-    card-title="Заказ №1"
-    is-order-page
-  />
+  <div v-show="$isAllowed('viewForAdmin')">
+    <PageCardDetail
+      v-if="resource"
+      :resource.sync="resource"
+      :clients.sync="clients"
+      :designers.sync="designers"
+      :photographers.sync="photographers"
+      :persons="persons"
+      :actions="actions"
+      card-title="Заказ №1"
+      is-order-page
+    />
+  </div>
 </template>
 
 <script>
@@ -18,11 +20,13 @@ import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: { PageCardDetail },
 
   mixins: [ResourceMixin, UsersGroupByRoleMixin],
+  perimeters: [ViewPerimeter],
 
   async fetch() {
     await this.fetchOrder()

@@ -33,7 +33,6 @@ export default {
         {
           label: 'Сохранить',
           btnClass: 'success',
-          to: '/admins/all_orders',
           icon: 'save',
           click: async () => {
             try {
@@ -55,6 +54,76 @@ export default {
                 })
               } else {
                 this.$notification.error('Не удалось обновить данные', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              }
+            }
+          },
+        },
+        {
+          label: 'В дизайн',
+          btnClass: 'black',
+          icon: 'magic',
+          isShow: this.$auth.user.role === 'photographer',
+          govern: 'viewForPhotographer',
+          click: async () => {
+            try {
+              this.error = null
+              const updatedOrder = this.resource
+              updatedOrder.owner = 'designer'
+              updatedOrder.status = 'inDesign'
+
+              await this.update(Object.assign({}, updatedOrder))
+            } catch (e) {
+              this.error = e.response.data
+            } finally {
+              if (this.error == null) {
+                setTimeout(
+                  () => this.$router.push({ path: '/my_orders' }),
+                  2000
+                )
+                this.$notification.success('Заказ передан дизайнеру', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              } else {
+                this.$notification.error('Не удалось передать заказ', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              }
+            }
+          },
+        },
+        {
+          label: 'В печать',
+          btnClass: 'black',
+          icon: 'print',
+          isShow: this.$auth.user.role === 'designer',
+          govern: 'viewForDesigner',
+          click: async () => {
+            try {
+              this.error = null
+              const updatedOrder = this.resource
+              updatedOrder.owner = 'manager'
+              updatedOrder.status = 'inPrint'
+
+              await this.update(Object.assign({}, updatedOrder))
+            } catch (e) {
+              this.error = e.response.data
+            } finally {
+              if (this.error == null) {
+                setTimeout(
+                  () => this.$router.push({ path: '/my_orders' }),
+                  2000
+                )
+                this.$notification.success('Заказ передан в печать', {
+                  timer: 3,
+                  position: 'bottomCenter',
+                })
+              } else {
+                this.$notification.error('Не удалось передать заказ', {
                   timer: 3,
                   position: 'bottomCenter',
                 })

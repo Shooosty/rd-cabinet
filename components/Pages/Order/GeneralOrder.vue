@@ -107,6 +107,10 @@ export default {
           return 'в работе'
         case 'close':
           return 'закрыт'
+        case 'inDesign':
+          return 'у дизайнера'
+        case 'inPrint':
+          return 'в печати'
         default:
           return ''
       }

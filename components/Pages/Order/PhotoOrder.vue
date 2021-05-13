@@ -8,8 +8,9 @@
     >
       <b-card no-body class="mb-1">
         <b-card-header
+          v-b-toggle="`collapse-${index}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between p-1"
+          class="d-flex align-content-center justify-content-between collapse-header p-1"
           role="tab"
         >
           <div class="d-flex justify-content-start ml-2">
@@ -18,11 +19,7 @@
             </span>
           </div>
           <div class="d-flex justify-content-end">
-            <IconButton
-              v-b-toggle="`collapse-${index}`"
-              icon="chevron-down"
-              class="collapse-button mr-3"
-            />
+            <IconButton icon="chevron-down" class="collapse-button mr-3" />
           </div>
         </b-card-header>
         <b-collapse
@@ -95,9 +92,24 @@
                 </div>
               </div>
 
+              <div class="mt-3">
+                <label for="description">Заметка</label>
+                <b-form-textarea
+                  id="description"
+                  v-model="form.description"
+                  placeholder="Поле для заметок.."
+                  rows="3"
+                  max-rows="8"
+                />
+              </div>
+
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex justify-content-start mt-3">
-                  <IconButton icon="save" @click.native="savePerson(index)" />
+                  <IconButton
+                    v-b-toggle="`collapse-${index}`"
+                    icon="save"
+                    @click.native="savePerson(index)"
+                  />
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                   <IconButton
@@ -125,8 +137,9 @@
     >
       <b-card no-body class="mb-1">
         <b-card-header
+          v-b-toggle="`collapse-${index}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between p-1"
+          class="d-flex align-content-center justify-content-between collapse-header p-1"
           role="tab"
         >
           <div class="d-flex justify-content-start ml-2">
@@ -135,11 +148,7 @@
             </span>
           </div>
           <div class="d-flex justify-content-end">
-            <IconButton
-              v-b-toggle="`collapse-${index}`"
-              icon="chevron-down"
-              class="collapse-button mr-3"
-            />
+            <IconButton icon="chevron-down" class="collapse-button mr-3" />
           </div>
         </b-card-header>
         <b-collapse
@@ -158,6 +167,11 @@
                   fluid
                   :src="image"
                 />
+              </div>
+
+              <div>
+                <b> Заметка: </b>
+                <span> {{ person.description }} </span>
               </div>
             </b-card-text>
           </b-card-body>
@@ -322,6 +336,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.collapse-header {
+  cursor: pointer;
+}
+
 .collapse-button {
   &:active {
     transition: transform 0.2s ease-out;

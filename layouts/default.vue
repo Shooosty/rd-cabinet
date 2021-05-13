@@ -5,7 +5,9 @@
       <sidebar />
     </div>
     <main>
-      <nuxt />
+      <transition name="fade">
+        <nuxt />
+      </transition>
     </main>
   </div>
 </template>
@@ -36,6 +38,17 @@ main {
 *::after {
   box-sizing: border-box;
   margin: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s;
+  transition-duration: 1.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 
 @media only screen and (max-width: 992px) {

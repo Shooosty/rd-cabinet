@@ -1,43 +1,45 @@
 <template>
-  <div v-show="this.$auth.user ? $isAllowed(govern) : true">
-    <a
-      v-if="fn"
-      :govern="govern"
-      :href="to"
-      class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
-      :class="type(btnClass)"
-      @click.prevent="fn && fn.call()"
-    >
-      <span
-        v-if="label"
-        class="d-lg-inline-block"
-        :class="[icon ? 'ml-2 d-none' : '']"
-        v-text="label"
-      />
+  <div v-if="isShow">
+    <div v-show="this.$auth.user ? $isAllowed(govern) : true">
+      <a
+        v-if="fn"
+        :govern="govern"
+        :href="to"
+        class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+        :class="type(btnClass)"
+        @click.prevent="fn && fn.call()"
+      >
+        <span
+          v-if="label"
+          class="d-lg-inline-block"
+          :class="[icon ? 'ml-2 d-none' : '']"
+          v-text="label"
+        />
 
-      <span v-if="icon" class="ml-auto">
-        <fa :icon="['fas', `${icon}`]" />
-      </span>
-    </a>
+        <span v-if="icon" class="ml-auto">
+          <fa :icon="['fas', `${icon}`]" />
+        </span>
+      </a>
 
-    <n-link
-      v-else
-      :govern="govern"
-      :to="to"
-      class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
-      :class="type(btnClass)"
-    >
-      <span
-        v-if="label"
-        class="d-lg-inline-block"
-        :class="[icon ? 'ml-2 d-none' : '']"
-        v-text="label"
-      />
+      <n-link
+        v-else
+        :govern="govern"
+        :to="to"
+        class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+        :class="type(btnClass)"
+      >
+        <span
+          v-if="label"
+          class="d-lg-inline-block"
+          :class="[icon ? 'ml-2 d-none' : '']"
+          v-text="label"
+        />
 
-      <span v-if="icon" class="ml-auto">
-        <fa :icon="['fas', `${icon}`]" />
-      </span>
-    </n-link>
+        <span v-if="icon" class="ml-auto">
+          <fa :icon="['fas', `${icon}`]" />
+        </span>
+      </n-link>
+    </div>
   </div>
 </template>
 
@@ -69,6 +71,10 @@ export default {
     govern: {
       type: String,
       default: 'viewForAll',
+    },
+    isShow: {
+      type: Boolean,
+      default: true,
     },
   },
 

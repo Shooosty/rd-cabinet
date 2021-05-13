@@ -11,6 +11,7 @@
       <LinkButton
         v-for="action in actions"
         :key="action.label"
+        :is-show="action.isShow"
         :label="action.label"
         :icon="action.icon"
         :to="action.to"

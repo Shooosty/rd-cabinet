@@ -52,7 +52,7 @@ export default {
 
   computed: {
     activeItems() {
-      return this.items.filter((order) => order.status === 'new' || 'active')
+      return this.items.filter((order) => order.status !== 'closed')
     },
 
     closedItems() {

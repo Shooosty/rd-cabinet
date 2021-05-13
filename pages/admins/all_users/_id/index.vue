@@ -1,11 +1,13 @@
 <template>
-  <PageCardDetail
-    v-if="resource"
-    :resource.sync="resource"
-    :actions="actions"
-    :card-title="resource.email"
-    is-user-page
-  />
+  <div v-show="$isAllowed('viewForAdmin')">
+    <PageCardDetail
+      v-if="resource"
+      :resource.sync="resource"
+      :actions="actions"
+      :card-title="resource.email"
+      is-user-page
+    />
+  </div>
 </template>
 
 <script>
@@ -13,11 +15,13 @@ import { mapGetters } from 'vuex'
 import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: { PageCardDetail },
 
   mixins: [ResourceMixin],
+  perimeters: [ViewPerimeter],
 
   async fetch() {
     await this.fetchUser()

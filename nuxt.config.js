@@ -55,6 +55,8 @@ export default {
               'faPhone',
               'faCheck',
               'faTrash',
+              'faPrint',
+              'faMagic',
               'faFileDownload',
               'faEnvelope',
               'faMoneyBillWave',

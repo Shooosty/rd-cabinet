@@ -1,16 +1,18 @@
 <template>
-  <PageCardDetail
-    v-if="resource"
-    :clients.sync="clients"
-    :designers.sync="designers"
-    :photographers.sync="photographers"
-    :resource.sync="resource"
-    :persons="persons"
-    :actions="actions"
-    is-order-page
-    is-edit-page
-    card-title="Заказ №1"
-  />
+  <div v-show="$isAllowed('viewForAdmin')">
+    <PageCardDetail
+      v-if="resource"
+      :clients.sync="clients"
+      :designers.sync="designers"
+      :photographers.sync="photographers"
+      :resource.sync="resource"
+      :persons="persons"
+      :actions="actions"
+      is-order-page
+      is-edit-page
+      card-title="Заказ №1"
+    />
+  </div>
 </template>
 
 <script>
@@ -19,11 +21,13 @@ import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: { PageCardDetail },
 
   mixins: [ResourceMixin, UsersGroupByRoleMixin],
+  perimeters: [ViewPerimeter],
 
   async fetch() {
     await this.fetchOrder()
@@ -47,6 +51,10 @@ export default {
               updatedOrder.designerId = updatedOrder.designerId.ID
               updatedOrder.photographerId = updatedOrder.photographerId.ID
               updatedOrder.userId = updatedOrder.userId.ID
+
+              if (updatedOrder.owner === 'designer') {
+                updatedOrder.status = 'inDesign'
+              }
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {
