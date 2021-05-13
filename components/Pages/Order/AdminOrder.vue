@@ -42,7 +42,8 @@
         <multiselect
           v-model="resource.owner"
           selected-label="выбран"
-          select-label="нажмите, чтобы выбрать"
+          deselect-label="убрать"
+          select-label="выбрать"
           :options="owners"
           placeholder="ответственный"
         />
@@ -52,7 +53,8 @@
         <multiselect
           v-model="resource.status"
           selected-label="выбран"
-          select-label="нажмите, чтобы выбрать"
+          deselect-label="убрать"
+          select-label="выбрать"
           :options="statuses"
           placeholder="статус заказа"
         />
