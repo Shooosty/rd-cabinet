@@ -169,7 +169,7 @@
                 />
               </div>
 
-              <div>
+              <div v-if="person.description">
                 <b> Заметка: </b>
                 <span> {{ person.description }} </span>
               </div>

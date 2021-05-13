@@ -1,0 +1,34 @@
+@import 'vue2-datepicker/index.css';
+@import 'default';
+
+.mx-input {
+  cursor: pointer;
+  height: 38px !important;
+  border: 1px solid #ced4da !important;
+}
+
+.mx-time-column .mx-time-list::after {
+  display: none !important;
+}
+
+.mx-datepicker-main {
+  color: $secondary-color !important;
+  border: none !important;
+}
+
+.mx-time-column .mx-time-item.active {
+  color: $success-color !important;
+}
+
+.mx-calendar-content .cell.active {
+  color: #fff;
+  background-color: $success-color !important;
+}
+
+.mx-table-date .today {
+  color: $success-color !important;
+}
+
+.mx-input:hover, .mx-input:focus {
+  border-color: $success-color !important;
+}

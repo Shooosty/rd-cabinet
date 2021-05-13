@@ -5,16 +5,6 @@
       <div>
         <b-row>
           <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
-            <label for="datetime">Дата и время фотосъемки</label>
-            <date-picker
-              id="datetime"
-              v-model="order.datetime"
-              v-model.trim="$v.order.datetime.$model"
-              type="datetime"
-              placeholder="Выберите дату и время"
-            />
-          </b-col>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
             <div>
               <label for="address">Адрес фотосъемки</label>
               <b-form-input
@@ -24,6 +14,20 @@
                 placeholder="Введите адрес"
               />
             </div>
+          </b-col>
+          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+            <label for="datetime">Дата и время фотосъемки</label>
+            <date-picker
+              id="datetime"
+              v-model="order.datetime"
+              v-model.trim="$v.order.datetime.$model"
+              type="datetime"
+              value-type="format"
+              :open.sync="open"
+              format="YYYY-MM-DDTHH:mm"
+              placeholder="Выберите дату и время"
+              @change="dateTimeChange"
+            />
           </b-col>
           <b-col xl="4" lg="4" md="12" sm="12" class="p-3">
             <label for="contract">Загрузите копию договора</label>
@@ -53,6 +57,8 @@
               <multiselect
                 v-model="order.userId"
                 v-model.trim="$v.order.userId.$model"
+                selected-label="выбран"
+                select-label="нажмите, чтобы выбрать"
                 :options="clients"
                 placeholder="email"
                 label="email"
@@ -67,6 +73,8 @@
                 v-model="order.photographerId"
                 v-model.trim="$v.order.photographerId.$model"
                 :options="photographers"
+                selected-label="выбран"
+                select-label="нажмите, чтобы выбрать"
                 placeholder="фотограф"
                 label="email"
                 track-by="email"
@@ -80,6 +88,8 @@
                 v-model="order.designerId"
                 v-model.trim="$v.order.designerId.$model"
                 :options="designers"
+                selected-label="выбран"
+                select-label="нажмите, чтобы выбрать"
                 placeholder="дизайнер"
                 label="email"
                 track-by="email"
@@ -149,6 +159,9 @@ export default {
   data() {
     return {
       error: null,
+      value: null,
+      open: false,
+
       order: {
         owner: 'photographer',
         status: 'new',
@@ -232,6 +245,12 @@ export default {
       updateContract: 'file/POST_FILES',
       clearFiles: 'file/CLEAR_FILES',
     }),
+
+    dateTimeChange(value, type) {
+      if (type === 'minute') {
+        this.open = false
+      }
+    },
 
     async saveContract() {
       try {

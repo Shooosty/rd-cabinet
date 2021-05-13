@@ -6,6 +6,8 @@
         <multiselect
           v-model="resource.userId"
           :options="clients"
+          selected-label="выбран"
+          select-label="нажмите, чтобы выбрать"
           placeholder="email"
           label="email"
           track-by="email"
@@ -16,6 +18,8 @@
         <multiselect
           v-model="resource.photographerId"
           :options="photographers"
+          selected-label="выбран"
+          select-label="нажмите, чтобы выбрать"
           placeholder="фотограф"
           label="email"
           track-by="email"
@@ -26,6 +30,8 @@
         <multiselect
           v-model="resource.designerId"
           :options="designers"
+          selected-label="выбран"
+          select-label="нажмите, чтобы выбрать"
           placeholder="дизайнер"
           label="email"
           track-by="email"
@@ -35,6 +41,8 @@
         <label>Ответственный</label>
         <multiselect
           v-model="resource.owner"
+          selected-label="выбран"
+          select-label="нажмите, чтобы выбрать"
           :options="owners"
           placeholder="ответственный"
         />
@@ -43,6 +51,8 @@
         <label>Статус</label>
         <multiselect
           v-model="resource.status"
+          selected-label="выбран"
+          select-label="нажмите, чтобы выбрать"
           :options="statuses"
           placeholder="статус заказа"
         />

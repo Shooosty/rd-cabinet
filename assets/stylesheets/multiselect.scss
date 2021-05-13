@@ -3,15 +3,16 @@
 
 .multiselect__option--selected.multiselect__option--highlight,
 .multiselect__option--highlight {
-  background-color: $secondary-color;
+  background-color: $success-color;
 
   &::after {
-    background-color: $secondary-color;
+    background-color: $success-color;
   }
 }
 
 // MultiSelect Styles
 .multiselect {
+  cursor: pointer;
   min-height: 18px;
   width: 100%;
 }
@@ -26,6 +27,7 @@
 .multiselect__placeholder,
 .multiselect__single,
 .multiselect__input {
+  cursor: pointer;
   padding: 0;
   margin: 0;
 }
@@ -34,7 +36,7 @@
 .multiselect__input,
 .multiselect__single {
   font-size: 14px;
-  color: $success-color;
+  color: $secondary-color;
   font-weight: $font-weight-boldest;
 }
 

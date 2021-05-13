@@ -1,0 +1,20 @@
+@import 'vue-file-agent/dist/vue-file-agent.css';
+@import 'default';
+
+.vue-file-agent.file-input-wrapper {
+  border: 2px dashed #aaa;
+  border-radius: 4px;
+}
+
+.vue-file-agent .file-preview-new::before,
+.theme-list .vue-file-agent .file-preview-wrapper .file-preview::before{
+  background: white !important;
+}
+
+.theme-list .vue-file-agent .file-preview-wrapper .file-preview .file-delete {
+  color: $danger-color !important;
+}
+
+.vue-file-agent .file-preview .file-size .vue-file-agent .file-ext, .vue-file-agent .file-preview {
+  font-size: $font-size-sm !important;
+}
