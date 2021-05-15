@@ -3,15 +3,15 @@
     <b-list-group>
       <b-list-group-item>
         <b> Имя: </b>
-        <span> {{ resource.name }} </span>
+        <span class="ml-1"> {{ resource.name }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> E-mail: </b>
-        <span> {{ resource.email }} </span>
+        <span class="ml-1"> {{ resource.email }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Телефон: </b>
-        <span> {{ resource.phone }} </span>
+        <span class="ml-1"> {{ resource.phone }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>

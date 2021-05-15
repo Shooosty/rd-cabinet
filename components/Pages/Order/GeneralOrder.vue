@@ -44,24 +44,25 @@
     <b-list-group>
       <b-list-group-item>
         <b> Адрес: </b>
-        <span> {{ resource.address }} </span>
+        <span class="ml-1"> {{ resource.address }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Дата: </b>
-        <span> {{ date }} </span>
+        <span class="ml-1"> {{ date }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Время: </b>
-        <span> {{ time }} </span>
+        <span class="ml-1"> {{ time }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Статус: </b>
-        <span> {{ status }} </span>
+        <span class="ml-1"> {{ status }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Договор: </b>
-        <a class="contractLink" :href="resource.contract" target="_blank">
-          Договор
+        <a class="contract ml-1" :href="resource.contract" target="_blank">
+          <fa :icon="['fas', 'file-pdf']" />
+          <span> Договор </span>
         </a>
       </b-list-group-item>
     </b-list-group>
@@ -102,15 +103,15 @@ export default {
     status() {
       switch (this.resource?.status) {
         case 'new':
-          return 'новый'
+          return 'Новый'
         case 'active':
-          return 'в работе'
+          return 'В работе'
         case 'close':
-          return 'закрыт'
+          return 'Закрыт'
         case 'inDesign':
-          return 'у дизайнера'
+          return 'У дизайнера'
         case 'inPrint':
-          return 'в печати'
+          return 'В печати'
         default:
           return ''
       }
@@ -164,8 +165,13 @@ export default {
   }
 }
 
-.contractLink {
-  color: $success-color;
+.contract {
+  padding: 0.2rem;
+  color: $secondary-color;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-light;
   text-decoration: none;
+  border: 2px solid $success-color;
+  border-radius: 3px;
 }
 </style>

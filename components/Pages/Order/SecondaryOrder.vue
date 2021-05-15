@@ -18,7 +18,7 @@
     <b-list-group>
       <b-list-group-item>
         <b> Заметка: </b>
-        <span> {{ resource.description }} </span>
+        <span class="ml-1"> {{ resource.description }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>

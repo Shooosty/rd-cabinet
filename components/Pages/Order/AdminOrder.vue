@@ -69,29 +69,29 @@
     <b-list-group>
       <b-list-group-item>
         <b> Клиент: </b>
-        <span> {{ chosenClient.name }} </span>
+        <span class="ml-1"> {{ chosenClient.name }} </span>
         <span>&bull;</span>
         <span> {{ chosenClient.email }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Фотограф: </b>
-        <span> {{ chosenPhotographer.name }} </span>
+        <span class="ml-1"> {{ chosenPhotographer.name }} </span>
         <span>&bull;</span>
         <span> {{ chosenPhotographer.email }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Дизайнер: </b>
-        <span> {{ chosenDesigner.name }} </span>
+        <span class="ml-1"> {{ chosenDesigner.name }} </span>
         <span>&bull;</span>
         <span> {{ chosenDesigner.email }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Ответственный: </b>
-        <span> {{ resource.owner }} </span>
+        <span class="ml-1"> {{ resource.owner }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Статус заказа: </b>
-        <span> {{ resource.status }} </span>
+        <span class="ml-1"> {{ resource.status }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>

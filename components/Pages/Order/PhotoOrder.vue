@@ -13,9 +13,25 @@
           class="d-flex align-content-center justify-content-between collapse-header p-1"
           role="tab"
         >
-          <div class="d-flex justify-content-start ml-2">
-            <span>
+          <div class="d-flex justify-content-start align-items-center ml-2">
+            <span :name="index" class="type-icon">
+              <fa
+                v-if="form.type === 'teacher'"
+                :icon="['fas', 'user-graduate']"
+              />
+              <fa v-if="form.type === 'pupil'" :icon="['fas', 'user']" />
+            </span>
+            <span class="ml-2">
               {{ form.surname }} {{ form.name }} {{ form.middleName }}
+            </span>
+            <span
+              class="ml-3"
+              :class="{
+                green: form.photos.length > 0,
+                red: form.photos.length === 0,
+              }"
+            >
+              {{ form.photos.length }}
             </span>
           </div>
           <div class="d-flex justify-content-end">
@@ -62,6 +78,17 @@
                 </b-col>
               </b-row>
 
+              <div class="mt-2">
+                <multiselect
+                  v-model="form.type"
+                  selected-label="выбран"
+                  deselect-label="убрать"
+                  select-label="выбрать"
+                  :options="types"
+                  placeholder="тип модели"
+                />
+              </div>
+
               <div class="mt-3">
                 <VueFileAgent
                   ref="photos"
@@ -93,9 +120,7 @@
               </div>
 
               <div class="mt-3">
-                <label for="description">Заметка</label>
                 <b-form-textarea
-                  id="description"
                   v-model="form.description"
                   placeholder="Поле для заметок.."
                   rows="3"
@@ -142,9 +167,24 @@
           class="d-flex align-content-center justify-content-between collapse-header p-1"
           role="tab"
         >
-          <div class="d-flex justify-content-start ml-2">
-            <span :name="index">
+          <div class="d-flex justify-content-start align-items-center ml-2">
+            <span :name="index" class="type-icon">
+              <fa
+                v-if="person.type === 'teacher'"
+                :icon="['fas', 'user-graduate']"
+              />
+              <fa v-if="person.type === 'pupil'" :icon="['fas', 'user']" />
+            </span>
+            <span class="ml-2" :name="index">
               {{ person.surname }} {{ person.name }} {{ person.middleName }}
+            </span>
+            <span
+              class="ml-3"
+              :class="{
+                green: person.photos.length > 0,
+                red: person.photos.length === 0,
+              }"
+            >
             </span>
           </div>
           <div class="d-flex justify-content-end">
@@ -183,11 +223,12 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import Multiselect from 'vue-multiselect'
 import IconButton from '~/components/Button/IconButton'
 import PrimaryButton from '~/components/Button/PrimaryButton'
 
 export default {
-  components: { PrimaryButton, IconButton },
+  components: { PrimaryButton, IconButton, Multiselect },
 
   props: {
     resource: {
@@ -215,6 +256,8 @@ export default {
         photos: [],
         description: '',
       },
+
+      types: ['teacher', 'pupil'],
 
       imgProps: { width: 75, height: 75 },
 
@@ -336,6 +379,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/stylesheets/default';
+
 .collapse-header {
   cursor: pointer;
 }
@@ -345,6 +390,18 @@ export default {
     transition: transform 0.2s ease-out;
     transform: rotate(90deg);
   }
+}
+
+.type-icon {
+  font-size: 12px;
+}
+
+.green {
+  color: $success-color;
+}
+
+.red {
+  color: $danger-color;
 }
 
 .collapsed > .collapse-button {

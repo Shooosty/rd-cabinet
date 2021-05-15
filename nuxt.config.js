@@ -54,6 +54,8 @@ export default {
               'faInfoCircle',
               'faPhone',
               'faCheck',
+              'faUserGraduate',
+              'faFilePdf',
               'faTrash',
               'faPrint',
               'faMagic',
