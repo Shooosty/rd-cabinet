@@ -40,6 +40,7 @@
           :max-size="'10MB'"
           :max-files="1"
           @select="saveContract"
+          @beforedelete="deleteContract($event)"
         />
       </b-list-group-item>
     </b-list-group>
@@ -92,6 +93,13 @@ export default {
     },
   },
 
+  data() {
+    return {
+      open: false,
+      photoContract: {},
+    }
+  },
+
   computed: {
     ...mapState('file', {
       contractFile: (state) => state.items[0].url,
@@ -132,6 +140,12 @@ export default {
     dateTimeChange(value, type) {
       if (type === 'minute') {
         this.open = false
+      }
+    },
+
+    deleteContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.contract.deleteFileRecord(fileRecord)
       }
     },
 

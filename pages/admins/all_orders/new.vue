@@ -47,6 +47,7 @@
               :max-size="'10MB'"
               :max-files="1"
               @select="saveContract"
+              @beforedelete="deleteContract($event)"
             />
           </b-col>
         </b-row>
@@ -248,6 +249,12 @@ export default {
       updateContract: 'file/POST_FILES',
       clearFiles: 'file/CLEAR_FILES',
     }),
+
+    deleteContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.contract.deleteFileRecord(fileRecord)
+      }
+    },
 
     dateTimeChange(value, type) {
       if (type === 'minute') {
