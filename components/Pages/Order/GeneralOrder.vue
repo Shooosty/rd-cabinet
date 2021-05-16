@@ -15,6 +15,11 @@
           id="datetime"
           v-model="resource.datetime"
           type="datetime"
+          value-type="format"
+          :open.sync="open"
+          format="YYYY-MM-DDTHH:mm"
+          placeholder="Выберите дату и время"
+          @change="dateTimeChange"
         />
       </b-list-group-item>
       <b-list-group-item>
@@ -123,6 +128,12 @@ export default {
       updateContract: 'file/POST_FILES',
       clearFiles: 'file/CLEAR_FILES',
     }),
+
+    dateTimeChange(value, type) {
+      if (type === 'minute') {
+        this.open = false
+      }
+    },
 
     async saveContract() {
       try {

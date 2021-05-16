@@ -21,10 +21,12 @@
               />
               <fa v-if="form.type === 'pupil'" :icon="['fas', 'user']" />
             </span>
-            <span class="ml-2">
+            <span :name="index" class="ml-2">
               {{ form.surname }} {{ form.name }} {{ form.middleName }}
             </span>
             <span
+              v-if="form.middleName && form.type"
+              :name="index"
               class="ml-3"
               :class="{
                 green: form.photos.length > 0,
@@ -92,9 +94,10 @@
               <div class="mt-3">
                 <VueFileAgent
                   ref="photos"
+                  v-model="photoFiles"
                   :multiple="true"
                   :deletable="true"
-                  :meta="true"
+                  :meta="false"
                   :average-color="false"
                   :help-text="'Выберите или перетащите фотографии'"
                   :error-text="{
@@ -106,6 +109,7 @@
                   :max-files="10"
                   :name="`photos-${index}`"
                   @select="showButton"
+                  @beforedelete="deletePhoto($event, index)"
                 />
                 <div
                   v-if="isSavePhotosButtonShow"
@@ -185,6 +189,9 @@
                 red: person.photos.length === 0,
               }"
             >
+              <span>
+                {{ person.photos.length }}
+              </span>
             </span>
           </div>
           <div class="d-flex justify-content-end">
@@ -257,6 +264,8 @@ export default {
         description: '',
       },
 
+      photoFiles: [],
+
       types: ['teacher', 'pupil'],
 
       imgProps: { width: 75, height: 75 },
@@ -272,6 +281,21 @@ export default {
         return state.items.map((r) => r.url)
       },
     }),
+  },
+
+  mounted() {
+    this.persons.forEach((person) => {
+      if (person.photos.length) {
+        person.photos.forEach((photo) => {
+          this.photoFiles.push({
+            name: 'Загружен ранее',
+            type: 'image/*',
+            size: 1,
+            url: photo,
+          })
+        })
+      }
+    })
   },
 
   methods: {
@@ -291,30 +315,37 @@ export default {
       this.persons.push(Object.assign({}, this.defaultFormModels))
     },
 
+    deletePhoto(fileRecord, index) {
+      this.$refs.photos[index].deleteFileRecord(fileRecord)
+      this.persons[index].photos.pop(fileRecord.url)
+    },
+
     async savePhotos(index) {
       await this.clearFiles()
-      for (const file of this.$refs.photos[index]._data.fileRecords) {
-        try {
-          this.error = null
-          await this.updatePhotos(file.file)
-        } catch (e) {
-          this.error = e.response
-        } finally {
-          await this.clearFiles()
-          this.isSavePhotosButtonShow = false
-          if (this.error == null) {
-            this.$notification.success(
-              `${file.file.name} сохранено на сервере`,
-              {
-                timer: 2,
+      for (const file of this.$refs.photos[index].fileRecords) {
+        if (file) {
+          try {
+            this.error = null
+            await this.updatePhotos(file.file)
+          } catch (e) {
+            this.error = e.response
+          } finally {
+            await this.clearFiles()
+            this.isSavePhotosButtonShow = false
+            if (this.error == null) {
+              this.$notification.success(
+                `${file.file.name} сохранено на сервере`,
+                {
+                  timer: 2,
+                  position: 'bottomCenter',
+                }
+              )
+            } else {
+              this.$notification.error('Не удалось сохранить фотографию', {
+                timer: 3,
                 position: 'bottomCenter',
-              }
-            )
-          } else {
-            this.$notification.error('Не удалось сохранить фотографию', {
-              timer: 3,
-              position: 'bottomCenter',
-            })
+              })
+            }
           }
         }
       }
@@ -324,8 +355,9 @@ export default {
       try {
         this.error = null
         const newPerson = this.persons[index]
+
         newPerson.orderId = this.resource.ID
-        newPerson.photos = this.files
+        newPerson.photos = this.files.concat(this.persons[index].photos)
 
         if (this.persons[index].ID) {
           await this.update(Object.assign({}, newPerson))
