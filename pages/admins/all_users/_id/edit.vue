@@ -69,29 +69,31 @@ export default {
           govern: 'viewForSuperAdmin',
           icon: 'trash',
           click: async () => {
-            try {
-              this.error = null
-              await this.delete(this.resource.ID)
-            } catch (e) {
-              this.error = e.response.data
-            } finally {
-              if (this.error == null) {
-                setTimeout(
-                  () =>
-                    this.$router.push({
-                      path: '/admins/all_users',
-                    }),
-                  2000
-                )
-                this.$notification.success('Пользователь успешно удален', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
-              } else {
-                this.$notification.error('Не удалось удалить пользователя', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
+            if (confirm('Подтверждаете удаление?')) {
+              try {
+                this.error = null
+                await this.delete(this.resource.ID)
+              } catch (e) {
+                this.error = e.response.data
+              } finally {
+                if (this.error == null) {
+                  setTimeout(
+                    () =>
+                      this.$router.push({
+                        path: '/admins/all_users',
+                      }),
+                    2000
+                  )
+                  this.$notification.success('Пользователь успешно удален', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                } else {
+                  this.$notification.error('Не удалось удалить пользователя', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                }
               }
             }
           },

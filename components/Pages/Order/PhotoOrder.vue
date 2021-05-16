@@ -316,8 +316,10 @@ export default {
     },
 
     deletePhoto(fileRecord, index) {
-      this.$refs.photos[index].deleteFileRecord(fileRecord)
-      this.persons[index].photos.pop(fileRecord.url)
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.photos[index].deleteFileRecord(fileRecord)
+        this.persons[index].photos.pop(fileRecord.url)
+      }
     },
 
     async savePhotos(index) {
