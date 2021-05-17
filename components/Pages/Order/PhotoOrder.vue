@@ -83,9 +83,11 @@
               <div class="mt-2">
                 <multiselect
                   v-model="form.type"
+                  :searchable="false"
                   selected-label="выбран"
                   deselect-label="убрать"
                   select-label="выбрать"
+                  :custom-label="localizeTypes"
                   :options="types"
                   placeholder="тип модели"
                 />
@@ -331,10 +333,21 @@ export default {
       this.persons.push(Object.assign({}, this.defaultFormModels))
     },
 
+    localizeTypes(type) {
+      switch (type) {
+        case 'pupil':
+          return 'Ученик'
+        case 'teacher':
+          return 'Учитель'
+      }
+    },
+
     deletePhoto(fileRecord, index) {
       if (confirm('Подтверждаете удаление?')) {
         this.$refs.photos[index].deleteFileRecord(fileRecord)
         this.persons[index].photos.pop(fileRecord.url)
+        console.log(fileRecord)
+        console.log(this.persons[index].photos)
       }
     },
 
@@ -398,6 +411,9 @@ export default {
       try {
         this.error = null
         const newPerson = this.persons[index]
+
+        console.log(this.files)
+        console.log(this.persons[index].photos)
 
         newPerson.orderId = this.resource.ID
         newPerson.photos = this.files.concat(this.persons[index].photos)

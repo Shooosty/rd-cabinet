@@ -204,6 +204,7 @@ export default {
               } catch (e) {
                 this.error = e.response.data
               } finally {
+                await this.clearFiles()
                 if (this.error == null) {
                   setTimeout(
                     () => this.$router.push({ path: '/admins/all_orders' }),

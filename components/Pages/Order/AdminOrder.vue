@@ -41,9 +41,11 @@
         <label>Ответственный</label>
         <multiselect
           v-model="resource.owner"
+          :searchable="false"
           selected-label="выбран"
           deselect-label="убрать"
           select-label="выбрать"
+          :custom-label="localizeOwners"
           :options="owners"
           placeholder="ответственный"
         />
@@ -52,9 +54,11 @@
         <label>Статус</label>
         <multiselect
           v-model="resource.status"
+          :searchable="false"
           selected-label="выбран"
           deselect-label="убрать"
           select-label="выбрать"
+          :custom-label="localizeStatuses"
           :options="statuses"
           placeholder="статус заказа"
         />
@@ -128,7 +132,7 @@ export default {
 
   data() {
     return {
-      owners: ['photogrpaher', 'manager', 'designer'],
+      owners: ['photographer', 'manager', 'designer'],
       statuses: ['active', 'close', 'inDesign', 'inPrint'],
     }
   },
@@ -150,6 +154,34 @@ export default {
       return this.designers.filter(
         (value) => value.ID === this.resource.designerId
       )[0]
+    },
+  },
+
+  methods: {
+    localizeOwners(owner) {
+      switch (owner) {
+        case 'photographer':
+          return 'Фотограф'
+        case 'manager':
+          return 'Менеджер'
+        case 'designer':
+          return 'Дизайнер'
+      }
+    },
+
+    localizeStatuses(status) {
+      switch (status) {
+        case 'active':
+          return 'Активный'
+        case 'close':
+          return 'Закрыт'
+        case 'inDesign':
+          return 'На дизайне'
+        case 'inPrint':
+          return 'В печати'
+        case 'new':
+          return 'Новый'
+      }
     },
   },
 }
