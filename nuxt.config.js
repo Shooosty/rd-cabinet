@@ -59,6 +59,7 @@ export default {
               'faTrash',
               'faPrint',
               'faMagic',
+              'faDownload',
               'faFileDownload',
               'faEnvelope',
               'faMoneyBillWave',

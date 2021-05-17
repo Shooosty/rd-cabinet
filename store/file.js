@@ -28,4 +28,10 @@ export const actions = {
   CLEAR_FILES({ commit }) {
     commit('CLEAR')
   },
+
+  GET_FILES({ commit }, fileName) {
+    this.$axios.post(`/files/download`, { fileName }).then((response) => {
+      commit('SET_ITEMS', response.data)
+    })
+  },
 }

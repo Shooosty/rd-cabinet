@@ -216,7 +216,22 @@
                 />
               </div>
 
-              <div v-if="person.description">
+              <!--              <div v-if="person.photos.length" class="mt-2">-->
+              <!--                <IconButton-->
+              <!--                  icon="download"-->
+              <!--                  @click.native="downloadFiles(index)"-->
+              <!--                />-->
+              <!--                <a-->
+              <!--                  v-for="(file, x) in person.photos"-->
+              <!--                  :key="x"-->
+              <!--                  href="#"-->
+              <!--                  :download="file"-->
+              <!--                >-->
+              <!--                  скачать-->
+              <!--                </a>-->
+              <!--              </div>-->
+
+              <div v-if="person.description" class="mt-1">
                 <b> Заметка: </b>
                 <span> {{ person.description }} </span>
               </div>
@@ -303,7 +318,8 @@ export default {
       create: 'person/CREATE',
       update: 'person/UPDATE',
       delete: 'person/DELETE',
-      updatePhotos: 'file/POST_FILES',
+      uploadPhotos: 'file/POST_FILES',
+      downloadPhotos: 'file/GET_FILES',
       clearFiles: 'file/CLEAR_FILES',
     }),
 
@@ -322,13 +338,38 @@ export default {
       }
     },
 
+    downloadFiles(index) {
+      this.persons[index].photos.forEach((url) => {
+        const fileName = url.substr(47)
+        try {
+          this.error = null
+          this.downloadPhotos(fileName)
+        } catch (e) {
+          this.error = e.response
+        } finally {
+          this.isSavePhotosButtonShow = false
+          if (this.error == null) {
+            this.$notification.success('Фотографии успешно скачены', {
+              timer: 2,
+              position: 'bottomCenter',
+            })
+          } else {
+            this.$notification.error('Не удалось скачать фотографии', {
+              timer: 3,
+              position: 'bottomCenter',
+            })
+          }
+        }
+      })
+    },
+
     async savePhotos(index) {
       await this.clearFiles()
       for (const file of this.$refs.photos[index].fileRecords) {
         if (file) {
           try {
             this.error = null
-            await this.updatePhotos(file.file)
+            await this.uploadPhotos(file.file)
           } catch (e) {
             this.error = e.response
           } finally {

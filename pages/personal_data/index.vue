@@ -1,29 +1,20 @@
 <template>
-  <div v-if="resource">
+  <div>
     <page-header card-title="Мои данные" :actions="actions" />
-    <UserGeneral :resource.sync="resource" />
+    <UserGeneral :resource.sync="user" />
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
-import ResourceMixin from '~/mixins/resource-mixin'
 import UserGeneral from '~/components/Pages/User/UserGeneral'
 
 export default {
   components: { UserGeneral, PageHeader },
 
-  mixins: [ResourceMixin],
-
-  async fetch() {
-    await this.fetchUser()
-  },
-
   data() {
     return {
-      userId: this.$auth.user.ID,
-
       actions: [
         {
           label: 'Редактировать',
@@ -36,19 +27,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      getResource: 'user/itemById',
+    ...mapState('auth', {
+      ...mapState('auth', {
+        user: (state) => state.user,
+      }),
     }),
-
-    resourceComputed() {
-      return Object.assign({}, this.getResource(this.userId))
-    },
-  },
-
-  methods: {
-    async fetchUser() {
-      await this.$store.dispatch('user/GET', this.userId)
-    },
   },
 }
 </script>

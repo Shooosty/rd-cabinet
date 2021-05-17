@@ -1,29 +1,21 @@
 <template>
-  <div v-if="resource">
+  <div>
     <page-header card-title="Мои данные" :actions="actions" />
-    <UserGeneral :resource.sync="resource" is-edit-page />
+    <UserGeneral :resource.sync="user" is-edit-page />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import PageHeader from '~/components/Pages/Card/PageHeader'
-import ResourceMixin from '~/mixins/resource-mixin'
 import UserGeneral from '~/components/Pages/User/UserGeneral'
 
 export default {
   components: { UserGeneral, PageHeader },
 
-  mixins: [ResourceMixin],
-
-  async fetch() {
-    await this.fetchUser()
-  },
-
   data() {
     return {
       error: null,
-      userId: this.$auth.user.ID,
 
       actions: [
         {
@@ -34,7 +26,7 @@ export default {
           click: async () => {
             try {
               this.error = null
-              await this.update(this.resource)
+              await this.update(this.user)
             } catch (e) {
               this.error = e.response
             } finally {
@@ -67,23 +59,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      getResource: 'user/itemById',
+    ...mapState('auth', {
+      ...mapState('auth', {
+        user: (state) => state.user,
+      }),
     }),
-
-    resourceComputed() {
-      return Object.assign({}, this.getResource(this.userId))
-    },
   },
 
   methods: {
     ...mapActions({
       update: 'user/UPDATE',
     }),
-
-    async fetchUser() {
-      await this.$store.dispatch('user/GET', this.userId)
-    },
   },
 }
 </script>

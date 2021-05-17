@@ -77,15 +77,15 @@ export default {
     localizeStatus(status) {
       switch (status) {
         case 'new':
-          return 'новый'
+          return 'Новый'
         case 'active':
-          return 'в работе'
+          return 'В работе'
         case 'close':
-          return 'закрыт'
+          return 'Закрыт'
         case 'inDesign':
-          return 'у дизайнера'
+          return 'У дизайнера'
         case 'inPrint':
-          return 'в печати'
+          return 'В печати'
         default:
           return ''
       }
