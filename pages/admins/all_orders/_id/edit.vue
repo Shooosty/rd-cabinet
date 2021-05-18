@@ -54,6 +54,20 @@ export default {
 
               if (updatedOrder.owner === 'designer') {
                 updatedOrder.status = 'inDesign'
+              } else if (updatedOrder.owner === 'photographer') {
+                updatedOrder.status = 'active'
+              }
+
+              if (updatedOrder.status === 'inDesign') {
+                updatedOrder.owner = 'designer'
+              } else if (updatedOrder.status === 'active') {
+                updatedOrder.owner = 'photographer'
+              } else if (
+                updatedOrder.status === 'inPrint' ||
+                updatedOrder.status === 'close' ||
+                updatedOrder.status === 'new'
+              ) {
+                updatedOrder.owner = 'manager'
               }
 
               await this.update(Object.assign({}, updatedOrder))
