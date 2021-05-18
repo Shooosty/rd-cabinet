@@ -22,11 +22,27 @@
     <template #cell(datetime)="data">
       <i> {{ parseDateTime(data.value) }} </i>
     </template>
+
+    <template #cell(status)="data">
+      <span> {{ localizeStatuses(data.value) }} </span>
+    </template>
+
+    <template #cell(owner)="data">
+      <span> {{ localizeOwners(data.value) }} </span>
+    </template>
+
+    <template #cell(role)="data">
+      <span> {{ localizeRoles(data.value) }} </span>
+    </template>
   </b-table>
 </template>
 
 <script>
+import localizeMixin from '~/mixins/localize-mixin'
+
 export default {
+  mixins: [localizeMixin],
+
   props: {
     items: {
       type: Array,

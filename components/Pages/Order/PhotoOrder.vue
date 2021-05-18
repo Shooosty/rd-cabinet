@@ -443,7 +443,7 @@ export default {
 
     removePerson(index) {
       this.persons.splice(index, 1)
-      if (this.persons[index].ID) {
+      if (this.persons.length && this.persons[index].ID) {
         try {
           this.error = null
           this.delete(this.persons[index].ID)

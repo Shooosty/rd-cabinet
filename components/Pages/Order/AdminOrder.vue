@@ -91,11 +91,11 @@
       </b-list-group-item>
       <b-list-group-item>
         <b> Ответственный: </b>
-        <span class="ml-1"> {{ resource.owner }} </span>
+        <span class="ml-1"> {{ localizeOwners(resource.owner) }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Статус заказа: </b>
-        <span class="ml-1"> {{ resource.status }} </span>
+        <span class="ml-1"> {{ localizeStatuses(resource.status) }} </span>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -103,9 +103,12 @@
 
 <script>
 import Multiselect from 'vue-multiselect'
+import localizeMixin from '~/mixins/localize-mixin'
 
 export default {
   components: { Multiselect },
+
+  mixins: [localizeMixin],
 
   props: {
     resource: {
@@ -154,34 +157,6 @@ export default {
       return this.designers.filter(
         (value) => value.ID === this.resource.designerId
       )[0]
-    },
-  },
-
-  methods: {
-    localizeOwners(owner) {
-      switch (owner) {
-        case 'photographer':
-          return 'Фотограф'
-        case 'manager':
-          return 'Менеджер'
-        case 'designer':
-          return 'Дизайнер'
-      }
-    },
-
-    localizeStatuses(status) {
-      switch (status) {
-        case 'active':
-          return 'Активный'
-        case 'close':
-          return 'Закрыт'
-        case 'inDesign':
-          return 'На дизайне'
-        case 'inPrint':
-          return 'В печати'
-        case 'new':
-          return 'Новый'
-      }
     },
   },
 }

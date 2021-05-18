@@ -34,7 +34,7 @@
                       <fa :icon="['fas', `info-circle`]" />
                     </icon>
                     <span class="ml-2">
-                      {{ localizeStatus(card.status) }}
+                      {{ localizeStatuses(card.status) }}
                     </span>
                   </div>
                 </b-card-text>
@@ -48,8 +48,13 @@
 </template>
 
 <script>
+import localizeMixin from '~/mixins/localize-mixin'
+
 export default {
   components: {},
+
+  mixins: [localizeMixin],
+
   props: {
     cards: {
       type: Array[Object],
@@ -72,23 +77,6 @@ export default {
 
     parseTime(value) {
       return this.$dayjs(value).format('HH:mm')
-    },
-
-    localizeStatus(status) {
-      switch (status) {
-        case 'new':
-          return 'Новый'
-        case 'active':
-          return 'В работе'
-        case 'close':
-          return 'Закрыт'
-        case 'inDesign':
-          return 'У дизайнера'
-        case 'inPrint':
-          return 'В печати'
-        default:
-          return ''
-      }
     },
   },
 }
