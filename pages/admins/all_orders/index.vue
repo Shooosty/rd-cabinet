@@ -29,6 +29,7 @@ export default {
   data() {
     return {
       fields: [
+        { key: 'number', label: '№' },
         { key: 'datetime', label: 'Дата съемки' },
         { key: 'owner', label: 'Ответственный' },
         { key: 'status', label: 'Статус' },

@@ -8,7 +8,7 @@
       :photographers.sync="photographers"
       :persons="persons"
       :actions="actions"
-      card-title="Заказ №1"
+      :card-title="orderNumber"
       is-order-page
     />
   </div>
@@ -59,6 +59,10 @@ export default {
       users: 'user/items',
       persons: 'person/items',
     }),
+
+    orderNumber() {
+      return `Заказ № ${this.resource.number}`
+    },
 
     ...ResourceHelper,
   },
