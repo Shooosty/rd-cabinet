@@ -66,10 +66,16 @@
       </b-list-group-item>
       <b-list-group-item>
         <b> Договор: </b>
-        <a class="contract ml-1" :href="resource.contract" target="_blank">
+        <a
+          v-if="resource.contract !== ''"
+          class="contract ml-1"
+          :href="resource.contract"
+          target="_blank"
+        >
           <fa :icon="['fas', 'file-pdf']" />
           <span> Договор </span>
         </a>
+        <span v-else class="red"> нет договора </span>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -198,5 +204,9 @@ export default {
   text-decoration: none;
   border: 2px solid $success-color;
   border-radius: 3px;
+}
+
+.red {
+  color: $danger-color;
 }
 </style>

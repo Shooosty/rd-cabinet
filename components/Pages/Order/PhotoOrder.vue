@@ -377,7 +377,7 @@ export default {
     },
 
     async savePhotos(index) {
-      await this.clearFiles()
+      this.clearFiles()
       for (const file of this.$refs.photos[index].fileRecords) {
         if (file) {
           try {
@@ -442,14 +442,14 @@ export default {
     },
 
     removePerson(index) {
-      this.persons.splice(index, 1)
-      if (this.persons.length && this.persons[index].ID) {
+      if (this.persons.length) {
         try {
           this.error = null
           this.delete(this.persons[index].ID)
         } catch (e) {
           this.error = e.response
         } finally {
+          this.persons.splice(index, 1)
           this.clearFiles()
           if (this.error == null) {
             this.$notification.success('Данные удалены', {
@@ -463,6 +463,8 @@ export default {
             })
           }
         }
+      } else {
+        this.persons.splice(index, 1)
       }
     },
   },

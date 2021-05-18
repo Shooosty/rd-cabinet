@@ -240,7 +240,7 @@ export default {
     }),
 
     ...mapState('file', {
-      contractFile: (state) => state.items[0].url,
+      contractFile: (state) => (state.items.length ? state.items[0].url : ''),
     }),
   },
 
@@ -264,6 +264,7 @@ export default {
     },
 
     async saveContract() {
+      this.clearFiles()
       try {
         this.error = null
         const file = this.$refs.contract._data.fileRecords[0].file
@@ -272,7 +273,6 @@ export default {
         this.error = e.response
       } finally {
         await this.clearFiles()
-
         if (this.error == null) {
           this.$notification.success(
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,

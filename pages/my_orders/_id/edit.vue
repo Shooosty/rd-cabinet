@@ -65,8 +65,7 @@ export default {
           label: 'В дизайн',
           btnClass: 'black',
           icon: 'magic',
-          isShow:
-            this.$auth.user.role === 'photographer' && this.persons.length,
+          isShow: this.$auth.user.role === 'photographer',
           govern: 'viewForPhotographer',
           click: async () => {
             try {

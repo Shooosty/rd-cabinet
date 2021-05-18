@@ -14,25 +14,25 @@
               <b-card-body title="Фотосессия">
                 <b-card-text class="p-2">
                   <div>
-                    <icon>
+                    <span>
                       <fa :icon="['fas', `calendar`]" />
-                    </icon>
+                    </span>
                     <span class="ml-2">
                       {{ parseDate(card.datetime) }}
                     </span>
                   </div>
                   <div class="mt-2">
-                    <icon>
+                    <span>
                       <fa :icon="['fas', `clock`]" />
-                    </icon>
+                    </span>
                     <span class="ml-2">
                       {{ parseTime(card.datetime) }}
                     </span>
                   </div>
                   <div class="mt-2">
-                    <icon>
+                    <span>
                       <fa :icon="['fas', `info-circle`]" />
-                    </icon>
+                    </span>
                     <span class="ml-2">
                       {{ localizeStatuses(card.status) }}
                     </span>
