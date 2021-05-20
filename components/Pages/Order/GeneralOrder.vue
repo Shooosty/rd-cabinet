@@ -107,7 +107,7 @@ export default {
   },
 
   computed: {
-    ...mapState('file', {
+    ...mapState('photo', {
       contractFile: (state) => state.items[0].url,
     }),
 
@@ -139,8 +139,8 @@ export default {
 
   methods: {
     ...mapActions({
-      updateContract: 'file/POST_FILES',
-      clearFiles: 'file/CLEAR_FILES',
+      updateContract: 'photo/POST_FILES',
+      clearPhotos: 'photo/CLEAR_FILES',
     }),
 
     dateTimeChange(value, type) {
@@ -164,7 +164,7 @@ export default {
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        await this.clearPhotos()
 
         if (this.error == null) {
           this.$notification.success(

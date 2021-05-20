@@ -6,7 +6,7 @@
     :persons.sync="persons"
     is-order-page
     is-edit-page
-    card-title="Заказ №1"
+    :card-title="orderNumber"
   />
 </template>
 
@@ -146,6 +146,10 @@ export default {
       getResource: 'order/itemById',
       persons: 'person/items',
     }),
+
+    orderNumber() {
+      return `Заказ № ${this.resource.number}`
+    },
 
     ...ResourceHelper,
   },

@@ -10,7 +10,7 @@
       :actions="actions"
       is-order-page
       is-edit-page
-      card-title="Заказ №1"
+      :card-title="orderNumber"
     />
   </div>
 </template>
@@ -143,6 +143,10 @@ export default {
       users: 'user/items',
       persons: 'person/items',
     }),
+
+    orderNumber() {
+      return `Заказ № ${this.resource.number}`
+    },
 
     ...ResourceHelper,
   },

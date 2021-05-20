@@ -8,6 +8,10 @@ export default {
     state.pagination = {}
   },
 
+  SET_PERSON_ID(state, data) {
+    state.personId = data
+  },
+
   CREATE_OR_UPDATE_ITEMS(state, data) {
     let isUpdate = false
     let items = []
@@ -28,7 +32,7 @@ export default {
     let isUpdate = false
     let items = []
     items = state.items.map((item) => {
-      if (item.url === data.url) {
+      if (item.ID === data.id) {
         item = Object.assign({}, data)
         isUpdate = true
       }

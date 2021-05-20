@@ -239,7 +239,7 @@ export default {
       users: 'user/items',
     }),
 
-    ...mapState('file', {
+    ...mapState('photo.js', {
       contractFile: (state) => (state.items.length ? state.items[0].url : ''),
     }),
   },
@@ -247,8 +247,8 @@ export default {
   methods: {
     ...mapActions({
       create: 'order/CREATE',
-      updateContract: 'file/POST_FILES',
-      clearFiles: 'file/CLEAR_FILES',
+      updateContract: 'photo.js/POST_FILES',
+      clearFiles: 'photo.js/CLEAR_FILES',
     }),
 
     deleteContract(fileRecord) {

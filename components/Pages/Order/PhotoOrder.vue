@@ -10,8 +10,9 @@
         <b-card-header
           v-b-toggle="`collapse-${index}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header p-1"
+          class="d-flex align-content-center justify-content-between collapse-header"
           role="tab"
+          @click="fetchPhotos(form.ID)"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
             <span :name="index" class="type-icon">
@@ -23,17 +24,6 @@
             </span>
             <span :name="index" class="ml-2">
               {{ form.surname }} {{ form.name }} {{ form.middleName }}
-            </span>
-            <span
-              v-if="form.middleName && form.type"
-              :name="index"
-              class="ml-3"
-              :class="{
-                green: form.photos.length > 0,
-                red: form.photos.length === 0,
-              }"
-            >
-              {{ form.photos.length }}
             </span>
           </div>
           <div class="d-flex justify-content-end">
@@ -80,7 +70,7 @@
                 </b-col>
               </b-row>
 
-              <div class="mt-2">
+              <div class="mt-3">
                 <multiselect
                   v-model="form.type"
                   :searchable="false"
@@ -93,13 +83,37 @@
                 />
               </div>
 
-              <div class="mt-3">
+              <div class="mt-5">
+                <div
+                  v-for="(image, i) in photos"
+                  :key="i"
+                  class="photo d-inline-block m-1"
+                >
+                  <b-img v-bind="imgProps" fluid :src="image.url" />
+                  <a
+                    :href="image.url"
+                    class="link"
+                    :download="image.name"
+                    target="_blank"
+                  >
+                    {{ image.name }}
+                  </a>
+                  <div class="delete-btn-container">
+                    <IconButton
+                      icon="trash"
+                      class="delete-btn"
+                      @click.native="deleteLoadedPhoto(image.ID)"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-5">
                 <VueFileAgent
                   ref="photos"
-                  v-model="photoFiles"
                   :multiple="true"
                   :deletable="true"
-                  :meta="false"
+                  :meta="true"
                   :average-color="false"
                   :help-text="'Выберите или перетащите фотографии'"
                   :error-text="{
@@ -110,22 +124,11 @@
                   :max-size="'10MB'"
                   :max-files="10"
                   :name="`photos-${index}`"
-                  @select="showButton"
                   @beforedelete="deletePhoto($event, index)"
                 />
-                <div
-                  v-if="isSavePhotosButtonShow"
-                  class="d-flex justify-content-center mt-2"
-                >
-                  <PrimaryButton
-                    label="Загрузить фотографии"
-                    :name="`button-${index}`"
-                    @click.native="savePhotos(index)"
-                  />
-                </div>
               </div>
 
-              <div class="mt-3">
+              <div class="mt-5">
                 <b-form-textarea
                   v-model="form.description"
                   placeholder="Поле для заметок.."
@@ -165,6 +168,7 @@
       :key="index"
       class="accordion"
       role="tablist"
+      @click="fetchPhotos(person.ID)"
     >
       <b-card no-body class="mb-1">
         <b-card-header
@@ -184,17 +188,17 @@
             <span class="ml-2" :name="index">
               {{ person.surname }} {{ person.name }} {{ person.middleName }}
             </span>
-            <span
-              class="ml-3"
-              :class="{
-                green: person.photos.length > 0,
-                red: person.photos.length === 0,
-              }"
-            >
-              <span>
-                {{ person.photos.length }}
-              </span>
-            </span>
+            <!--            <span-->
+            <!--              class="ml-3"-->
+            <!--              :class="{-->
+            <!--                green: photos.length > 0,-->
+            <!--                red: photos.length === 0,-->
+            <!--              }"-->
+            <!--            >-->
+            <!--              <span>-->
+            <!--                {{ photos.length }}-->
+            <!--              </span>-->
+            <!--            </span>-->
           </div>
           <div class="d-flex justify-content-end">
             <IconButton icon="chevron-down" class="collapse-button mr-3" />
@@ -209,30 +213,15 @@
             <b-card-text>
               <div>
                 <b-img
-                  v-for="(image, i) in person.photos"
+                  v-for="(image, i) in photos"
                   :key="i"
                   v-bind="imgProps"
                   class="d-inline-flex align-content-center p-1 m-1"
                   fluid
-                  :src="image"
+                  lazy
+                  :src="image.url"
                 />
               </div>
-
-              <!--              <div v-if="person.photos.length" class="mt-2">-->
-              <!--                <IconButton-->
-              <!--                  icon="download"-->
-              <!--                  @click.native="downloadFiles(index)"-->
-              <!--                />-->
-              <!--                <a-->
-              <!--                  v-for="(file, x) in person.photos"-->
-              <!--                  :key="x"-->
-              <!--                  href="#"-->
-              <!--                  :download="file"-->
-              <!--                >-->
-              <!--                  скачать-->
-              <!--                </a>-->
-              <!--              </div>-->
-
               <div v-if="person.description" class="mt-1">
                 <b> Заметка: </b>
                 <span> {{ person.description }} </span>
@@ -246,13 +235,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import IconButton from '~/components/Button/IconButton'
-import PrimaryButton from '~/components/Button/PrimaryButton'
 
 export default {
-  components: { PrimaryButton, IconButton, Multiselect },
+  components: { IconButton, Multiselect },
 
   props: {
     resource: {
@@ -277,42 +265,22 @@ export default {
         orderId: '',
         middleName: '',
         type: '',
-        photos: [],
         description: '',
       },
 
-      photoFiles: [],
-
       types: ['teacher', 'pupil'],
 
-      imgProps: { width: 75, height: 75 },
+      imgProps: { width: 88, height: 88 },
 
       error: null,
-      isSavePhotosButtonShow: false,
     }
   },
 
   computed: {
-    ...mapState('file', {
-      files: (state) => {
-        return state.items.map((r) => r.url)
-      },
+    ...mapGetters({
+      photos: 'photo/items',
+      newPersonId: 'person/personId',
     }),
-  },
-
-  mounted() {
-    this.persons.forEach((person) => {
-      if (person.photos.length) {
-        person.photos.forEach((photo) => {
-          this.photoFiles.push({
-            name: 'Загружен ранее',
-            type: 'image/*',
-            size: 1,
-            url: photo,
-          })
-        })
-      }
-    })
   },
 
   methods: {
@@ -320,16 +288,13 @@ export default {
       create: 'person/CREATE',
       update: 'person/UPDATE',
       delete: 'person/DELETE',
-      uploadPhotos: 'file/POST_FILES',
-      downloadPhotos: 'file/GET_FILES',
-      clearFiles: 'file/CLEAR_FILES',
+      uploadPhoto: 'photo/CREATE',
+      removePhoto: 'photo/DELETE',
+      clearPhotos: 'photo/CLEAR',
     }),
 
-    showButton() {
-      this.isSavePhotosButtonShow = true
-    },
-
     addCard() {
+      this.clearPhotos()
       this.persons.push(Object.assign({}, this.defaultFormModels))
     },
 
@@ -343,67 +308,56 @@ export default {
     },
 
     deletePhoto(fileRecord, index) {
+      this.$refs.photos[index].deleteFileRecord(fileRecord)
+    },
+
+    async deleteLoadedPhoto(id) {
       if (confirm('Подтверждаете удаление?')) {
-        this.$refs.photos[index].deleteFileRecord(fileRecord)
-        this.persons[index].photos.pop(fileRecord.url)
-        console.log(fileRecord)
-        console.log(this.persons[index].photos)
+        const index = this.photos.findIndex((p) => p.ID === id)
+        if (index > -1) {
+          this.photos.splice(index, 1)
+        }
+        await this.removePhoto(id)
       }
     },
 
-    downloadFiles(index) {
-      this.persons[index].photos.forEach((url) => {
-        const fileName = url.substr(47)
+    async savePhotos(index, personId) {
+      this.clearPhotos()
+      for (const file of this.$refs.photos[index].fileRecords) {
         try {
           this.error = null
-          this.downloadPhotos(fileName)
+          const newFile = { file: file.file, personId }
+          await this.uploadPhoto(Object.assign({}, newFile))
         } catch (e) {
-          this.error = e.response
+          this.error = e.response.data
         } finally {
-          this.isSavePhotosButtonShow = false
           if (this.error == null) {
-            this.$notification.success('Фотографии успешно скачены', {
-              timer: 2,
-              position: 'bottomCenter',
-            })
-          } else {
-            this.$notification.error('Не удалось скачать фотографии', {
-              timer: 3,
-              position: 'bottomCenter',
-            })
-          }
-        }
-      })
-    },
-
-    async savePhotos(index) {
-      this.clearFiles()
-      for (const file of this.$refs.photos[index].fileRecords) {
-        if (file) {
-          try {
-            this.error = null
-            await this.uploadPhotos(file.file)
-          } catch (e) {
-            this.error = e.response
-          } finally {
-            await this.clearFiles()
-            this.isSavePhotosButtonShow = false
-            if (this.error == null) {
-              this.$notification.success(
-                `${file.file.name} сохранено на сервере`,
-                {
-                  timer: 2,
-                  position: 'bottomCenter',
-                }
-              )
-            } else {
-              this.$notification.error('Не удалось сохранить фотографию', {
+            this.$notification.success(
+              `${file.file.name} сохранено на сервере`,
+              {
+                timer: 2,
+                position: 'bottomCenter',
+              }
+            )
+          } else if (
+            this.error.message ===
+            'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
+          ) {
+            this.$notification.error(
+              'Фотография с таким именем уже загружена',
+              {
                 timer: 3,
                 position: 'bottomCenter',
-              })
-            }
+              }
+            )
           }
         }
+      }
+    },
+
+    async fetchPhotos(id) {
+      if (id) {
+        await this.$store.dispatch('photo/GET_ALL_BY_PERSON_ID', id)
       }
     },
 
@@ -411,22 +365,21 @@ export default {
       try {
         this.error = null
         const newPerson = this.persons[index]
-
-        console.log(this.files)
-        console.log(this.persons[index].photos)
-
         newPerson.orderId = this.resource.ID
-        newPerson.photos = this.files.concat(this.persons[index].photos)
+        const personId = this.persons[index].ID
 
-        if (this.persons[index].ID) {
+        if (personId) {
+          await this.savePhotos(index, personId)
           await this.update(Object.assign({}, newPerson))
         } else {
           await this.create(Object.assign({}, newPerson))
+          this.savePhotos(index, this.newPersonId)
         }
       } catch (e) {
-        this.error = e.response
+        this.error = e.response.data
       } finally {
-        await this.clearFiles()
+        this.$refs.photos[index].fileRecords = []
+        await this.clearPhotos()
         if (this.error == null) {
           this.$notification.success('Данные сохранены', {
             timer: 3,
@@ -450,7 +403,7 @@ export default {
           this.error = e.response
         } finally {
           this.persons.splice(index, 1)
-          this.clearFiles()
+          this.clearPhotos()
           if (this.error == null) {
             this.$notification.success('Данные удалены', {
               timer: 3,
@@ -478,11 +431,59 @@ export default {
   cursor: pointer;
 }
 
+.card-body {
+  min-height: 180px;
+}
+
 .collapse-button {
   &:active {
     transition: transform 0.2s ease-out;
     transform: rotate(90deg);
   }
+}
+
+.photo {
+  height: 90px;
+  width: 90px;
+  position: relative;
+
+  &:hover {
+    div {
+      display: block;
+    }
+    img {
+      opacity: 35%;
+    }
+  }
+}
+
+.delete-btn-container {
+  display: none;
+  position: absolute;
+  bottom: 75%;
+  left: 75%;
+}
+
+.delete-btn {
+  font-size: $font-size-sm;
+  color: $danger-color;
+
+  &:hover {
+    color: $danger-color;
+    transform: rotate(10deg);
+  }
+}
+
+.link {
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -ms-line-clamp: 2;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-box-orient: vertical;
 }
 
 .type-icon {
