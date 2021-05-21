@@ -15,7 +15,7 @@ export default {
       switch (status) {
         case 'active':
           return 'Активный'
-        case 'close':
+        case 'closed':
           return 'Закрыт'
         case 'inDesign':
           return 'На дизайне'

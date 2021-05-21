@@ -42,6 +42,11 @@
                   <div>
                     <b-form-input
                       v-model="form.surname"
+                      :disabled="
+                        $isAllowed('viewForEmployerAndAdmins') ||
+                        form.changesAgree !== 'accepted'
+                      "
+                      required
                       type="text"
                       :name="`surname-${index}`"
                       placeholder="Фамилия"
@@ -52,6 +57,11 @@
                   <div>
                     <b-form-input
                       v-model="form.name"
+                      :disabled="
+                        $isAllowed('viewForEmployerAndAdmins') ||
+                        form.changesAgree !== 'accepted'
+                      "
+                      required
                       type="text"
                       :name="`name-${index}`"
                       placeholder="Имя"
@@ -62,6 +72,11 @@
                   <div>
                     <b-form-input
                       v-model="form.middleName"
+                      :disabled="
+                        $isAllowed('viewForEmployerAndAdmins') ||
+                        form.changesAgree !== 'accepted'
+                      "
+                      required
                       type="text"
                       :name="`middlename-${index}`"
                       placeholder="Отчество"
@@ -74,6 +89,10 @@
                 <multiselect
                   v-model="form.type"
                   :searchable="false"
+                  :disabled="
+                    $isAllowed('viewForEmployerAndAdmins') ||
+                    form.changesAgree !== 'accepted'
+                  "
                   selected-label="выбран"
                   deselect-label="убрать"
                   select-label="выбрать"
@@ -100,6 +119,7 @@
                   </a>
                   <div class="delete-btn-container">
                     <IconButton
+                      v-if="$isAllowed('viewForEmployerAndAdmins')"
                       icon="trash"
                       class="delete-btn"
                       @click.native="deleteLoadedPhoto(image.ID)"
@@ -108,7 +128,24 @@
                 </div>
               </div>
 
-              <div class="mt-5">
+              <div v-show="$isAllowed('viewForUser')" class="mt-3">
+                <b-form-checkbox
+                  v-model="form.changesAgree"
+                  :name="`checkbox-${index}`"
+                  value="accepted"
+                  unchecked-value="not_accepted"
+                >
+                  Я хочу внести изменения и согласен с условиями договора
+                </b-form-checkbox>
+              </div>
+
+              <div
+                v-show="
+                  $isAllowed('viewForEmployerAndAdmins') ||
+                  form.changesAgree === 'accepted'
+                "
+                class="mt-5"
+              >
                 <VueFileAgent
                   ref="photos"
                   :multiple="true"
@@ -140,6 +177,7 @@
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex justify-content-start mt-3">
                   <IconButton
+                    v-if="form.changesAgree === 'accepted'"
                     v-b-toggle="`collapse-${index}`"
                     icon="save"
                     @click.native="savePerson(index)"
@@ -147,6 +185,7 @@
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                   <IconButton
+                    v-if="$isAllowed('viewForEmployerAndAdmins')"
                     icon="trash"
                     @click.native="removePerson(index)"
                   />
@@ -157,7 +196,10 @@
         </b-collapse>
       </b-card>
     </div>
-    <div class="d-flex justify-content-center mt-3">
+    <div
+      v-if="$isAllowed('viewForEmployerAndAdmins')"
+      class="d-flex justify-content-center mt-3"
+    >
       <IconButton icon="plus" @click.native="addCard" />
     </div>
   </div>
@@ -238,9 +280,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import IconButton from '~/components/Button/IconButton'
+import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
   components: { IconButton, Multiselect },
+
+  perimeters: [ViewPerimeter],
 
   props: {
     resource: {
@@ -266,6 +311,7 @@ export default {
         middleName: '',
         type: '',
         description: '',
+        changesAgree: 'not_accepted',
       },
 
       types: ['teacher', 'pupil'],
@@ -356,6 +402,7 @@ export default {
     },
 
     async fetchPhotos(id) {
+      this.clearPhotos()
       if (id) {
         await this.$store.dispatch('photo/GET_ALL_BY_PERSON_ID', id)
       }

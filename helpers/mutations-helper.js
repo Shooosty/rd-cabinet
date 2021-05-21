@@ -47,6 +47,25 @@ export default {
     state.items.push(data)
   },
 
+  CREATE_OR_UPDATE_CONTRACTS(state, data) {
+    let isUpdate = false
+    let items = []
+    items = state.items.map((item) => {
+      if (item.url === data) {
+        item = Object.assign({}, data)
+        isUpdate = true
+      }
+      return item
+    })
+
+    if (isUpdate) {
+      state.items = items
+      return
+    }
+
+    state.items.push(data)
+  },
+
   SET_PAGINATION_META(state, headers) {
     state.pagination = {
       page: parseInt(headers['x-page']),

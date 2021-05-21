@@ -102,12 +102,11 @@ export default {
   data() {
     return {
       open: false,
-      photoContract: {},
     }
   },
 
   computed: {
-    ...mapState('photo', {
+    ...mapState('contract', {
       contractFile: (state) => state.items[0].url,
     }),
 
@@ -125,7 +124,7 @@ export default {
           return 'Новый'
         case 'active':
           return 'В работе'
-        case 'close':
+        case 'closed':
           return 'Закрыт'
         case 'inDesign':
           return 'У дизайнера'
@@ -139,8 +138,8 @@ export default {
 
   methods: {
     ...mapActions({
-      updateContract: 'photo/POST_FILES',
-      clearPhotos: 'photo/CLEAR_FILES',
+      uploadContract: 'contract/CREATE',
+      clearContract: 'contract/CLEAR',
     }),
 
     dateTimeChange(value, type) {
@@ -159,12 +158,12 @@ export default {
       try {
         this.error = null
         const file = this.$refs.contract._data.fileRecords[0].file
-        await this.updateContract(file)
+        await this.uploadContract(file)
         this.resource.contract = this.contractFile
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearPhotos()
+        await this.clearContract()
 
         if (this.error == null) {
           this.$notification.success(
