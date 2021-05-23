@@ -70,7 +70,6 @@
           v-if="resource.contract !== ''"
           class="contract ml-1"
           :href="resource.contract"
-          target="_blank"
         >
           <fa :icon="['fas', 'file-pdf']" />
           <span> Договор </span>
