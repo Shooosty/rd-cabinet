@@ -43,8 +43,7 @@
                     <b-form-input
                       v-model="form.surname"
                       :disabled="
-                        $isAllowed('viewForEmployerAndAdmins') ||
-                        form.changesAgree !== 'accepted'
+                        userRole === 'user' && form.changesAgree !== 'accepted'
                       "
                       required
                       type="text"
@@ -58,8 +57,7 @@
                     <b-form-input
                       v-model="form.name"
                       :disabled="
-                        $isAllowed('viewForEmployerAndAdmins') ||
-                        form.changesAgree !== 'accepted'
+                        userRole === 'user' && form.changesAgree !== 'accepted'
                       "
                       required
                       type="text"
@@ -73,8 +71,7 @@
                     <b-form-input
                       v-model="form.middleName"
                       :disabled="
-                        $isAllowed('viewForEmployerAndAdmins') ||
-                        form.changesAgree !== 'accepted'
+                        userRole === 'user' && form.changesAgree !== 'accepted'
                       "
                       required
                       type="text"
@@ -90,8 +87,7 @@
                   v-model="form.type"
                   :searchable="false"
                   :disabled="
-                    $isAllowed('viewForEmployerAndAdmins') ||
-                    form.changesAgree !== 'accepted'
+                    userRole === 'user' && form.changesAgree !== 'accepted'
                   "
                   selected-label="выбран"
                   deselect-label="убрать"
@@ -109,14 +105,15 @@
                   class="photo d-inline-block m-1"
                 >
                   <b-img v-bind="imgProps" fluid :src="image.url" />
-                  <a
-                    :href="image.url"
-                    class="link"
-                    :download="image.name"
-                    target="_blank"
-                  >
-                    {{ image.name }}
-                  </a>
+                  <div class="download-btn-container">
+                    <IconButton
+                      v-if="$isAllowed('viewForEmployerAndAdmins')"
+                      icon="download"
+                      class="download-btn"
+                      :href="image.url"
+                      download
+                    />
+                  </div>
                   <div class="delete-btn-container">
                     <IconButton
                       v-if="$isAllowed('viewForEmployerAndAdmins')"
@@ -177,7 +174,9 @@
               <div class="d-flex align-items-center justify-content-between">
                 <div class="d-flex justify-content-start mt-3">
                   <IconButton
-                    v-if="form.changesAgree === 'accepted'"
+                    v-if="
+                      userRole !== 'user' || form.changesAgree === 'accepted'
+                    "
                     v-b-toggle="`collapse-${index}`"
                     icon="save"
                     @click.native="savePerson(index)"
@@ -210,7 +209,6 @@
       :key="index"
       class="accordion"
       role="tablist"
-      @click="fetchPhotos(person.ID)"
     >
       <b-card no-body class="mb-1">
         <b-card-header
@@ -218,6 +216,7 @@
           header-tag="header"
           class="d-flex align-content-center justify-content-between collapse-header p-1"
           role="tab"
+          @click="fetchPhotos(person.ID)"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
             <span :name="index" class="type-icon">
@@ -327,6 +326,10 @@ export default {
       photos: 'photo/items',
       newPersonId: 'person/personId',
     }),
+
+    userRole() {
+      return this.$auth.user.role
+    },
   },
 
   methods: {
@@ -511,12 +514,29 @@ export default {
   left: 75%;
 }
 
+.download-btn-container {
+  display: none;
+  position: absolute;
+  bottom: 75%;
+  left: 45%;
+}
+
 .delete-btn {
   font-size: $font-size-sm;
   color: $danger-color;
 
   &:hover {
     color: $danger-color;
+    transform: rotate(10deg);
+  }
+}
+
+.download-btn {
+  font-size: $font-size-sm;
+  color: $success-color;
+
+  &:hover {
+    color: $success-color;
     transform: rotate(10deg);
   }
 }

@@ -12,7 +12,7 @@ export const mutations = { ...commonMutations }
 export const actions = {
   async GET_ALL_BY_PERSON_ID({ commit }, objectId) {
     commit('CLEAR')
-    const response = await this.$axios.get(`/persons/${objectId}/photos`)
+    const response = await this.$axios.get(`api/persons/${objectId}/photos`)
     commit('SET_ITEMS', response.data.data)
   },
 
@@ -20,7 +20,7 @@ export const actions = {
     const formData = new FormData()
     formData.append('file', file.file)
     this.$axios
-      .post(`/photos/${file.personId}`, formData, {
+      .post(`api/photos/${file.personId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -31,7 +31,7 @@ export const actions = {
   },
 
   GET({ commit }, objectId) {
-    return this.$axios.$get(`/photos/${objectId}`).then((response) => {
+    return this.$axios.$get(`api/photos/${objectId}`).then((response) => {
       commit('CREATE_OR_UPDATE_PHOTOS', response.data)
     })
   },
@@ -41,7 +41,7 @@ export const actions = {
   },
 
   DELETE({ commit }, id) {
-    return this.$axios.$delete(`/photos/${id}`).then(() => {
+    return this.$axios.$delete(`api/photos/${id}`).then(() => {
       commit('DELETE')
     })
   },

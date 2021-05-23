@@ -14,7 +14,7 @@ export const actions = {
     const formData = new FormData()
     formData.append('file', file)
     this.$axios
-      .post(`/contracts/`, formData, {
+      .post(`api/contracts/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
