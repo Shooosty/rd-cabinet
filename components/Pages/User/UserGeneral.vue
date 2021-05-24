@@ -9,6 +9,10 @@
         <b> E-mail: </b>
         <span class="ml-1"> {{ resource.email }} </span>
       </b-list-group-item>
+      <b-list-group-item v-show="$isAllowed('viewForEmployerAndAdmins')">
+        <b> Роль: </b>
+        <span> {{ localizeRoles(resource.role) }} </span>
+      </b-list-group-item>
       <b-list-group-item>
         <b> Телефон: </b>
         <span class="ml-1"> {{ resource.phone }} </span>
@@ -31,7 +35,13 @@
 </template>
 
 <script>
+import ViewPerimeter from '~/perimeters/viewPerimeter'
+import LocalizeMixin from '~/mixins/localize-mixin'
+
 export default {
+  perimeters: [ViewPerimeter],
+  mixins: [LocalizeMixin],
+
   props: {
     resource: {
       type: Object,
