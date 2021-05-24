@@ -22,6 +22,7 @@
               v-model="order.datetime"
               v-model.trim="$v.order.datetime.$model"
               type="datetime"
+              :disabled-date="datePickerDisabledRule"
               value-type="format"
               :open.sync="open"
               format="YYYY-MM-DDTHH:mm"
@@ -118,7 +119,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
 import Multiselect from 'vue-multiselect'
-import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+import { maxLength, minLength, alpha, required } from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
@@ -138,12 +139,12 @@ export default {
     order: {
       address: {
         required,
+        alpha,
         minLength: minLength(8),
         maxLength: maxLength(64),
       },
       datetime: {
         required,
-        // доработать
       },
       userId: {
         required,
@@ -255,6 +256,13 @@ export default {
       if (confirm('Подтверждаете удаление?')) {
         this.$refs.contract.deleteFileRecord(fileRecord)
       }
+    },
+
+    datePickerDisabledRule(date) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      return date < today
     },
 
     dateTimeChange(value, type) {

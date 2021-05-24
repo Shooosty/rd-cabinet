@@ -16,6 +16,7 @@
           v-model="resource.datetime"
           type="datetime"
           value-type="format"
+          :disabled-date="datePickerDisabledRule"
           :open.sync="open"
           format="YYYY-MM-DDTHH:mm"
           placeholder="Выберите дату и время"
@@ -145,6 +146,13 @@ export default {
       if (type === 'minute') {
         this.open = false
       }
+    },
+
+    datePickerDisabledRule(date) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      return date < today
     },
 
     deleteContract(fileRecord) {
