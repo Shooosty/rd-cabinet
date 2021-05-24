@@ -35,7 +35,7 @@ export const actions = {
   },
 
   SIGN_UP_EMPLOYEE({ commit }, object) {
-    return this.$axios.post('api/auth/sign-up-employee', {
+    return this.$axios.post('api/users/sign-up-employee', {
       name: object.name,
       email: object.email,
       role: object.role,

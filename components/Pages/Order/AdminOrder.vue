@@ -136,7 +136,7 @@ export default {
   data() {
     return {
       owners: ['photographer', 'manager', 'designer'],
-      statuses: ['active', 'close', 'inDesign', 'inPrint'],
+      statuses: ['active', 'closed', 'inDesign', 'inPrint'],
     }
   },
 
