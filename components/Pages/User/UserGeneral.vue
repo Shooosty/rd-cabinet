@@ -23,12 +23,53 @@
   <div v-else class="mt-3 card-body bg-white">
     <b-list-group>
       <b-list-group-item>
-        <b> Имя: </b>
-        <b-form-input v-model="resource.name"></b-form-input>
+        <div class="form-control-email d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">имя</div>
+              <div class="d-flex">
+                <input
+                  v-model="resource.name"
+                  class="form-control width-email"
+                  required
+                  type="text"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'user']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
       </b-list-group-item>
       <b-list-group-item>
-        <b> Телефон: </b>
-        <b-form-input v-model="resource.phone"></b-form-input>
+        <div class="form-control-email mt-3 d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">телефон</div>
+              <div class="d-flex">
+                <span class="d-flex align-items-center">
+                  <span>+7 </span>
+                </span>
+                <input
+                  v-model="resource.phone"
+                  v-phone
+                  placeholder="(555)555-55-55"
+                  class="form-control width-email"
+                  autocomplete="tel"
+                  maxlength="10"
+                  required
+                  type="tel"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'phone']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -56,6 +97,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/stylesheets/auth-page';
+
 .card-body {
   border-radius: 5px;
 }

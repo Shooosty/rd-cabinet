@@ -99,28 +99,32 @@
               </div>
 
               <div class="mt-5">
-                <div
-                  v-for="(image, i) in photos"
-                  :key="i"
-                  class="photo d-inline-block m-1"
-                >
-                  <b-img v-bind="imgProps" fluid :src="image.url" />
-                  <div class="download-btn-container">
-                    <IconButton
-                      v-if="$isAllowed('viewForEmployerAndAdmins')"
-                      icon="download"
-                      class="download-btn"
-                      :href="image.url"
-                      download
-                    />
-                  </div>
-                  <div class="delete-btn-container">
-                    <IconButton
-                      v-if="$isAllowed('viewForEmployerAndAdmins')"
-                      icon="trash"
-                      class="delete-btn"
-                      @click.native="deleteLoadedPhoto(image.ID)"
-                    />
+                <div class="gallery">
+                  <div
+                    v-for="image in photos"
+                    :key="image.id"
+                    class="gallery-panel"
+                  >
+                    <div class="photo">
+                      <b-img class="image" :src="image.url" />
+                      <div class="download-btn-container">
+                        <IconButton
+                          v-if="$isAllowed('viewForEmployerAndAdmins')"
+                          icon="download"
+                          class="download-btn"
+                          :href="image.url"
+                          download
+                        />
+                      </div>
+                      <div class="delete-btn-container">
+                        <IconButton
+                          v-if="$isAllowed('viewForEmployerAndAdmins')"
+                          icon="trash"
+                          class="delete-btn"
+                          @click.native="deleteLoadedPhoto(image.ID)"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -252,16 +256,14 @@
         >
           <b-card-body>
             <b-card-text>
-              <div>
-                <b-img
-                  v-for="(image, i) in photos"
-                  :key="i"
-                  v-bind="imgProps"
-                  class="d-inline-flex align-content-center p-1 m-1"
-                  fluid
-                  lazy
-                  :src="image.url"
-                />
+              <div class="gallery">
+                <div
+                  v-for="image in photos"
+                  :key="image.id"
+                  class="gallery-panel"
+                >
+                  <b-img class="image" :src="image.url" />
+                </div>
               </div>
               <div v-if="person.description" class="mt-1">
                 <b> Заметка: </b>
@@ -314,8 +316,6 @@ export default {
       },
 
       types: ['teacher', 'pupil'],
-
-      imgProps: { width: 88, height: 88 },
 
       error: null,
     }
@@ -492,37 +492,22 @@ export default {
   }
 }
 
-.photo {
-  height: 90px;
-  width: 90px;
-  position: relative;
-
-  &:hover {
-    div {
-      display: block;
-    }
-    img {
-      opacity: 35%;
-    }
-  }
-}
-
 .delete-btn-container {
   display: none;
   position: absolute;
-  bottom: 75%;
-  left: 75%;
+  bottom: 50%;
+  left: 55%;
 }
 
 .download-btn-container {
   display: none;
   position: absolute;
-  bottom: 75%;
+  bottom: 50%;
   left: 45%;
 }
 
 .delete-btn {
-  font-size: $font-size-sm;
+  font-size: $font-size-md;
   color: $danger-color;
 
   &:hover {
@@ -532,7 +517,7 @@ export default {
 }
 
 .download-btn {
-  font-size: $font-size-sm;
+  font-size: $font-size-md;
   color: $success-color;
 
   &:hover {
@@ -567,5 +552,34 @@ export default {
 
 .collapsed > .collapse-button {
   transform: rotate(90deg);
+}
+
+.photo {
+  position: relative;
+
+  &:hover {
+    div {
+      display: block;
+    }
+    img {
+      opacity: 35%;
+    }
+  }
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-gap: 1rem;
+  max-width: 80rem;
+  margin: 5rem auto;
+  padding: 0 5rem;
+}
+
+.gallery-panel .image {
+  width: 100%;
+  height: 22vw;
+  object-fit: cover;
+  border-radius: 0.75rem;
 }
 </style>
