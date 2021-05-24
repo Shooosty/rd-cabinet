@@ -6,8 +6,9 @@
           <b-row no-gutters>
             <b-col md="6">
               <b-card-img
-                src="https://picsum.photos/400/400/?image=33"
-                class="rounded-0"
+                src="~@/assets/images/cover.jpg"
+                fluid
+                class="rounded-0 h-100"
               ></b-card-img>
             </b-col>
             <b-col md="6">
