@@ -132,7 +132,7 @@
                           v-if="$isAllowed('viewForEmployerAndAdmins')"
                           icon="trash"
                           class="delete-btn"
-                          @click.native="deleteLoadedPhoto(image.ID)"
+                          @click.native="deleteLoadedPhoto(image.ID, index)"
                         />
                       </div>
                     </div>
@@ -374,11 +374,11 @@ export default {
       this.$refs.photos[index].deleteFileRecord(fileRecord)
     },
 
-    async deleteLoadedPhoto(id) {
+    async deleteLoadedPhoto(id, index) {
       if (confirm('Подтверждаете удаление?')) {
-        const index = this.photos.findIndex((p) => p.ID === id)
-        if (index > -1) {
-          this.photos.splice(index, 1)
+        const i = this.photos.findIndex((p) => p.ID === id)
+        if (i > -1) {
+          this.photos.splice(i, 1)
         }
         const newPerson = this.persons[index]
         newPerson.photosCount = this.persons[index].photosCount - 1
@@ -398,6 +398,7 @@ export default {
           this.error = e.response.data
         } finally {
           if (this.error == null) {
+            this.$refs.photos[index].fileRecord = []
             this.$notification.success(
               `${file.file.name} сохранено на сервере`,
               {
