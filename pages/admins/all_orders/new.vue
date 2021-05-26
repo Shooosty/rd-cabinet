@@ -119,7 +119,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
 import Multiselect from 'vue-multiselect'
-import { maxLength, minLength, alpha, required } from 'vuelidate/lib/validators'
+import { maxLength, minLength, required } from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'

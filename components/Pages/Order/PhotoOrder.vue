@@ -594,7 +594,7 @@ export default {
       display: block;
     }
     img {
-      opacity: 15%;
+      opacity: 65%;
     }
   }
 }
