@@ -145,11 +145,18 @@ export default {
 
                 await this.changePassword(Object.assign({}, updatedUser))
               } catch (e) {
-                this.error = e.response
+                this.error = e.response.data
               } finally {
                 if (this.error == null) {
                   setTimeout(() => this.$router.push({ path: '/' }), 2000)
                   this.$notification.success('Пароль успешно изменен', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                }
+
+                if (this.error && this.error.message === 'record not found') {
+                  this.$notification.error('Неправильный пароль', {
                     timer: 3,
                     position: 'bottomCenter',
                   })

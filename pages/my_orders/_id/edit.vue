@@ -68,31 +68,45 @@ export default {
           isShow: this.$auth.user.role === 'photographer',
           govern: 'viewForPhotographer',
           click: async () => {
-            try {
-              this.error = null
-              const updatedOrder = this.resource
-              updatedOrder.owner = 'designer'
-              updatedOrder.status = 'inDesign'
+            if (
+              this.persons.map((p) => {
+                return p.photosCount !== 0
+              })
+            ) {
+              try {
+                this.error = null
+                const updatedOrder = this.resource
+                updatedOrder.owner = 'designer'
+                updatedOrder.status = 'inDesign'
 
-              await this.update(Object.assign({}, updatedOrder))
-            } catch (e) {
-              this.error = e.response.data
-            } finally {
-              if (this.error == null) {
-                setTimeout(
-                  () => this.$router.push({ path: '/my_orders' }),
-                  2000
-                )
-                this.$notification.success('Заказ передан дизайнеру', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
-              } else {
-                this.$notification.error('Не удалось передать заказ', {
-                  timer: 3,
-                  position: 'bottomCenter',
-                })
+                await this.update(Object.assign({}, updatedOrder))
+              } catch (e) {
+                this.error = e.response.data
+              } finally {
+                if (this.error == null) {
+                  setTimeout(
+                    () => this.$router.push({ path: '/my_orders' }),
+                    2000
+                  )
+                  this.$notification.success('Заказ передан дизайнеру', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                } else {
+                  this.$notification.error('Не удалось передать заказ', {
+                    timer: 3,
+                    position: 'bottomCenter',
+                  })
+                }
               }
+            } else {
+              this.$notification.error(
+                'Нельзя передать заказ с моделями без фото',
+                {
+                  timer: 3,
+                  position: 'bottomCenter',
+                }
+              )
             }
           },
         },

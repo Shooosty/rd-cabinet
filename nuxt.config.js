@@ -112,7 +112,7 @@ export default {
             method: 'post',
             propertyName: 'token',
           },
-          logout: false,
+          logout: true,
         },
         autoFetchUser: false,
         tokenType: false,

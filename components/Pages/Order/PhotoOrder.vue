@@ -25,6 +25,17 @@
             <span :name="index" class="ml-2">
               {{ form.surname }} {{ form.name }} {{ form.middleName }}
             </span>
+            <span
+              class="ml-3"
+              :class="{
+                green: form.photosCount > 0,
+                red: form.photosCount === 0,
+              }"
+            >
+              <span>
+                {{ form.photosCount }}
+              </span>
+            </span>
           </div>
           <div class="d-flex justify-content-end">
             <IconButton icon="chevron-down" class="collapse-button mr-3" />
@@ -190,6 +201,7 @@
                   <IconButton
                     v-if="$isAllowed('viewForEmployerAndAdmins')"
                     icon="trash"
+                    class="remove-person-btn"
                     @click.native="removePerson(index)"
                   />
                 </div>
@@ -233,17 +245,17 @@
             <span class="ml-2" :name="index">
               {{ person.surname }} {{ person.name }} {{ person.middleName }}
             </span>
-            <!--            <span-->
-            <!--              class="ml-3"-->
-            <!--              :class="{-->
-            <!--                green: photos.length > 0,-->
-            <!--                red: photos.length === 0,-->
-            <!--              }"-->
-            <!--            >-->
-            <!--              <span>-->
-            <!--                {{ photos.length }}-->
-            <!--              </span>-->
-            <!--            </span>-->
+            <span
+              class="ml-3"
+              :class="{
+                green: person.photosCount > 0,
+                red: person.photosCount === 0,
+              }"
+            >
+              <span>
+                {{ person.photosCount }}
+              </span>
+            </span>
           </div>
           <div class="d-flex justify-content-end">
             <IconButton icon="chevron-down" class="collapse-button mr-3" />
@@ -297,10 +309,10 @@ export default {
       type: Boolean,
       default: false,
     },
-    persons: {
-      type: [Array],
-      default: () => [],
-    },
+  },
+
+  async fetch() {
+    await this.fetchPersons()
   },
 
   data() {
@@ -312,6 +324,7 @@ export default {
         middleName: '',
         type: '',
         description: '',
+        photosCount: null,
         changesAgree: 'not_accepted',
       },
 
@@ -324,6 +337,7 @@ export default {
   computed: {
     ...mapGetters({
       photos: 'photo/items',
+      persons: 'person/items',
       newPersonId: 'person/personId',
     }),
 
@@ -366,6 +380,9 @@ export default {
         if (index > -1) {
           this.photos.splice(index, 1)
         }
+        const newPerson = this.persons[index]
+        newPerson.photosCount = this.persons[index].photosCount - 1
+        await this.update(Object.assign({}, newPerson))
         await this.removePhoto(id)
       }
     },
@@ -411,6 +428,13 @@ export default {
       }
     },
 
+    async fetchPersons() {
+      await this.$store.dispatch(
+        'person/GET_ALL_BY_ORDER_ID',
+        this.$route.params.id
+      )
+    },
+
     async savePerson(index) {
       try {
         this.error = null
@@ -420,10 +444,16 @@ export default {
 
         if (personId) {
           await this.savePhotos(index, personId)
+          newPerson.photosCount =
+            this.$refs.photos[index].fileRecords.length +
+            this.persons[index].photosCount
           await this.update(Object.assign({}, newPerson))
+          await this.fetchPersons()
         } else {
+          newPerson.photosCount = this.$refs.photos[index].fileRecords.length
           await this.create(Object.assign({}, newPerson))
           this.savePhotos(index, this.newPersonId)
+          await this.fetchPersons()
         }
       } catch (e) {
         this.error = e.response.data
@@ -445,29 +475,31 @@ export default {
     },
 
     removePerson(index) {
-      if (this.persons.length) {
-        try {
-          this.error = null
-          this.delete(this.persons[index].ID)
-        } catch (e) {
-          this.error = e.response
-        } finally {
-          this.persons.splice(index, 1)
-          this.clearPhotos()
-          if (this.error == null) {
-            this.$notification.success('Данные удалены', {
-              timer: 3,
-              position: 'bottomCenter',
-            })
-          } else {
-            this.$notification.error('Не удалось удалить данные', {
-              timer: 3,
-              position: 'bottomCenter',
-            })
+      if (confirm('Подтверждаете удаление?')) {
+        if (this.persons.length) {
+          try {
+            this.error = null
+            this.delete(this.persons[index].ID)
+          } catch (e) {
+            this.error = e.response
+          } finally {
+            this.persons.splice(index, 1)
+            this.clearPhotos()
+            if (this.error == null) {
+              this.$notification.success('Данные удалены', {
+                timer: 3,
+                position: 'bottomCenter',
+              })
+            } else {
+              this.$notification.error('Не удалось удалить данные', {
+                timer: 3,
+                position: 'bottomCenter',
+              })
+            }
           }
+        } else {
+          this.persons.splice(index, 1)
         }
-      } else {
-        this.persons.splice(index, 1)
       }
     },
   },
@@ -564,6 +596,12 @@ export default {
     img {
       opacity: 35%;
     }
+  }
+}
+
+.remove-person-btn {
+  &:hover {
+    color: $danger-color;
   }
 }
 
