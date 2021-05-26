@@ -139,7 +139,6 @@ export default {
     order: {
       address: {
         required,
-        alpha,
         minLength: minLength(8),
         maxLength: maxLength(64),
       },
