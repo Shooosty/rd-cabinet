@@ -398,7 +398,6 @@ export default {
           this.error = e.response.data
         } finally {
           if (this.error == null) {
-            this.$refs.photos[index].fileRecord = []
             this.$notification.success(
               `${file.file.name} сохранено на сервере`,
               {
