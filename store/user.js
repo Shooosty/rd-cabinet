@@ -25,7 +25,7 @@ export const actions = {
   },
 
   SIGN_UP({ commit }, object) {
-    return this.$axios.post('api/auth/sign-up', {
+    return this.$axios.post('auth/sign-up', {
       name: object.name,
       email: object.email,
       role: object.role,
