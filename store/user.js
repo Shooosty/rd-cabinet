@@ -70,10 +70,7 @@ export const actions = {
 
   UPDATE({ commit }, object) {
     return this.$axios
-      .$put(`api/users/${object.ID}`, {
-        name: object.name,
-        phone: `+7${object.phone}`,
-      })
+      .$put(`api/users/${object.ID}`, object)
       .then((response) => {
         commit('CREATE_OR_UPDATE_ITEMS', response)
       })

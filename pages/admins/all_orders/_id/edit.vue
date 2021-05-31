@@ -81,12 +81,12 @@ export default {
                 )
                 this.$notification.success('Данные заказа обновлены', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               } else {
                 this.$notification.error('Не удалось обновить данные', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               }
             }
@@ -115,12 +115,12 @@ export default {
                   )
                   this.$notification.success('Заказ успешно удален', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось удалить заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }

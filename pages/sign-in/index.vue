@@ -102,7 +102,7 @@ export default {
         if (this.error && this.error.message === 'record not found') {
           this.$notification.error('Неправильный email или пароль', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         }
       }

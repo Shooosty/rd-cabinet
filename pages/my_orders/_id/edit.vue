@@ -50,12 +50,12 @@ export default {
                 )
                 this.$notification.success('Данные заказа обновлены', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               } else {
                 this.$notification.error('Не удалось обновить данные', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               }
             }
@@ -90,12 +90,12 @@ export default {
                   )
                   this.$notification.success('Заказ передан дизайнеру', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось передать заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }
@@ -104,7 +104,7 @@ export default {
                 'Нельзя передать заказ с моделями без фото',
                 {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 }
               )
             }

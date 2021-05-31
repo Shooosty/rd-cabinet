@@ -158,7 +158,7 @@ export default {
             if (this.employee.role !== 'superadmin' && this.$v.$invalid) {
               this.$notification.error('Не удалось создать сотрудника', {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               })
             } else {
               try {
@@ -174,7 +174,7 @@ export default {
                   )
                   this.$notification.success('Создан сотрудник', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else if (
                   this.error.message ===
@@ -184,7 +184,7 @@ export default {
                     'Сотрудник с такой почтой уже зарегистрирован',
                     {
                       timer: 3,
-                      position: 'bottomCenter',
+                      position: 'topRight',
                     }
                   )
                 }

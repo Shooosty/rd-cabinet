@@ -31,6 +31,19 @@
             />
           </b-col>
           <b-col xl="4" lg="4" md="12" sm="12" class="p-3">
+            <label for="number">Укажите номер договора</label>
+            <b-form-input
+              id="number"
+              v-model="order.number"
+              v-model.trim="$v.order.number.$model"
+              type="number"
+              placeholder="Введите номер"
+            />
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
             <label for="contract">Загрузите копию договора</label>
             <VueFileAgent
               ref="contract"
@@ -52,8 +65,9 @@
             />
           </b-col>
         </b-row>
+
         <b-row>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
             <div>
               <label>Выберите клиента</label>
               <multiselect
@@ -69,7 +83,7 @@
               />
             </div>
           </b-col>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
             <div>
               <label>Выберите фотографа</label>
               <multiselect
@@ -80,22 +94,6 @@
                 deselect-label="убрать"
                 select-label="выбрать"
                 placeholder="фотограф"
-                label="email"
-                track-by="email"
-              />
-            </div>
-          </b-col>
-          <b-col xl="4" lg="4" md="12" sm="12" class="p-3">
-            <div>
-              <label>Выберите дизайнера</label>
-              <multiselect
-                v-model="order.designerId"
-                v-model.trim="$v.order.designerId.$model"
-                :options="designers"
-                selected-label="выбран"
-                deselect-label="убрать"
-                select-label="выбрать"
-                placeholder="дизайнер"
                 label="email"
                 track-by="email"
               />
@@ -119,7 +117,12 @@
 <script>
 import { mapActions, mapGetters, mapState } from 'vuex'
 import Multiselect from 'vue-multiselect'
-import { maxLength, minLength, required } from 'vuelidate/lib/validators'
+import {
+  maxLength,
+  minLength,
+  numeric,
+  required,
+} from 'vuelidate/lib/validators'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
@@ -151,8 +154,9 @@ export default {
       photographerId: {
         required,
       },
-      designerId: {
+      number: {
         required,
+        numeric,
       },
       description: {
         maxLength: maxLength(256),
@@ -169,6 +173,7 @@ export default {
       order: {
         owner: 'photographer',
         status: 'new',
+        number: '',
         photographerId: '',
         designerId: '',
         contract: '',
@@ -189,13 +194,12 @@ export default {
             if (this.$v.$invalid) {
               this.$notification.error('Введенные данные некорректны', {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               })
             } else {
               try {
                 this.error = null
                 const newOrder = this.order
-                newOrder.designerId = newOrder.designerId.ID
                 newOrder.photographerId = newOrder.photographerId.ID
                 newOrder.userId = newOrder.userId.ID
                 newOrder.contract = this.contractFile
@@ -212,12 +216,12 @@ export default {
                   )
                   this.$notification.success('Создан новый заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось создать заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }
@@ -239,7 +243,7 @@ export default {
       users: 'user/items',
     }),
 
-    ...mapState('photo.js', {
+    ...mapState('photo', {
       contractFile: (state) => (state.items.length ? state.items[0].url : ''),
     }),
   },
@@ -247,8 +251,8 @@ export default {
   methods: {
     ...mapActions({
       create: 'order/CREATE',
-      updateContract: 'photo.js/POST_FILES',
-      clearFiles: 'photo.js/CLEAR_FILES',
+      updateContract: 'photo/POST_FILES',
+      clearFiles: 'photo/CLEAR_FILES',
     }),
 
     deleteContract(fileRecord) {
@@ -285,13 +289,13 @@ export default {
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
-              position: 'bottomCenter',
+              position: 'topRight',
             }
           )
         } else {
           this.$notification.error('Не удалось сохранить договор', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         }
       }
@@ -307,10 +311,6 @@ export default {
 <style scoped lang="scss">
 .card-body {
   border-radius: 5px;
-}
-
-.custom-file-input:lang(ru) ~ .custom-file-label::after {
-  content: 'Загрузить';
 }
 
 .mx-datepicker {

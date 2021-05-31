@@ -70,13 +70,13 @@ export default {
             'Пароль для входа отправлен на вашу почту',
             {
               timer: 3,
-              position: 'bottomCenter',
+              position: 'topRight',
             }
           )
         } else if (this.error && this.error.message === 'record not found') {
           this.$notification.error('Неправильный email', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         }
       }

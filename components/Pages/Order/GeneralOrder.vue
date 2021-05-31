@@ -10,6 +10,15 @@
         />
       </b-list-group-item>
       <b-list-group-item>
+        <label for="number">Номер договора</label>
+        <b-form-input
+          id="number"
+          v-model="resource.number"
+          type="number"
+          placeholder="Введите номер"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
         <label for="datetime">Дата и время фотосъемки</label>
         <date-picker
           id="datetime"
@@ -58,8 +67,16 @@
         <span class="ml-1"> {{ date }} </span>
       </b-list-group-item>
       <b-list-group-item>
+        <b> Номер договора: </b>
+        <span class="ml-1"> {{ resource.number }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
         <b> Время: </b>
         <span class="ml-1"> {{ time }} </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Менеджер заказа: </b>
+        <span class="ml-1"> {{ manager }} </span>
       </b-list-group-item>
       <b-list-group-item>
         <b> Статус: </b>
@@ -116,6 +133,10 @@ export default {
 
     time() {
       return this.$dayjs(this.resource?.datetime).format('HH:mm')
+    },
+
+    manager() {
+      return ''
     },
 
     status() {
@@ -177,13 +198,13 @@ export default {
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
-              position: 'bottomCenter',
+              position: 'topRight',
             }
           )
         } else {
           this.$notification.error('Не удалось сохранить договор', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         }
       }

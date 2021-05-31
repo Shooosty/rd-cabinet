@@ -28,6 +28,7 @@ export default {
     return {
       fields: [
         { key: 'name', label: 'Имя' },
+        { key: 'surname', label: 'Фамилия' },
         { key: 'email', label: 'Логин' },
         { key: 'phone', label: 'Телефон' },
         { key: 'role', label: 'Роль' },

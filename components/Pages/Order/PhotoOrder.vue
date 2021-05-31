@@ -402,7 +402,7 @@ export default {
               `${file.file.name} сохранено на сервере`,
               {
                 timer: 2,
-                position: 'bottomCenter',
+                position: 'topRight',
               }
             )
           } else if (
@@ -413,7 +413,7 @@ export default {
               'Фотография с таким именем уже загружена',
               {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               }
             )
           }
@@ -463,12 +463,12 @@ export default {
         if (this.error == null) {
           this.$notification.success('Данные сохранены', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         } else {
           this.$notification.error('Не удалось сохранить данные', {
             timer: 3,
-            position: 'bottomCenter',
+            position: 'topRight',
           })
         }
       }
@@ -488,12 +488,12 @@ export default {
             if (this.error == null) {
               this.$notification.success('Данные удалены', {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               })
             } else {
               this.$notification.error('Не удалось удалить данные', {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               })
             }
           }

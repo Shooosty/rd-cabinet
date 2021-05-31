@@ -75,7 +75,10 @@ export default {
     }
   },
 
-  DELETE(state) {
-    state.item = {}
+  DELETE(state, data) {
+    const index = state.items.findIndex((item) => item.ID === data.ID)
+    if (index !== -1) {
+      state.list.splice(index, 1)
+    }
   },
 }

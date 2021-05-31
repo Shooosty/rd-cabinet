@@ -52,12 +52,12 @@ export default {
                 )
                 this.$notification.success('Данные пользователя обновлены', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               } else {
                 this.$notification.error('Не удалось обновить данные', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               }
             }
@@ -86,12 +86,12 @@ export default {
                   )
                   this.$notification.success('Пользователь успешно удален', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось удалить пользователя', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }

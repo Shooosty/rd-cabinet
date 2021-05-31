@@ -135,7 +135,7 @@ export default {
             if (this.$v.$invalid) {
               this.$notification.error('Не удалось изменить пароль', {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               })
             } else {
               try {
@@ -151,14 +151,14 @@ export default {
                   setTimeout(() => this.$router.push({ path: '/' }), 2000)
                   this.$notification.success('Пароль успешно изменен', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
 
                 if (this.error && this.error.message === 'record not found') {
                   this.$notification.error('Неправильный пароль', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }

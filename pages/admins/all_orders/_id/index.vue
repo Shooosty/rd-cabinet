@@ -38,16 +38,16 @@ export default {
     return {
       actions: [
         {
-          label: 'Редактировать',
-          btnClass: 'secondary',
-          to: `${this.$route.path}/edit`,
-          icon: 'edit',
-        },
-        {
           label: 'К списку',
           btnClass: 'black',
           to: '/admins/all_orders',
           icon: 'arrow-left',
+        },
+        {
+          label: 'Редактировать',
+          btnClass: 'secondary',
+          to: `${this.$route.path}/edit`,
+          icon: 'edit',
         },
       ],
     }

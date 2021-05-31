@@ -37,12 +37,12 @@ export default {
                 )
                 this.$notification.success('Данные успешно изменены', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               } else {
                 this.$notification.error('Не удалось сохранить данные', {
                   timer: 3,
-                  position: 'bottomCenter',
+                  position: 'topRight',
                 })
               }
             }

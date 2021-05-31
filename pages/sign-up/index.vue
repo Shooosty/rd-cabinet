@@ -23,6 +23,27 @@
           <div class="pure"></div>
         </div>
 
+        <div class="form-control-email d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
+              <div class="label">фамилия</div>
+              <div class="d-flex">
+                <input
+                  v-model="user.surname"
+                  v-model.trim="$v.user.surname.$model"
+                  class="form-control width-email"
+                  required
+                  type="text"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'user']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
         <div class="form-control-email mt-3 d-flex flex-column">
           <div class="d-flex">
             <div class="flex-column data-email">
@@ -163,6 +184,7 @@ export default {
       submitStatus: null,
       user: {
         name: '',
+        surname: '',
         email: '',
         password: '',
         phone: '',
@@ -184,6 +206,11 @@ export default {
 
     user: {
       name: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(19),
+      },
+      surname: {
         required,
         minLength: minLength(2),
         maxLength: maxLength(19),
@@ -216,7 +243,7 @@ export default {
         this.submitStatus = 'ERROR'
         this.$notification.error('Введенные данные некорректны', {
           timer: 3,
-          position: 'bottomCenter',
+          position: 'topRight',
         })
       } else {
         try {
@@ -229,7 +256,7 @@ export default {
             setTimeout(() => this.$router.push({ path: '/sign-in' }), 2000)
             this.$notification.success('Вы успешно зарегистрировались', {
               timer: 3,
-              position: 'bottomCenter',
+              position: 'topRight',
             })
           } else if (
             this.error.message ===
@@ -239,7 +266,7 @@ export default {
               'Пользователь с такой почтой уже зарегистрирован',
               {
                 timer: 3,
-                position: 'bottomCenter',
+                position: 'topRight',
               }
             )
           }
