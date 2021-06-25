@@ -148,7 +148,6 @@ export default {
                 this.error = e.response.data
               } finally {
                 if (this.error == null) {
-                  setTimeout(() => this.$router.push({ path: '/' }), 2000)
                   this.$notification.success('Пароль успешно изменен', {
                     timer: 3,
                     position: 'topRight',
@@ -168,7 +167,7 @@ export default {
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to: '/',
+          to: '/my_orders',
           icon: 'window-close',
         },
       ],

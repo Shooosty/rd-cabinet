@@ -4,7 +4,7 @@
     <div class="mt-3 card-body bg-white">
       <div>
         <b-row>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
             <div>
               <label for="address">Адрес фотосъемки</label>
               <b-form-input
@@ -15,30 +15,56 @@
               />
             </div>
           </b-col>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
-            <label for="datetime">Дата и время фотосъемки</label>
-            <date-picker
-              id="datetime"
-              v-model="order.datetime"
-              v-model.trim="$v.order.datetime.$model"
-              type="datetime"
-              :disabled-date="datePickerDisabledRule"
-              value-type="format"
-              :open.sync="open"
-              format="YYYY-MM-DDTHH:mm"
-              placeholder="Выберите дату и время"
-              @change="dateTimeChange"
-            />
-          </b-col>
-          <b-col xl="4" lg="4" md="12" sm="12" class="p-3">
+          <b-col xl="6" lg="6" md="12" sm="12" class="p-3">
             <label for="number">Укажите номер договора</label>
             <b-form-input
               id="number"
               v-model="order.number"
               v-model.trim="$v.order.number.$model"
+              min="1"
+              max="999999999"
               type="number"
               placeholder="Введите номер"
             />
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col
+            v-for="(date, index) in photoDates"
+            :key="index"
+            xl="4"
+            lg="4"
+            md="6"
+            sm="12"
+            class="p-3"
+          >
+            <label for="datetime"
+              >Дата и время фотосъемки {{ index + 1 }}</label
+            >
+            <div class="d-flex">
+              <date-picker
+                id="datetime"
+                v-model="date.datetime"
+                type="datetime"
+                :disabled-date="datePickerDisabledRule"
+                value-type="format"
+                :open.sync="date.open"
+                format="YYYY-MM-DDTHH:mm"
+                placeholder="Выберите дату и время"
+              />
+              <IconButton
+                class="plus-date-btn ml-2"
+                icon="plus"
+                @click.native="addDate"
+              />
+              <IconButton
+                v-if="index > 0"
+                class="remove-date-btn ml-3"
+                icon="trash"
+                @click.native="removeDate(index)"
+              />
+            </div>
           </b-col>
         </b-row>
 
@@ -64,42 +90,106 @@
               @beforedelete="deleteContract($event)"
             />
           </b-col>
+          <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
+            <label for="attContract">Загрузите приложение к договору</label>
+            <VueFileAgent
+              ref="attContract"
+              :deletable="true"
+              :meta="true"
+              :theme="'list'"
+              :average-color="false"
+              :help-text="'Выберите или перетащите приложение'"
+              :error-text="{
+                type: 'Неправильный тип файла',
+                size: 'Недопустимый размер файла',
+              }"
+              :accept="'.pdf, .doc'"
+              :max-size="'10MB'"
+              :max-files="1"
+              @select="saveAttachmentContract"
+              @beforedelete="deleteAttachmentContract($event)"
+            />
+          </b-col>
         </b-row>
 
         <b-row>
-          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
+          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
             <div>
               <label>Выберите клиента</label>
               <multiselect
                 v-model="order.userId"
                 v-model.trim="$v.order.userId.$model"
+                :custom-label="customLabel"
                 selected-label="выбран"
                 deselect-label="убрать"
                 select-label="выбрать"
                 :options="clients"
-                placeholder="email"
-                label="email"
-                track-by="email"
+                placeholder="клиент"
               />
             </div>
           </b-col>
-          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
+          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
             <div>
               <label>Выберите фотографа</label>
               <multiselect
                 v-model="order.photographerId"
                 v-model.trim="$v.order.photographerId.$model"
+                :custom-label="customLabel"
                 :options="photographers"
                 selected-label="выбран"
                 deselect-label="убрать"
                 select-label="выбрать"
                 placeholder="фотограф"
-                label="email"
-                track-by="email"
+              />
+            </div>
+          </b-col>
+          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+            <div>
+              <label>Выберите менеджера</label>
+              <multiselect
+                v-model="order.managerId"
+                v-model.trim="$v.order.managerId.$model"
+                :options="managers"
+                :custom-label="customLabel"
+                selected-label="выбран"
+                deselect-label="убрать"
+                select-label="выбрать"
+                placeholder="выберите менеджера"
               />
             </div>
           </b-col>
         </b-row>
+
+        <div>
+          <label>Выберите разделы</label>
+          <multiselect
+            v-model="order.sections"
+            v-model.trim="$v.order.sections.$model"
+            :options="sections"
+            :multiple="true"
+            :close-on-select="false"
+            selected-label="выбран"
+            deselect-label="убрать"
+            select-label="выбрать"
+            placeholder="выберите разделы"
+            :custom-label="localizeSections"
+          />
+        </div>
+
+        <div class="mt-3">
+          <label>Выберите дизайн альбома</label>
+          <multiselect
+            v-model="order.design"
+            v-model.trim="$v.order.design.$model"
+            :options="designs"
+            selected-label="выбран"
+            deselect-label="убрать"
+            select-label="выбрать"
+            placeholder="выберите разделы"
+            :custom-label="localizeDesigns"
+          />
+        </div>
+
         <div class="mt-5">
           <b-form-textarea
             v-model="order.description"
@@ -126,13 +216,16 @@ import {
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
+import LocalizeMixin from '~/mixins/localize-mixin'
+import Model from '~/models/order'
+import IconButton from '~/components/Button/IconButton'
 
 export default {
-  components: { PageHeader, Multiselect },
+  components: { IconButton, PageHeader, Multiselect },
 
   perimeters: [ViewPerimeter],
 
-  mixins: [UsersGroupByRoleMixin],
+  mixins: [UsersGroupByRoleMixin, LocalizeMixin],
 
   async fetch() {
     await this.fetchUsers()
@@ -145,13 +238,19 @@ export default {
         minLength: minLength(8),
         maxLength: maxLength(64),
       },
-      datetime: {
+      sections: {
         required,
       },
       userId: {
         required,
       },
+      design: {
+        required,
+      },
       photographerId: {
+        required,
+      },
+      managerId: {
         required,
       },
       number: {
@@ -168,18 +267,39 @@ export default {
     return {
       error: null,
       value: null,
-      open: false,
+
+      ...Model,
+
+      defaultFormDates: {
+        open: false,
+        datetime: '',
+      },
+
+      photoDates: [
+        {
+          open: false,
+          datetime: '',
+        },
+      ],
 
       order: {
-        owner: 'photographer',
-        status: 'new',
+        status: 'photoDateApproved',
         number: '',
+        design: '',
+        sections: [],
         photographerId: '',
         designerId: '',
+        managerId: '',
         contract: '',
+        attachmentContract: '',
         address: '',
+        preFormDate: '',
+        formDate: '',
+        layoutFormDate: '',
         userId: '',
-        datetime: '',
+        dateTimes: [],
+        designerDescription: '',
+        initialDescription: '',
         description: '',
       },
 
@@ -201,8 +321,11 @@ export default {
                 this.error = null
                 const newOrder = this.order
                 newOrder.photographerId = newOrder.photographerId.ID
+                newOrder.managerId = newOrder.managerId.ID
                 newOrder.userId = newOrder.userId.ID
-                newOrder.contract = this.contractFile
+                newOrder.dateTimes = this.photoDates.map((d) => {
+                  return d.datetime
+                })
 
                 await this.create(Object.assign({}, newOrder))
               } catch (e) {
@@ -243,21 +366,40 @@ export default {
       users: 'user/items',
     }),
 
-    ...mapState('photo', {
-      contractFile: (state) => (state.items.length ? state.items[0].url : ''),
+    ...mapState('file', {
+      docFile: (state) => state.items[0].url,
     }),
   },
 
   methods: {
     ...mapActions({
       create: 'order/CREATE',
-      updateContract: 'photo/POST_FILES',
-      clearFiles: 'photo/CLEAR_FILES',
+      createFile: 'file/CREATE',
+      clearFiles: 'file/CLEAR',
     }),
+
+    customLabel(value) {
+      return `${value.name} ${value.surname} ${value.email}`
+    },
+
+    addDate() {
+      const newForm = this.defaultFormDates
+      this.photoDates.push(Object.assign({}, newForm))
+    },
+
+    removeDate(index) {
+      this.photoDates.splice(index, 1)
+    },
 
     deleteContract(fileRecord) {
       if (confirm('Подтверждаете удаление?')) {
         this.$refs.contract.deleteFileRecord(fileRecord)
+      }
+    },
+
+    deleteAttachmentContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.attContract.deleteFileRecord(fileRecord)
       }
     },
 
@@ -268,18 +410,13 @@ export default {
       return date < today
     },
 
-    dateTimeChange(value, type) {
-      if (type === 'minute') {
-        this.open = false
-      }
-    },
-
     async saveContract() {
       this.clearFiles()
       try {
         this.error = null
         const file = this.$refs.contract._data.fileRecords[0].file
-        await this.updateContract(file)
+        await this.createFile(file)
+        this.order.contract = this.docFile
       } catch (e) {
         this.error = e.response
       } finally {
@@ -287,6 +424,34 @@ export default {
         if (this.error == null) {
           this.$notification.success(
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
+    },
+
+    async saveAttachmentContract() {
+      try {
+        this.error = null
+        const file = this.$refs.attContract._data.fileRecords[0].file
+        await this.createFile(file)
+        this.order.attachmentContract = this.docFile
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        await this.clearFiles()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.attContract._data.fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
               position: 'topRight',
@@ -309,6 +474,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '~/assets/stylesheets/default';
+
 .card-body {
   border-radius: 5px;
 }
@@ -318,5 +485,15 @@ export default {
   .mx-input {
     height: 38px;
   }
+}
+
+.plus-date-btn {
+  font-size: $font-size-xs;
+  color: $success-color;
+}
+
+.remove-date-btn {
+  font-size: $font-size-xs;
+  color: $danger-color;
 }
 </style>

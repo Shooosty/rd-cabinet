@@ -40,9 +40,11 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'datetime', label: 'Дата съемки' },
-        { key: 'owner', label: 'Ответственный' },
-        { key: 'status', label: 'Статус' },
+        { key: 'number', label: '№', sortable: true },
+        { key: 'dateTime', label: 'Дата первой съемки', sortable: true },
+        { key: 'design', label: 'Дизайн обложки', sortable: true },
+        { key: 'status', label: 'Статус', sortable: true },
+        { key: 'createdAt', label: 'Дата создания', sortable: true },
       ],
       pageName: 'all_orders',
     }

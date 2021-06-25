@@ -1,285 +1,499 @@
 <template>
   <div v-if="isEditPage">
     <div
-      v-for="(form, index) in persons"
-      :key="index"
+      v-for="section in resource.sections"
+      :key="`section-${section}`"
       class="accordion"
       role="tablist"
     >
       <b-card no-body class="mb-1">
         <b-card-header
-          v-b-toggle="`collapse-${index}`"
+          v-b-toggle="`collapse-${section}`"
           header-tag="header"
           class="d-flex align-content-center justify-content-between collapse-header"
           role="tab"
-          @click="fetchPhotos(form.ID)"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
-            <span :name="index" class="type-icon">
+            <span class="type-icon mr-1">
               <fa
-                v-if="form.type === 'teacher'"
+                v-if="section === 'teachers'"
                 :icon="['fas', 'user-graduate']"
               />
-              <fa v-if="form.type === 'pupil'" :icon="['fas', 'user']" />
-            </span>
-            <span :name="index" class="ml-2">
-              {{ form.surname }} {{ form.name }} {{ form.middleName }}
+              <fa v-if="section === 'pupils'" :icon="['fas', 'user']" />
+              <fa v-if="section === 'cover'" :icon="['fas', 'building']" />
+              <fa v-if="section === 'group'" :icon="['fas', 'users']" />
+              <fa v-if="section === 'reportage'" :icon="['fas', 'images']" />
+              <fa v-if="section === 'text'" :icon="['fas', 'file-alt']" />
             </span>
             <span
-              class="ml-3"
-              :class="{
-                green: form.photosCount > 0,
-                red: form.photosCount === 0,
-              }"
-            >
-              <span>
-                {{ form.photosCount }}
-              </span>
-            </span>
+              :name="section"
+              class="ml-2"
+              v-text="localizeSections(section)"
+            />
           </div>
           <div class="d-flex justify-content-end">
             <IconButton icon="chevron-down" class="collapse-button mr-3" />
           </div>
         </b-card-header>
         <b-collapse
-          :id="`collapse-${index}`"
-          accordion="my-accordion"
+          :id="`collapse-${section}`"
+          accordion="falder"
           role="tabpanel"
         >
           <b-card-body>
             <b-card-text>
-              <b-row>
-                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                  <div>
-                    <b-form-input
-                      v-model="form.surname"
-                      :disabled="
-                        userRole === 'user' && form.changesAgree !== 'accepted'
-                      "
-                      required
-                      type="text"
-                      :name="`surname-${index}`"
-                      placeholder="Фамилия"
-                    />
-                  </div>
-                </b-col>
-                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                  <div>
-                    <b-form-input
-                      v-model="form.name"
-                      :disabled="
-                        userRole === 'user' && form.changesAgree !== 'accepted'
-                      "
-                      required
-                      type="text"
-                      :name="`name-${index}`"
-                      placeholder="Имя"
-                    />
-                  </div>
-                </b-col>
-                <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                  <div>
-                    <b-form-input
-                      v-model="form.middleName"
-                      :disabled="
-                        userRole === 'user' && form.changesAgree !== 'accepted'
-                      "
-                      required
-                      type="text"
-                      :name="`middlename-${index}`"
-                      placeholder="Отчество"
-                    />
-                  </div>
-                </b-col>
-              </b-row>
-
-              <div class="mt-3">
-                <multiselect
-                  v-model="form.type"
-                  :searchable="false"
-                  :disabled="
-                    userRole === 'user' && form.changesAgree !== 'accepted'
-                  "
-                  selected-label="выбран"
-                  deselect-label="убрать"
-                  select-label="выбрать"
-                  :custom-label="localizeTypes"
-                  :options="types"
-                  placeholder="тип модели"
-                />
-              </div>
-
-              <div class="mt-5">
-                <div class="gallery">
-                  <div
-                    v-for="image in photos"
-                    :key="image.id"
-                    class="gallery-panel"
+              <div
+                v-for="(form, index) in folder(section)"
+                :key="`accordion-${section}-${index}-${form.type}`"
+                class="accordion"
+                role="tablist"
+              >
+                <b-card no-body class="mb-1">
+                  <b-card-header
+                    v-b-toggle="`collapse-${index}-${form.type}`"
+                    header-tag="header"
+                    class="d-flex align-content-center justify-content-between collapse-header"
+                    role="tab"
+                    @click="fetchPhotos(form.ID)"
                   >
-                    <div class="photo">
-                      <b-img class="image" :src="image.url" />
-                      <div class="download-btn-container">
-                        <IconButton
-                          v-if="$isAllowed('viewForEmployerAndAdmins')"
-                          icon="download"
-                          class="download-btn"
-                          :href="image.url"
-                          download
-                        />
-                      </div>
-                      <div class="delete-btn-container">
-                        <IconButton
-                          v-if="$isAllowed('viewForEmployerAndAdmins')"
-                          icon="trash"
-                          class="delete-btn"
-                          @click.native="deleteLoadedPhoto(image.ID, index)"
-                        />
+                    <div
+                      class="d-flex justify-content-start align-items-center ml-2"
+                    >
+                      <span :name="index" class="ml-2">
+                        {{ form.surname }} {{ form.name }} {{ form.middleName }}
+                      </span>
+                      <span
+                        class="ml-3"
+                        :class="{
+                          green: form.photosCount > 0,
+                          red: form.photosCount === 0,
+                        }"
+                      >
+                        <span>
+                          {{ form.photosCount }}
+                        </span>
+                      </span>
+                      <div v-if="form.willBuy === 'accepted'" class="ml-3">
+                        <fa :icon="['fas', 'money-bill']" class="icon-money" />
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
+                    <div class="d-flex justify-content-end">
+                      <IconButton
+                        icon="chevron-down"
+                        class="collapse-button mr-3"
+                      />
+                    </div>
+                  </b-card-header>
+                  <b-collapse
+                    :id="`collapse-${index}-${form.type}`"
+                    accordion="my-accordion"
+                    role="tabpanel"
+                  >
+                    <b-card-body>
+                      <b-card-text>
+                        <b-row
+                          v-if="section === 'pupils' || section === 'teachers'"
+                        >
+                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                            <div>
+                              <b-form-input
+                                v-model="form.surname"
+                                :disabled="
+                                  resource.status !== 'photoDateApproved' &&
+                                  resource.status !== 'onTheFormation' &&
+                                  form.changesAgree !== 'accepted'
+                                "
+                                required
+                                type="text"
+                                :name="`surname-${index}`"
+                                placeholder="Фамилия"
+                              />
+                            </div>
+                          </b-col>
+                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                            <div>
+                              <b-form-input
+                                v-model="form.name"
+                                :disabled="
+                                  resource.status !== 'photoDateApproved' &&
+                                  resource.status !== 'onTheFormation' &&
+                                  form.changesAgree !== 'accepted'
+                                "
+                                required
+                                type="text"
+                                :name="`name-${index}`"
+                                placeholder="Имя"
+                              />
+                            </div>
+                          </b-col>
+                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
+                            <div>
+                              <b-form-input
+                                v-model="form.middleName"
+                                :disabled="
+                                  resource.status !== 'photoDateApproved' &&
+                                  resource.status !== 'onTheFormation' &&
+                                  form.changesAgree !== 'accepted'
+                                "
+                                required
+                                type="text"
+                                :name="`middlename-${index}`"
+                                placeholder="Отчество"
+                              />
+                            </div>
+                          </b-col>
+                        </b-row>
 
-              <div v-show="$isAllowed('viewForUser')" class="mt-3">
-                <b-form-checkbox
-                  v-model="form.changesAgree"
-                  :name="`checkbox-${index}`"
-                  value="accepted"
-                  unchecked-value="not_accepted"
-                >
-                  Я хочу внести изменения и согласен с условиями договора
-                </b-form-checkbox>
-              </div>
+                        <div v-if="section === 'teachers'" class="mt-3">
+                          <div>
+                            <b-form-input
+                              v-model="form.role"
+                              :disabled="
+                                resource.status !== 'photoDateApproved' &&
+                                resource.status !== 'onTheFormation' &&
+                                form.changesAgree !== 'accepted'
+                              "
+                              required
+                              type="text"
+                              :name="`role-${index}`"
+                              placeholder="Должность"
+                            />
+                          </div>
+                        </div>
 
+                        <div
+                          v-if="
+                            photos.length &&
+                            $isAllowed('viewForEmployerAndAdmins')
+                          "
+                          class="mt-3"
+                        >
+                          <div class="gallery">
+                            <div
+                              v-for="image in photos"
+                              :key="image.id"
+                              class="gallery-panel"
+                            >
+                              <div class="photo">
+                                <b-img class="image" :src="image.url" />
+                                <span v-text="image.name" />
+                                <div class="download-btn-container">
+                                  <IconButton
+                                    icon="download"
+                                    class="download-btn"
+                                    :href="image.url"
+                                    download
+                                  />
+                                </div>
+                                <div class="delete-btn-container">
+                                  <IconButton
+                                    icon="trash"
+                                    class="delete-btn"
+                                    @click.native="
+                                      deleteLoadedPhoto(
+                                        section,
+                                        index,
+                                        image.ID
+                                      )
+                                    "
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          v-if="photos.length && $isAllowed('viewForUser')"
+                          class="mt-3"
+                        >
+                          <div class="gallery-for-user">
+                            <div
+                              v-for="image in photos"
+                              :key="image.id"
+                              class="gallery-panel-for-user"
+                            >
+                              <b-img class="image locked" :src="image.url" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          v-if="resource.status === 'onTheClientApprove'"
+                          v-show="$isAllowed('viewForUser')"
+                          class="mt-3"
+                        >
+                          <b-form-checkbox
+                            v-model="form.changesAgree"
+                            :name="`checkbox-${index}`"
+                            value="accepted"
+                            unchecked-value="not_accepted"
+                          >
+                            Я хочу внести изменения и согласен с условиями
+                            договора
+                          </b-form-checkbox>
+                        </div>
+
+                        <div
+                          v-show="
+                            $isAllowed('viewForUser') && section === 'pupils'
+                          "
+                          class="mt-3"
+                        >
+                          <b-form-checkbox
+                            v-if="resource.status === 'photoDateApproved'"
+                            v-model="form.willBuy"
+                            :name="`checkbox-${index}`"
+                            value="accepted"
+                            unchecked-value="not_accepted"
+                          >
+                            Этот альбом будет куплен
+                          </b-form-checkbox>
+                        </div>
+
+                        <div
+                          v-if="
+                            ($isAllowed('viewForUser') &&
+                              resource.status === 'photoDateApproved') ||
+                            ($isAllowed('viewForUser') &&
+                              resource.status === 'onTheFormation') ||
+                            form.changesAgree === 'accepted'
+                          "
+                          class="mt-5"
+                        >
+                          <h6>Загрузите техническое задание</h6>
+                          <VueFileAgent
+                            ref="tz"
+                            :deletable="true"
+                            :meta="true"
+                            :average-color="false"
+                            :help-text="'Выберите или перетащите файл'"
+                            :error-text="{
+                              type: 'Неправильный тип файла',
+                              size: 'Недопустимый размер файла',
+                            }"
+                            :accept="'text/*, .pdf, .doc'"
+                            :max-size="'10MB'"
+                            :max-files="1"
+                            :name="`file-${index}`"
+                            @select="saveTz"
+                            @beforedelete="deleteFile($event, index)"
+                          />
+                        </div>
+
+                        <div
+                          v-if="
+                            ($isAllowed('viewForUser') &&
+                              resource.status === 'onTheFormation') ||
+                            form.changesAgree === 'accepted' ||
+                            $isAllowed('viewForEmployerAndAdmins')
+                          "
+                          class="mt-5"
+                        >
+                          <h6>Загрузите фотографии</h6>
+                          <VueFileAgent
+                            :ref="section"
+                            :multiple="true"
+                            :deletable="true"
+                            :meta="true"
+                            :average-color="false"
+                            :help-text="'Выберите или перетащите фотографии'"
+                            :error-text="{
+                              type: 'Неправильный тип файла',
+                              size: 'Недопустимый размер файла',
+                            }"
+                            :accept="'image/*'"
+                            :max-size="'10MB'"
+                            :max-files="10"
+                            :name="`photos-${index}`"
+                            @beforedelete="deletePhoto($event, section, index)"
+                          />
+                        </div>
+
+                        <div class="mt-3">
+                          <b-form-textarea
+                            v-model="form.description"
+                            placeholder="Поле для заметок.."
+                            rows="3"
+                            max-rows="8"
+                          />
+                        </div>
+
+                        <div
+                          class="d-flex align-items-center justify-content-between"
+                        >
+                          <div class="d-flex justify-content-start mt-4">
+                            <IconButton
+                              v-b-toggle="`collapse-${index}-${form.type}`"
+                              icon="save"
+                              @click.native="
+                                savePerson(section, index, form.ID)
+                              "
+                            />
+                          </div>
+                          <div class="d-flex justify-content-end mt-4">
+                            <IconButton
+                              icon="trash"
+                              class="remove-person-btn"
+                              @click.native="
+                                removePerson(section, index, form.ID)
+                              "
+                            />
+                          </div>
+                        </div>
+                      </b-card-text>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+              </div>
               <div
-                v-show="
-                  $isAllowed('viewForEmployerAndAdmins') ||
-                  form.changesAgree === 'accepted'
+                v-if="
+                  ($isAllowed('viewForUserAndPhotographer') &&
+                    resource.status === 'photoDateApproved') ||
+                  ($isAllowed('viewForUserAndPhotographer') &&
+                    resource.status === 'photoDateChecked')
                 "
-                class="mt-5"
+                class="d-flex justify-content-center mt-3"
               >
-                <VueFileAgent
-                  ref="photos"
-                  :multiple="true"
-                  :deletable="true"
-                  :meta="true"
-                  :average-color="false"
-                  :help-text="'Выберите или перетащите фотографии'"
-                  :error-text="{
-                    type: 'Неправильный тип файла',
-                    size: 'Недопустимый размер файла',
-                  }"
-                  :accept="'image/*'"
-                  :max-size="'10MB'"
-                  :max-files="10"
-                  :name="`photos-${index}`"
-                  @beforedelete="deletePhoto($event, index)"
-                />
-              </div>
-
-              <div class="mt-5">
-                <b-form-textarea
-                  v-model="form.description"
-                  placeholder="Поле для заметок.."
-                  rows="3"
-                  max-rows="8"
-                />
-              </div>
-
-              <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex justify-content-start mt-3">
-                  <IconButton
-                    v-if="
-                      userRole !== 'user' || form.changesAgree === 'accepted'
-                    "
-                    v-b-toggle="`collapse-${index}`"
-                    icon="save"
-                    @click.native="savePerson(index)"
-                  />
-                </div>
-                <div class="d-flex justify-content-end mt-3">
-                  <IconButton
-                    v-if="$isAllowed('viewForEmployerAndAdmins')"
-                    icon="trash"
-                    class="remove-person-btn"
-                    @click.native="removePerson(index)"
-                  />
-                </div>
+                <IconButton icon="plus" @click.native="addCard(section)" />
               </div>
             </b-card-text>
           </b-card-body>
         </b-collapse>
       </b-card>
     </div>
-    <div
-      v-if="$isAllowed('viewForEmployerAndAdmins')"
-      class="d-flex justify-content-center mt-3"
-    >
-      <IconButton icon="plus" @click.native="addCard" />
-    </div>
   </div>
 
   <div v-else>
     <div
-      v-for="(person, index) in persons"
-      :key="index"
+      v-for="section in resource.sections"
+      :key="`section-${section}`"
       class="accordion"
       role="tablist"
     >
       <b-card no-body class="mb-1">
         <b-card-header
-          v-b-toggle="`collapse-${index}`"
+          v-b-toggle="`collapse-${section}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header p-1"
+          class="d-flex align-content-center justify-content-between collapse-header"
           role="tab"
-          @click="fetchPhotos(person.ID)"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
-            <span :name="index" class="type-icon">
+            <span class="type-icon mr-1">
               <fa
-                v-if="person.type === 'teacher'"
+                v-if="section === 'teachers'"
                 :icon="['fas', 'user-graduate']"
               />
-              <fa v-if="person.type === 'pupil'" :icon="['fas', 'user']" />
-            </span>
-            <span class="ml-2" :name="index">
-              {{ person.surname }} {{ person.name }} {{ person.middleName }}
+              <fa v-if="section === 'pupils'" :icon="['fas', 'user']" />
+              <fa v-if="section === 'cover'" :icon="['fas', 'building']" />
+              <fa v-if="section === 'group'" :icon="['fas', 'users']" />
+              <fa v-if="section === 'reportage'" :icon="['fas', 'images']" />
+              <fa v-if="section === 'text'" :icon="['fas', 'file-alt']" />
             </span>
             <span
-              class="ml-3"
-              :class="{
-                green: person.photosCount > 0,
-                red: person.photosCount === 0,
-              }"
-            >
-              <span>
-                {{ person.photosCount }}
-              </span>
-            </span>
+              :name="section"
+              class="ml-2"
+              v-text="localizeSections(section)"
+            />
           </div>
           <div class="d-flex justify-content-end">
             <IconButton icon="chevron-down" class="collapse-button mr-3" />
           </div>
         </b-card-header>
         <b-collapse
-          :id="`collapse-${index}`"
-          accordion="my-accordion"
+          :id="`collapse-${section}`"
+          accordion="falder"
           role="tabpanel"
         >
           <b-card-body>
             <b-card-text>
-              <div class="gallery">
-                <div
-                  v-for="image in photos"
-                  :key="image.id"
-                  class="gallery-panel"
-                >
-                  <b-img class="image" :src="image.url" />
-                </div>
-              </div>
-              <div v-if="person.description" class="mt-1">
-                <b> Заметка: </b>
-                <span> {{ person.description }} </span>
+              <div
+                v-for="(form, index) in folder(section)"
+                :key="`accordion-${section}-${index}-${form.type}`"
+                class="accordion"
+                role="tablist"
+              >
+                <b-card no-body class="mb-1">
+                  <b-card-header
+                    v-b-toggle="`collapse-${index}-${form.type}`"
+                    header-tag="header"
+                    class="d-flex align-content-center justify-content-between collapse-header"
+                    role="tab"
+                    @click="fetchPhotos(form.ID)"
+                  >
+                    <div
+                      class="d-flex justify-content-start align-items-center ml-2"
+                    >
+                      <span :name="index" class="ml-2">
+                        {{ form.surname }} {{ form.name }} {{ form.middleName }}
+                      </span>
+                      <span
+                        class="ml-3"
+                        :class="{
+                          green: form.photosCount > 0,
+                          red: form.photosCount === 0,
+                        }"
+                      >
+                        <span>
+                          {{ form.photosCount }}
+                        </span>
+                      </span>
+                      <div v-if="form.willBuy === 'accepted'" class="ml-3">
+                        <fa :icon="['fas', 'money-bill']" class="icon-money" />
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                      <IconButton
+                        icon="chevron-down"
+                        class="collapse-button mr-3"
+                      />
+                    </div>
+                  </b-card-header>
+                  <b-collapse
+                    :id="`collapse-${index}-${form.type}`"
+                    accordion="my-accordion"
+                    role="tabpanel"
+                  >
+                    <b-card-body>
+                      <b-card-text>
+                        <div
+                          v-if="
+                            photos.length &&
+                            $isAllowed('viewForEmployerAndAdmins')
+                          "
+                          class="mt-3"
+                        >
+                          <div class="gallery">
+                            <div
+                              v-for="image in photos"
+                              :key="image.id"
+                              class="gallery-panel"
+                            >
+                              <div class="photo">
+                                <b-img class="image" :src="image.url" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div
+                          v-if="photos.length && $isAllowed('viewForUser')"
+                          class="mt-3"
+                        >
+                          <div class="gallery-for-user">
+                            <div
+                              v-for="image in photos"
+                              :key="image.id"
+                              class="gallery-panel-for-user"
+                            >
+                              <b-img class="image locked" :src="image.url" />
+                            </div>
+                          </div>
+                        </div>
+                      </b-card-text>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
               </div>
             </b-card-text>
           </b-card-body>
@@ -290,15 +504,17 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import Multiselect from 'vue-multiselect'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import IconButton from '~/components/Button/IconButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
+import LocalizeMixin from '~/mixins/localize-mixin'
 
 export default {
-  components: { IconButton, Multiselect },
+  components: { IconButton },
 
   perimeters: [ViewPerimeter],
+
+  mixins: [LocalizeMixin],
 
   props: {
     resource: {
@@ -311,10 +527,6 @@ export default {
     },
   },
 
-  async fetch() {
-    await this.fetchPersons()
-  },
-
   data() {
     return {
       defaultFormModels: {
@@ -322,13 +534,20 @@ export default {
         surname: '',
         orderId: '',
         middleName: '',
+        role: '',
         type: '',
+        willBuy: 'not_accepted',
         description: '',
         photosCount: null,
         changesAgree: 'not_accepted',
       },
 
-      types: ['teacher', 'pupil'],
+      pupils: [],
+      teachers: [],
+      cover: [],
+      group: [],
+      reportage: [],
+      text: [],
 
       error: null,
     }
@@ -337,12 +556,58 @@ export default {
   computed: {
     ...mapGetters({
       photos: 'photo/items',
-      persons: 'person/items',
+      personsV: 'person/items',
       newPersonId: 'person/personId',
     }),
 
+    ...mapState('file', {
+      tzFile: (state) => state.items[0].url,
+    }),
+
+    personsComputed() {
+      return this.personsV
+    },
+
     userRole() {
       return this.$auth.user.role
+    },
+  },
+
+  watch: {
+    personsComputed() {
+      const personsArray = JSON.parse(JSON.stringify(this.personsComputed))
+      personsArray.forEach((p) => {
+        if (p.type === 'pupils') {
+          if (!this.pupils.includes(p)) {
+            this.pupils.push(p)
+          }
+        }
+        if (p.type === 'teachers') {
+          if (!this.teachers.includes(p)) {
+            this.teachers.push(p)
+          }
+        }
+        if (p.type === 'cover') {
+          if (!this.cover.includes(p)) {
+            this.cover.push(p)
+          }
+        }
+        if (p.type === 'group') {
+          if (!this.group.includes(p)) {
+            this.group.push(p)
+          }
+        }
+        if (p.type === 'reportage') {
+          if (!this.reportage.includes(p)) {
+            this.reportage.push(p)
+          }
+        }
+        if (p.type === 'text') {
+          if (!this.text.includes(p)) {
+            this.text.push(p)
+          }
+        }
+      })
     },
   },
 
@@ -354,71 +619,45 @@ export default {
       uploadPhoto: 'photo/CREATE',
       removePhoto: 'photo/DELETE',
       clearPhotos: 'photo/CLEAR',
+      createFile: 'file/CREATE',
+      clearFiles: 'file/CLEAR',
     }),
 
-    addCard() {
+    folder(name) {
+      switch (name) {
+        case 'pupils':
+          return this.pupils
+        case 'teachers':
+          return this.teachers
+        case 'cover':
+          return this.cover
+        case 'group':
+          return this.group
+        case 'reportage':
+          return this.reportage
+        case 'text':
+          return this.text
+      }
+    },
+
+    addCard(name) {
       this.clearPhotos()
-      this.persons.push(Object.assign({}, this.defaultFormModels))
-    },
+      const newForm = this.defaultFormModels
+      newForm.type = name
 
-    localizeTypes(type) {
-      switch (type) {
-        case 'pupil':
-          return 'Ученик'
-        case 'teacher':
-          return 'Учитель'
+      if (name === 'cover') {
+        newForm.name = 'Фото учебного заведения'
+      } else if (name === 'group') {
+        newForm.name = 'Общегрупповая фотография'
+      } else if (name === 'reportage') {
+        newForm.name = 'Репортаж'
+      } else if (name === 'text') {
+        newForm.name = 'Текстовая информация'
+      } else {
+        newForm.name = ''
       }
-    },
 
-    deletePhoto(fileRecord, index) {
-      this.$refs.photos[index].deleteFileRecord(fileRecord)
-    },
-
-    async deleteLoadedPhoto(id, index) {
-      if (confirm('Подтверждаете удаление?')) {
-        const i = this.photos.findIndex((p) => p.ID === id)
-        if (i > -1) {
-          this.photos.splice(i, 1)
-        }
-        const newPerson = this.persons[index]
-        newPerson.photosCount = this.persons[index].photosCount - 1
-        await this.update(Object.assign({}, newPerson))
-        await this.removePhoto(id)
-      }
-    },
-
-    async savePhotos(index, personId) {
-      this.clearPhotos()
-      for (const file of this.$refs.photos[index].fileRecords) {
-        try {
-          this.error = null
-          const newFile = { file: file.file, personId }
-          await this.uploadPhoto(Object.assign({}, newFile))
-        } catch (e) {
-          this.error = e.response.data
-        } finally {
-          if (this.error == null) {
-            this.$notification.success(
-              `${file.file.name} сохранено на сервере`,
-              {
-                timer: 2,
-                position: 'topRight',
-              }
-            )
-          } else if (
-            this.error.message ===
-            'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
-          ) {
-            this.$notification.error(
-              'Фотография с таким именем уже загружена',
-              {
-                timer: 3,
-                position: 'topRight',
-              }
-            )
-          }
-        }
-      }
+      this.folder(name).push(Object.assign({}, newForm))
     },
 
     async fetchPhotos(id) {
@@ -428,37 +667,72 @@ export default {
       }
     },
 
-    async fetchPersons() {
-      await this.$store.dispatch(
-        'person/GET_ALL_BY_ORDER_ID',
-        this.$route.params.id
-      )
+    deletePhoto(fileRecord, name, index) {
+      this.$refs[name][index].deleteFileRecord(fileRecord)
     },
 
-    async savePerson(index) {
+    async savePhotos(name, index, id) {
+      const fileRecs = this.$refs[name][index].fileRecords
+      if (confirm('Сохранить изменения?')) {
+        this.clearPhotos()
+        for (const file of fileRecs) {
+          try {
+            this.error = null
+            const newFile = {
+              file: file.file,
+              personId: id,
+              orderId: this.$route.params.id,
+            }
+            await this.uploadPhoto(Object.assign({}, newFile))
+          } catch (e) {
+            this.error = e.response.data
+          } finally {
+            if (this.error == null) {
+              this.$notification.success(
+                `${file.file.name} сохранено на сервере`,
+                {
+                  timer: 2,
+                  position: 'topRight',
+                }
+              )
+            } else if (
+              this.error.message ===
+              'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
+            ) {
+              this.$notification.error(
+                'Фотография с таким именем уже загружена',
+                {
+                  timer: 3,
+                  position: 'topRight',
+                }
+              )
+            }
+          }
+        }
+      }
+    },
+
+    async savePerson(name, index, id) {
       try {
         this.error = null
-        const newPerson = this.persons[index]
+        const section = this.folder(name)
+        const newPerson = section[index]
+        const fileRecs = this.$refs[name][index].fileRecords
         newPerson.orderId = this.resource.ID
-        const personId = this.persons[index].ID
 
-        if (personId) {
-          await this.savePhotos(index, personId)
-          newPerson.photosCount =
-            this.$refs.photos[index].fileRecords.length +
-            this.persons[index].photosCount
+        if (id) {
+          if (fileRecs) {
+            await this.savePhotos(name, index, id)
+            newPerson.photosCount = fileRecs.length + newPerson.photosCount
+          }
           await this.update(Object.assign({}, newPerson))
-          await this.fetchPersons()
         } else {
-          newPerson.photosCount = this.$refs.photos[index].fileRecords.length
           await this.create(Object.assign({}, newPerson))
-          this.savePhotos(index, this.newPersonId)
-          await this.fetchPersons()
         }
       } catch (e) {
-        this.error = e.response.data
+        this.error = e.response
       } finally {
-        this.$refs.photos[index].fileRecords = []
+        this.$refs[name][index].fileRecords = []
         await this.clearPhotos()
         if (this.error == null) {
           this.$notification.success('Данные сохранены', {
@@ -474,16 +748,16 @@ export default {
       }
     },
 
-    removePerson(index) {
-      if (confirm('Подтверждаете удаление?')) {
-        if (this.persons.length) {
+    removePerson(name, index, id) {
+      if (id) {
+        if (confirm('Подтверждаете удаление?')) {
           try {
             this.error = null
-            this.delete(this.persons[index].ID)
+            this.delete(id)
           } catch (e) {
             this.error = e.response
           } finally {
-            this.persons.splice(index, 1)
+            this.folder(name).splice(index, 1)
             this.clearPhotos()
             if (this.error == null) {
               this.$notification.success('Данные удалены', {
@@ -497,8 +771,66 @@ export default {
               })
             }
           }
+        }
+      } else {
+        this.folder(name).splice(index, 1)
+      }
+    },
+
+    async deleteLoadedPhoto(name, index, id) {
+      if (confirm('Подтверждаете удаление?')) {
+        const i = this.photos.findIndex((p) => p.ID === id)
+        if (i > -1) {
+          this.photos.splice(i, 1)
+        }
+        const section = this.folder(name)
+        const newPerson = section[index]
+        newPerson.photosCount = newPerson.photosCount - 1
+        await this.update(Object.assign({}, newPerson))
+        try {
+          this.error = null
+          await this.removePhoto(id)
+        } catch (e) {
+          this.error = e.response.data
+        } finally {
+          if (this.error == null) {
+            this.$notification.success('Фотография удалена', {
+              timer: 2,
+              position: 'topRight',
+            })
+          } else {
+            this.$notification.error('Не удалось удалить фото', {
+              timer: 3,
+              position: 'topRight',
+            })
+          }
+        }
+      }
+    },
+
+    async saveTz() {
+      try {
+        this.error = null
+        const file = this.$refs.tz._data.fileRecords[0].file
+        await this.createFile(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        await this.clearFiles()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.tz._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
         } else {
-          this.persons.splice(index, 1)
+          this.$notification.error('Не удалось сохранить файл', {
+            timer: 3,
+            position: 'topRight',
+          })
         }
       }
     },
@@ -515,6 +847,14 @@ export default {
 
 .card-body {
   min-height: 180px;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+.card {
+  border: none;
 }
 
 .collapse-button {
@@ -593,9 +933,6 @@ export default {
     div {
       display: block;
     }
-    img {
-      opacity: 65%;
-    }
   }
 }
 
@@ -611,7 +948,6 @@ export default {
   grid-gap: 1rem;
   max-width: 80rem;
   margin: 5rem auto;
-  padding: 0 5rem;
 }
 
 .gallery-panel .image {
@@ -619,5 +955,31 @@ export default {
   height: 22vw;
   object-fit: cover;
   border-radius: 0.75rem;
+}
+
+.gallery-for-user {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  grid-gap: 1rem;
+  max-width: 40rem;
+  margin: 5rem auto;
+}
+
+.gallery-panel-for-user .image {
+  width: 100%;
+  height: 11vw;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+.icon-money {
+  color: $success-color;
+}
+
+.locked {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  pointer-events: none;
 }
 </style>

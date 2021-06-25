@@ -27,11 +27,12 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'name', label: 'Имя' },
-        { key: 'surname', label: 'Фамилия' },
-        { key: 'email', label: 'Логин' },
-        { key: 'phone', label: 'Телефон' },
-        { key: 'role', label: 'Роль' },
+        { key: 'name', label: 'Имя', sortable: true },
+        { key: 'surname', label: 'Фамилия', sortable: true },
+        { key: 'email', label: 'Логин', sortable: true },
+        { key: 'phone', label: 'Телефон', sortable: true },
+        { key: 'role', label: 'Роль', sortable: true },
+        { key: 'createdAt', label: 'Дата создания' },
       ],
 
       pageName: 'all_users',

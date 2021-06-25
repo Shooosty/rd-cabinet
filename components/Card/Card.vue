@@ -12,14 +12,14 @@
               ></b-card-img>
             </b-col>
             <b-col md="6">
-              <b-card-body title="Фотосессия">
-                <b-card-text class="p-2">
+              <b-card-body class="text-center" title="Фотоальбом">
+                <b-card-text class="text-left p-2">
                   <div>
                     <span>
                       <fa :icon="['fas', `calendar`]" />
                     </span>
                     <span class="ml-2">
-                      {{ parseDate(card.datetime) }}
+                      {{ parseDate(card.dateTimes[0]) }}
                     </span>
                   </div>
                   <div class="mt-2">
@@ -27,7 +27,7 @@
                       <fa :icon="['fas', `clock`]" />
                     </span>
                     <span class="ml-2">
-                      {{ parseTime(card.datetime) }}
+                      {{ parseTime(card.dateTimes[0]) }}
                     </span>
                   </div>
                   <div class="mt-2">
@@ -89,7 +89,7 @@ export default {
   box-shadow: 0 0 5px darkgrey;
   border: none;
   cursor: pointer;
-  max-width: 26.5rem;
+  max-width: 31rem;
   user-select: none;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -99,5 +99,11 @@ export default {
   &:hover {
     transform: scale(1.05, 1.05);
   }
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0.5rem;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div v-show="$isAllowed('viewForEmployerAndUser')">
     <PageCard
-      :items="orders"
+      :items="ordersForRole"
       :resource-name="resourceName"
       is-card-page
       card-title="Мои заказы"
@@ -36,6 +36,27 @@ export default {
       orders: 'order/items',
       pagination: 'order/pagination',
     }),
+
+    ordersForRole() {
+      switch (this.$auth.user.role) {
+        case 'user':
+          return this.orders
+        case 'designer':
+          return this.orders.filter(
+            (order) => order.status === 'onDesign' || order.status === 'onEdits'
+          )
+        case 'photographer':
+          return this.orders.filter(
+            (order) =>
+              order.status === 'photoDateApproved' ||
+              order.status === 'needAnotherPhotoDate' ||
+              order.status === 'anotherPhotoDateApproved' ||
+              order.status === 'photoDateChecked'
+          )
+        default:
+          return this.orders
+      }
+    },
   },
 
   methods: {

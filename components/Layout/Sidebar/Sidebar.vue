@@ -24,11 +24,11 @@ export default {
           route: '/my_orders',
           govern: 'viewForEmployerAndUser',
         },
-        {
-          title: 'Мои бонусы',
-          route: '/my_bonuses',
-          govern: 'viewForUser',
-        },
+        // {
+        //   title: 'Мои бонусы',
+        //   route: '/my_bonuses',
+        //   govern: 'viewForUser',
+        // },
         // admins
         {
           title: 'Все клиенты',
@@ -38,7 +38,7 @@ export default {
         {
           title: 'Все заказы',
           route: '/admins/all_orders',
-          govern: 'viewForAdmin',
+          govern: 'viewForAdminAndDesigner',
         },
         // super-admins
         {

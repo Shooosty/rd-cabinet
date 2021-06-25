@@ -1,10 +1,21 @@
 <template>
-  <div v-show="$isAllowed('viewForAdmin')">
+  <div v-show="$isAllowed('viewForAdminAndDesigner')">
     <div>
       <PageHeader card-title="Все заказы" :actions="actions" />
       <div class="mt-3 card-body bg-white">
         <div class="d-flex">
-          <DataTable :items="orders" :fields="fields" :page-name="pageName" />
+          <DataTable
+            v-if="this.$auth.user.role === 'designer'"
+            :items="ordersForDesigner"
+            :fields="fields"
+            :page-name="pageName"
+          />
+          <DataTable
+            v-else
+            :items="orders"
+            :fields="fields"
+            :page-name="pageName"
+          />
         </div>
       </div>
     </div>
@@ -29,16 +40,18 @@ export default {
   data() {
     return {
       fields: [
-        { key: 'number', label: '№' },
-        { key: 'datetime', label: 'Дата съемки' },
-        { key: 'owner', label: 'Ответственный' },
-        { key: 'status', label: 'Статус' },
+        { key: 'number', label: '№', sortable: true },
+        { key: 'dateTime', label: 'Дата первой съемки', sortable: true },
+        { key: 'design', label: 'Дизайн обложки', sortable: true },
+        { key: 'status', label: 'Статус', sortable: true },
+        { key: 'createdAt', label: 'Дата создания' },
       ],
       pageName: 'all_orders',
       actions: [
         {
           label: 'Создать',
           btnClass: 'success',
+          govern: 'viewForAdmin',
           to: '/admins/all_orders/new',
           icon: 'plus',
         },
@@ -51,6 +64,12 @@ export default {
       orders: 'order/items',
       pagination: 'order/pagination',
     }),
+
+    ordersForDesigner() {
+      return this.orders.filter(
+        (order) => order.status === 'onDesign' && !order.designerId
+      )
+    },
   },
 
   methods: {

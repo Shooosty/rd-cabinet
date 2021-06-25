@@ -32,6 +32,10 @@
   margin: 0;
 }
 
+.multiselect__tag {
+  background: $success-color;
+}
+
 .multiselect,
 .multiselect__input,
 .multiselect__single {
@@ -87,4 +91,9 @@
 .with-label {
   height: 18px;
   font-weight: $font-weight-normal;
+}
+
+.multiselect__tags-wrap {
+  display: inline;
+  align-self: flex-end;
 }

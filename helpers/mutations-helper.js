@@ -47,7 +47,7 @@ export default {
     state.items.push(data)
   },
 
-  CREATE_OR_UPDATE_CONTRACTS(state, data) {
+  CREATE_OR_UPDATE_FILES(state, data) {
     let isUpdate = false
     let items = []
     items = state.items.map((item) => {

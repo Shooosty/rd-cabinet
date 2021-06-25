@@ -27,6 +27,27 @@
         <div class="form-control-email mt-3 d-flex flex-column">
           <div class="d-flex">
             <div class="flex-column data-email">
+              <div class="label">Фамилия</div>
+              <div class="d-flex">
+                <input
+                  v-model="employee.surname"
+                  v-model.trim="$v.employee.surname.$model"
+                  class="form-control width-email"
+                  required
+                  type="text"
+                />
+                <div class="d-flex align-items-center ml-auto">
+                  <fa class="color-icon" :icon="['fas', 'user']" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pure"></div>
+        </div>
+
+        <div class="form-control-email mt-3 d-flex flex-column">
+          <div class="d-flex">
+            <div class="flex-column data-email">
               <div class="label">E-mail</div>
               <div class="d-flex">
                 <input
@@ -112,6 +133,11 @@ export default {
         minLength: minLength(2),
         maxLength: maxLength(19),
       },
+      surname: {
+        required,
+        minLength: minLength(2),
+        maxLength: maxLength(19),
+      },
       phone: {
         required,
         numeric,
@@ -135,6 +161,7 @@ export default {
 
       employee: {
         name: '',
+        surname: '',
         email: '',
         phone: '',
         role: '',

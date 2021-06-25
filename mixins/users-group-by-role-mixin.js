@@ -4,6 +4,10 @@ export default {
       return this.users.filter((users) => users.role === 'user')
     },
 
+    managers() {
+      return this.users.filter((users) => users.role === 'admin')
+    },
+
     photographers() {
       return this.users.filter((users) => users.role === 'photographer')
     },

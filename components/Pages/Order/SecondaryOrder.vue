@@ -11,6 +11,17 @@
           max-rows="8"
         />
       </b-list-group-item>
+
+      <b-list-group-item v-show="$isAllowed('viewForEmployerAndAdmins')">
+        <label for="initial-description">Внутренняя заметка</label>
+        <b-form-textarea
+          id="initial-description"
+          v-model="resource.initialDescription"
+          placeholder="Поле для внутренних заметок.."
+          rows="3"
+          max-rows="8"
+        />
+      </b-list-group-item>
     </b-list-group>
   </div>
 
@@ -20,12 +31,21 @@
         <b> Заметка: </b>
         <span class="ml-1"> {{ resource.description }} </span>
       </b-list-group-item>
+
+      <b-list-group-item v-show="$isAllowed('viewForEmployerAndAdmins')">
+        <b> Внутренняя заметка: </b>
+        <span class="ml-1"> {{ resource.initialDescription }} </span>
+      </b-list-group-item>
     </b-list-group>
   </div>
 </template>
 
 <script>
+import ViewPerimeter from '~/perimeters/viewPerimeter'
+
 export default {
+  perimeters: [ViewPerimeter],
+
   props: {
     resource: {
       type: Object,

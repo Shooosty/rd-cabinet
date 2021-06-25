@@ -18,8 +18,16 @@ export const actions = {
       .then((response) => {
         const user = response.data.user
         this.$auth.setUser(user)
-        if (user.role === 'user') {
-          this.$router.push({ path: 'api/my_orders' })
+        if (
+          user.role === 'user' ||
+          user.role === 'photographer' ||
+          user.role === 'designer'
+        ) {
+          this.$router.push({ path: '/my_orders' })
+        }
+
+        if (user.role === 'admin' || user.role === 'superadmin') {
+          this.$router.push({ path: '/admins/all_orders' })
         }
       })
   },

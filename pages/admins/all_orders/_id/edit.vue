@@ -5,6 +5,7 @@
       :clients.sync="clients"
       :designers.sync="designers"
       :photographers.sync="photographers"
+      :managers.sync="managers"
       :resource.sync="resource"
       :persons="persons"
       :actions="actions"
@@ -51,24 +52,7 @@ export default {
               updatedOrder.designerId = updatedOrder.designerId.ID
               updatedOrder.photographerId = updatedOrder.photographerId.ID
               updatedOrder.userId = updatedOrder.userId.ID
-
-              if (updatedOrder.owner === 'designer') {
-                updatedOrder.status = 'inDesign'
-              } else if (updatedOrder.owner === 'photographer') {
-                updatedOrder.status = 'active'
-              }
-
-              if (updatedOrder.status === 'inDesign') {
-                updatedOrder.owner = 'designer'
-              } else if (updatedOrder.status === 'active') {
-                updatedOrder.owner = 'photographer'
-              } else if (
-                updatedOrder.status === 'inPrint' ||
-                updatedOrder.status === 'close' ||
-                updatedOrder.status === 'new'
-              ) {
-                updatedOrder.owner = 'manager'
-              }
+              updatedOrder.managerId = updatedOrder.managerId.ID
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {

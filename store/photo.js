@@ -16,11 +16,17 @@ export const actions = {
     commit('SET_ITEMS', response.data.data)
   },
 
+  async GET_ALL_BY_ORDER_ID({ commit }, objectId) {
+    commit('CLEAR')
+    const response = await this.$axios.get(`api/orders/${objectId}/photos`)
+    commit('SET_ITEMS', response.data.data)
+  },
+
   CREATE({ commit }, file) {
     const formData = new FormData()
     formData.append('file', file.file)
     this.$axios
-      .post(`api/photos/${file.personId}`, formData, {
+      .post(`api/photos/${file.personId}/${file.orderId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -41,8 +47,6 @@ export const actions = {
   },
 
   DELETE({ commit }, id) {
-    return this.$axios.$delete(`api/photos/${id}`).then(() => {
-      commit('DELETE')
-    })
+    return this.$axios.$delete(`api/photos/${id}`)
   },
 }

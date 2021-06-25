@@ -1,114 +1,279 @@
 <template>
-  <div v-if="isEditPage && $isAllowed('viewForEmployerAndAdmins')">
-    <b-list-group>
-      <b-list-group-item>
-        <label for="address">Адрес фотосъемки</label>
-        <b-form-input
-          id="address"
-          v-model="resource.address"
-          placeholder="Введите адрес"
-        />
-      </b-list-group-item>
-      <b-list-group-item>
-        <label for="number">Номер договора</label>
-        <b-form-input
-          id="number"
-          v-model="resource.number"
-          type="number"
-          placeholder="Введите номер"
-        />
-      </b-list-group-item>
-      <b-list-group-item>
-        <label for="datetime">Дата и время фотосъемки</label>
-        <date-picker
-          id="datetime"
-          v-model="resource.datetime"
-          type="datetime"
-          value-type="format"
-          :disabled-date="datePickerDisabledRule"
-          :open.sync="open"
-          format="YYYY-MM-DDTHH:mm"
-          placeholder="Выберите дату и время"
-          @change="dateTimeChange"
-        />
-      </b-list-group-item>
-      <b-list-group-item>
-        <label for="contract">Загрузите копию договора</label>
-        <VueFileAgent
-          ref="contract"
-          :multiple="false"
-          :deletable="true"
-          :meta="true"
-          :theme="'list'"
-          :average-color="false"
-          :help-text="'Выберите или перетащите договор'"
-          :error-text="{
-            type: 'Неправильный тип файла',
-            size: 'Недопустимый размер файла',
-          }"
-          :accept="'.pdf, .doc'"
-          :max-size="'10MB'"
-          :max-files="1"
-          @select="saveContract"
-          @beforedelete="deleteContract($event)"
-        />
-      </b-list-group-item>
-    </b-list-group>
-  </div>
+  <div>
+    <div v-if="isEditPage && $isAllowed('viewForAdmin')">
+      <div>
+        <vue-tabs>
+          <v-tab title="О заказе">
+            <b-list-group>
+              <b-list-group-item>
+                <label for="number">Номер договора</label>
+                <b-form-input
+                  id="number"
+                  v-model="resource.number"
+                  type="number"
+                  placeholder="Введите номер"
+                />
+              </b-list-group-item>
+              <b-list-group-item>
+                <label>Статус</label>
+                <multiselect
+                  v-model="resource.status"
+                  :searchable="false"
+                  selected-label="выбран"
+                  deselect-label="убрать"
+                  select-label="выбрать"
+                  :custom-label="localizeStatuses"
+                  :options="statuses"
+                  placeholder="статус заказа"
+                />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
 
-  <div v-else class="mt-3 card-body bg-white">
-    <b-list-group>
-      <b-list-group-item>
-        <b> Адрес: </b>
-        <span class="ml-1"> {{ resource.address }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Дата: </b>
-        <span class="ml-1"> {{ date }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Номер договора: </b>
-        <span class="ml-1"> {{ resource.number }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Время: </b>
-        <span class="ml-1"> {{ time }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Менеджер заказа: </b>
-        <span class="ml-1"> {{ manager }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Статус: </b>
-        <span class="ml-1"> {{ status }} </span>
-      </b-list-group-item>
-      <b-list-group-item>
-        <b> Договор: </b>
-        <a
-          v-if="resource.contract !== ''"
-          class="contract ml-1"
-          :href="resource.contract"
-        >
-          <fa :icon="['fas', 'file-pdf']" />
-          <span> Договор </span>
-        </a>
-        <span v-else class="red"> нет договора </span>
-      </b-list-group-item>
-    </b-list-group>
+          <v-tab title="Менеджер">
+            <b-list-group>
+              <b-list-group-item>
+                <label>Выберите менеджера</label>
+                <multiselect
+                  v-model="resource.managerId"
+                  :custom-label="customLabel"
+                  :options="managers"
+                  selected-label="выбран"
+                  select-label="нажмите, чтобы выбрать"
+                  placeholder="менеджер"
+                />
+              </b-list-group-item>
+              <b-list-group-item>
+                <label>Дизайн альбома</label>
+                <multiselect
+                  v-model="resource.design"
+                  :custom-label="localizeDesigns"
+                  :options="designs"
+                  selected-label="выбран"
+                  select-label="нажмите, чтобы выбрать"
+                  placeholder="дизайн"
+                />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+
+          <v-tab title="Фотограф">
+            <b-list-group>
+              <b-list-group-item>
+                <label for="address">Адрес фотосъемки</label>
+                <b-form-input
+                  id="address"
+                  v-model="resource.address"
+                  placeholder="Введите адрес"
+                />
+              </b-list-group-item>
+              <b-list-group-item>
+                <div
+                  v-for="(date, index) in resource.dateTimes"
+                  :key="index"
+                  class="mb-3"
+                >
+                  <div class="d-flex justify-content-between">
+                    <label for="datetime" class="d-flex justify-content-start">
+                      Дата и время {{ index + 1 }} фотосъемки
+                    </label>
+
+                    <div class="d-flex justify-content-end">
+                      <IconButton
+                        class="plus-date-btn ml-2"
+                        icon="plus"
+                        @click.native="addDate"
+                      />
+
+                      <IconButton
+                        v-if="index > 0"
+                        class="remove-date-btn ml-3"
+                        icon="trash"
+                        @click.native="removeDate(index)"
+                      />
+                    </div>
+                  </div>
+
+                  <date-picker
+                    id="datetime"
+                    v-model="resource.dateTimes[index]"
+                    type="datetime"
+                    value-type="format"
+                    :disabled-date="datePickerDisabledRule"
+                    format="YYYY-MM-DDTHH:mm"
+                    placeholder="Выберите дату и время"
+                  />
+                </div>
+              </b-list-group-item>
+              <b-list-group-item>
+                <label>Выберите фотографа</label>
+                <multiselect
+                  v-model="resource.photographerId"
+                  :options="photographers"
+                  :custom-label="customLabel"
+                  selected-label="выбран"
+                  select-label="нажмите, чтобы выбрать"
+                  placeholder="фотограф"
+                />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+
+          <v-tab title="Дизайнер">
+            <b-list-group>
+              <b-list-group-item>
+                <label>Выберите дизайнера</label>
+                <multiselect
+                  v-model="resource.designerId"
+                  :options="designers"
+                  :custom-label="customLabel"
+                  selected-label="выбран"
+                  select-label="нажмите, чтобы выбрать"
+                  placeholder="дизайнер"
+                />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+        </vue-tabs>
+      </div>
+    </div>
+
+    <div v-else class="mt-3 card-body bg-white">
+      <div>
+        <vue-tabs>
+          <v-tab title="О заказе">
+            <b-list-group>
+              <b-list-group-item>
+                <b>Номер договора:</b>
+                <span v-text="resource.number" />
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Дата выгрузки фотографий:</b>
+                <span
+                  v-if="resource.preFormDate"
+                  v-text="dateTimeFormatted(resource.preFormDate)"
+                />
+                <span v-else>Не выгружены</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Дата формирования заказа:</b>
+                <span
+                  v-if="resource.formDate"
+                  v-text="dateTimeFormatted(resource.formDate)"
+                />
+                <span v-else>На формировании</span>
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Статус:</b>
+                <span v-text="localizeStatuses(resource.status)" />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+
+          <v-tab title="Менеджер">
+            <b-list-group>
+              <b-list-group-item>
+                <b>Имя менеджера:</b>
+                <span
+                  v-if="chosenManager"
+                  v-text="`${chosenManager.name} ${chosenManager.surname}`"
+                />
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Телефон менеджера:</b>
+                <span v-if="chosenManager" v-text="chosenManager.phone" />
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Дизайн альбома:</b>
+                <span v-text="localizeDesigns(resource.design)" />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+
+          <v-tab title="Фотограф">
+            <b-list-group>
+              <b-list-group-item>
+                <b>Адрес фотосъемки:</b>
+                <span v-text="resource.address" />
+              </b-list-group-item>
+              <b-list-group-item v-if="resource.dateTimes.length === 1">
+                <b>Дата и время фотосъемки:</b>
+                <span v-text="dateTimeFormatted(resource.dateTimes[0])" />
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Имя фотографа:</b>
+                <span
+                  v-if="chosenPhotographer"
+                  v-text="
+                    `${chosenPhotographer.name} ${chosenPhotographer.surname}`
+                  "
+                />
+              </b-list-group-item>
+
+              <template v-if="resource.dateTimes.length > 1">
+                <b-list-group-item>
+                  <b>Количество съемочных дней:</b>
+                  <span v-text="resource.dateTimes.length" />
+                </b-list-group-item>
+                <b-list-group-item
+                  v-for="(d, index) in resource.dateTimes"
+                  :key="index"
+                >
+                  <b>Дата {{ index + 1 }} съемки:</b>
+                  <span v-text="dateTimeFormatted(d)" />
+                </b-list-group-item>
+              </template>
+            </b-list-group>
+          </v-tab>
+
+          <v-tab title="Дизайнер">
+            <b-list-group>
+              <b-list-group-item>
+                <b>Имя дизайнера:</b>
+                <span
+                  v-if="chosenDesigner"
+                  v-text="`${chosenDesigner.name} ${chosenDesigner.surname}`"
+                />
+                <span v-else> не назначен </span>
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+        </vue-tabs>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import Multiselect from 'vue-multiselect'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
+import localizeMixin from '~/mixins/localize-mixin'
+import Model from '~/models/order'
+import IconButton from '~/components/Button/IconButton'
 
 export default {
+  components: { IconButton, Multiselect },
+
+  mixins: [localizeMixin],
+
   perimeters: [ViewPerimeter],
 
   props: {
     resource: {
       type: Object,
       required: true,
+    },
+    photographers: {
+      type: [Array],
+      default: () => [],
+    },
+    designers: {
+      type: [Array],
+      default: () => [],
+    },
+    managers: {
+      type: [Array],
+      default: () => [],
     },
     isEditPage: {
       type: Boolean,
@@ -119,54 +284,57 @@ export default {
   data() {
     return {
       open: false,
+
+      ...Model,
     }
   },
 
   computed: {
-    ...mapState('contract', {
-      contractFile: (state) => state.items[0].url,
-    }),
-
-    date() {
-      return this.$dayjs(this.resource?.datetime).format('DD.MM.YYYY')
+    chosenPhotographer() {
+      return this.photographers.filter(
+        (value) => value.ID === this.resource.photographerId
+      )[0]
     },
 
-    time() {
-      return this.$dayjs(this.resource?.datetime).format('HH:mm')
+    chosenDesigner() {
+      return this.designers.filter(
+        (value) => value.ID === this.resource.designerId
+      )[0]
     },
 
-    manager() {
-      return ''
-    },
-
-    status() {
-      switch (this.resource?.status) {
-        case 'new':
-          return 'Новый'
-        case 'active':
-          return 'В работе'
-        case 'closed':
-          return 'Закрыт'
-        case 'inDesign':
-          return 'У дизайнера'
-        case 'inPrint':
-          return 'В печати'
-        default:
-          return ''
-      }
+    chosenManager() {
+      return this.managers.filter(
+        (value) => value.ID === this.resource.managerId
+      )[0]
     },
   },
 
   methods: {
-    ...mapActions({
-      uploadContract: 'contract/CREATE',
-      clearContract: 'contract/CLEAR',
-    }),
+    addDate() {
+      this.resource?.dateTimes.push('')
+    },
 
-    dateTimeChange(value, type) {
-      if (type === 'minute') {
-        this.open = false
+    removeDate(index) {
+      this.resource?.dateTimes.splice(index, 1)
+    },
+
+    customLabel(value) {
+      if (value.ID) {
+        return `${value.name} ${value.surname} (${value.email})`
+      } else if (this.chosenManager && this.chosenManager.ID === value) {
+        return `${this.chosenManager.name} ${this.chosenManager.surname} ${this.chosenManager.email}`
+      } else if (this.chosenDesigner && this.chosenDesigner.ID === value) {
+        return `${this.chosenDesigner.name} ${this.chosenDesigner.surname} ${this.chosenDesigner.email}`
+      } else if (
+        this.chosenPhotographer &&
+        this.chosenPhotographer.ID === value
+      ) {
+        return `${this.chosenPhotographer.name} ${this.chosenPhotographer.surname} ${this.chosenPhotographer.email}`
       }
+    },
+
+    dateTimeFormatted(dateTime) {
+      return this.$dayjs(dateTime).format('DD.MM.YYYY HH:mm')
     },
 
     datePickerDisabledRule(date) {
@@ -174,40 +342,6 @@ export default {
       today.setHours(0, 0, 0, 0)
 
       return date < today
-    },
-
-    deleteContract(fileRecord) {
-      if (confirm('Подтверждаете удаление?')) {
-        this.$refs.contract.deleteFileRecord(fileRecord)
-      }
-    },
-
-    async saveContract() {
-      try {
-        this.error = null
-        const file = this.$refs.contract._data.fileRecords[0].file
-        await this.uploadContract(file)
-        this.resource.contract = this.contractFile
-      } catch (e) {
-        this.error = e.response
-      } finally {
-        await this.clearContract()
-
-        if (this.error == null) {
-          this.$notification.success(
-            `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
-            {
-              timer: 2,
-              position: 'topRight',
-            }
-          )
-        } else {
-          this.$notification.error('Не удалось сохранить договор', {
-            timer: 3,
-            position: 'topRight',
-          })
-        }
-      }
     },
   },
 }
@@ -223,17 +357,13 @@ export default {
   }
 }
 
-.contract {
-  padding: 0.2rem;
-  color: $secondary-color;
+.plus-date-btn {
   font-size: $font-size-xs;
-  font-weight: $font-weight-light;
-  text-decoration: none;
-  border: 2px solid $success-color;
-  border-radius: 3px;
+  color: $success-color;
 }
 
-.red {
+.remove-date-btn {
+  font-size: $font-size-xs;
   color: $danger-color;
 }
 </style>

@@ -52,11 +52,11 @@ export default {
           route: '/faq',
           govern: 'viewForUser',
         },
-        {
-          title: 'Корзина',
-          route: '/my_cart',
-          govern: 'viewForUser',
-        },
+        // {
+        //   title: 'Корзина',
+        //   route: '/my_cart',
+        //   govern: 'viewForUser',
+        // },
         {
           title: 'Пароль и безопасноть',
           route: '/security',
