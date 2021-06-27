@@ -119,10 +119,10 @@ export default {
       })
     },
 
-    async generateZip() {
+    generateZip() {
       const zip = new JSZip()
 
-      await this.photos.forEach((p) => {
+      this.photos.forEach((p) => {
         zip.file(p.name, this.urlToPromise(p.url), { binary: true })
       })
 

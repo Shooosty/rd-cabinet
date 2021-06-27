@@ -111,6 +111,12 @@
             <span>{{ scope.props.minutes }}</span
             ><i>{{ scope.props.minutesTxt }}</i>
           </template>
+
+          <template slot="end-text" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.endText }}
+            </span>
+          </template>
         </vue-countdown-timer>
       </div>
 
@@ -400,6 +406,9 @@ export default {
             this.error = null
             const updatedOrder = this.resource
             updatedOrder.status = 'onDesign'
+            updatedOrder.formDate = this.$dayjs(new Date()).format(
+              'YYYY-MM-DD HH:mm'
+            )
 
             this.update(Object.assign({}, updatedOrder))
           } catch (e) {
@@ -530,6 +539,10 @@ export default {
 
 .info-icon {
   color: $success-color;
+}
+
+.red {
+  color: $danger-color;
 }
 
 .comment-card {

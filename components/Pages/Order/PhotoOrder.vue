@@ -63,6 +63,7 @@
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
                       </span>
                       <span
+                        v-if="section !== 'text'"
                         class="ml-3"
                         :class="{
                           green: form.photosCount > 0,
@@ -234,6 +235,13 @@
                           </b-form-checkbox>
                         </div>
 
+                        <div v-if="form.tz">
+                          <a :href="form.tz">
+                            <fa :icon="['fas', 'file-pdf']" />
+                            <span> Текстовый файл </span>
+                          </a>
+                        </div>
+
                         <div
                           v-show="
                             $isAllowed('viewForUser') && section === 'pupils'
@@ -249,36 +257,6 @@
                           >
                             Этот альбом будет куплен
                           </b-form-checkbox>
-                        </div>
-
-                        <div
-                          v-if="
-                            ($isAllowed('viewForUser') &&
-                              resource.status === 'photoDateApproved') ||
-                            ($isAllowed('viewForUser') &&
-                              resource.status === 'onTheFormation') ||
-                            form.changesAgree === 'accepted'
-                          "
-                          class="mt-5"
-                        >
-                          <h6>Загрузите техническое задание</h6>
-                          <VueFileAgent
-                            ref="tz"
-                            :deletable="true"
-                            :meta="true"
-                            :average-color="false"
-                            :help-text="'Выберите или перетащите файл'"
-                            :error-text="{
-                              type: 'Неправильный тип файла',
-                              size: 'Недопустимый размер файла',
-                            }"
-                            :accept="'text/*, .pdf, .doc'"
-                            :max-size="'10MB'"
-                            :max-files="1"
-                            :name="`file-${index}`"
-                            @select="saveTz"
-                            @beforedelete="deleteFile($event, index)"
-                          />
                         </div>
 
                         <div
@@ -306,6 +284,28 @@
                             :max-size="'10MB'"
                             :max-files="10"
                             :name="`photos-${index}`"
+                            @beforedelete="deletePhoto($event, section, index)"
+                          />
+                        </div>
+
+                        <div v-if="section === 'text' && !form.tz" class="mt-5">
+                          <h6>Загрузите текстовый файл</h6>
+                          <VueFileAgent
+                            ref="text"
+                            :multiple="true"
+                            :deletable="true"
+                            :meta="true"
+                            :average-color="false"
+                            :help-text="'Выберите или перетащите текстовый файл'"
+                            :error-text="{
+                              type: 'Неправильный тип файла',
+                              size: 'Недопустимый размер файла',
+                            }"
+                            :accept="'.pdf, .doc'"
+                            :max-size="'10MB'"
+                            :max-files="1"
+                            :name="`photos-${index}`"
+                            @select="saveTz(index)"
                             @beforedelete="deletePhoto($event, section, index)"
                           />
                         </div>
@@ -349,9 +349,11 @@
               <div
                 v-if="
                   ($isAllowed('viewForUserAndPhotographer') &&
-                    resource.status === 'photoDateApproved') ||
+                    resource.status === 'photoDateApproved' &&
+                    section !== 'text') ||
                   ($isAllowed('viewForUserAndPhotographer') &&
-                    resource.status === 'photoDateChecked')
+                    resource.status === 'photoDateChecked' &&
+                    section !== 'text')
                 "
                 class="d-flex justify-content-center mt-3"
               >
@@ -428,6 +430,7 @@
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
                       </span>
                       <span
+                        v-if="section !== 'text'"
                         class="ml-3"
                         :class="{
                           green: form.photosCount > 0,
@@ -474,6 +477,13 @@
                               </div>
                             </div>
                           </div>
+                        </div>
+
+                        <div v-if="form.tz">
+                          <a :href="form.tz">
+                            <fa :icon="['fas', 'file-pdf']" />
+                            <span> Текстовый файл </span>
+                          </a>
                         </div>
 
                         <div
@@ -668,7 +678,12 @@ export default {
     },
 
     deletePhoto(fileRecord, name, index) {
-      this.$refs[name][index].deleteFileRecord(fileRecord)
+      if (this.$refs.text[index]) {
+        this.$refs.text[index].deleteFileRecord(fileRecord)
+      }
+      if (this.$refs[name][index]) {
+        this.$refs[name][index].deleteFileRecord(fileRecord)
+      }
     },
 
     async savePhotos(name, index, id) {
@@ -717,13 +732,18 @@ export default {
         this.error = null
         const section = this.folder(name)
         const newPerson = section[index]
-        const fileRecs = this.$refs[name][index].fileRecords
         newPerson.orderId = this.resource.ID
 
+        if (name === 'text') {
+          newPerson.tz = this.tzFile
+        }
+
         if (id) {
+          const fileRecs = this.$refs[name][index].fileRecords
           if (fileRecs) {
             await this.savePhotos(name, index, id)
             newPerson.photosCount = fileRecs.length + newPerson.photosCount
+            this.$refs[name][index].fileRecords = []
           }
           await this.update(Object.assign({}, newPerson))
         } else {
@@ -732,7 +752,6 @@ export default {
       } catch (e) {
         this.error = e.response
       } finally {
-        this.$refs[name][index].fileRecords = []
         await this.clearPhotos()
         if (this.error == null) {
           this.$notification.success('Данные сохранены', {
@@ -748,11 +767,19 @@ export default {
       }
     },
 
-    removePerson(name, index, id) {
+    async deleteAllPersonPhotos(id) {
+      const arr = this.photos.filter((p) => p.personId === id)
+      for (const i of arr) {
+        await this.removePhoto(i.ID)
+      }
+    },
+
+    async removePerson(name, index, id) {
       if (id) {
         if (confirm('Подтверждаете удаление?')) {
           try {
             this.error = null
+            await this.deleteAllPersonPhotos(id)
             this.delete(id)
           } catch (e) {
             this.error = e.response
@@ -808,10 +835,10 @@ export default {
       }
     },
 
-    async saveTz() {
+    async saveTz(index) {
       try {
         this.error = null
-        const file = this.$refs.tz._data.fileRecords[0].file
+        const file = this.$refs.text[index].fileRecords[0].file
         await this.createFile(file)
       } catch (e) {
         this.error = e.response
@@ -820,14 +847,14 @@ export default {
 
         if (this.error == null) {
           this.$notification.success(
-            `${this.$refs.tz._data.fileRecords[0].file.name} сохранен на сервере`,
+            `${this.$refs.text[index].fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
               position: 'topRight',
             }
           )
         } else {
-          this.$notification.error('Не удалось сохранить файл', {
+          this.$notification.error('Не удалось сохранить макет', {
             timer: 3,
             position: 'topRight',
           })

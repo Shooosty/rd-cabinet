@@ -67,12 +67,12 @@ export default {
                   )
                   this.$notification.success('Заказ передан на сверку', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось передать заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }
@@ -105,12 +105,12 @@ export default {
                   )
                   this.$notification.success('Заказ передан на сверку', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 } else {
                   this.$notification.error('Не удалось передать заказ', {
                     timer: 3,
-                    position: 'bottomCenter',
+                    position: 'topRight',
                   })
                 }
               }
