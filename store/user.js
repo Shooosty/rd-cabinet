@@ -35,6 +35,7 @@ export const actions = {
   SIGN_UP({ commit }, object) {
     return this.$axios.post('auth/sign-up', {
       name: object.name,
+      surname: object.surname,
       email: object.email,
       role: object.role,
       password: object.password,
@@ -45,6 +46,7 @@ export const actions = {
   SIGN_UP_EMPLOYEE({ commit }, object) {
     return this.$axios.post('api/users/sign-up-employee', {
       name: object.name,
+      surname: object.surname,
       email: object.email,
       role: object.role,
       phone: `+7${object.phone}`,
