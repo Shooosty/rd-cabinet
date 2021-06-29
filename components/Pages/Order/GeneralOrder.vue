@@ -159,7 +159,7 @@
                 <b>Дата формирования заказа:</b>
                 <span
                   v-if="resource.formDate"
-                  v-text="dateTimeFormatted(resource.formDate)"
+                  v-text="formDatesCheck(resource.formDate)"
                 />
                 <span v-else>На формировании</span>
               </b-list-group-item>
@@ -312,6 +312,17 @@ export default {
   methods: {
     addDate() {
       this.resource?.dateTimes.push('')
+    },
+
+    formDatesCheck(date) {
+      if (
+        this.$dayjs(date) >
+        this.$dayjs(this.resource.preFormDate).add(7, 'day').$d
+      ) {
+        return `${this.dateTimeFormatted(date)} (просрочен)`
+      } else {
+        return this.dateTimeFormatted(date)
+      }
     },
 
     removeDate(index) {

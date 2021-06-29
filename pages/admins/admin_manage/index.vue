@@ -2,19 +2,31 @@
   <div v-show="$isAllowed('viewForSuperAdmin')">
     <page-header card-title="Администрирование" />
     <div class="mt-3 card-body bg-white">
-      <span> adm/manage </span>
+      <PrimaryButton label="Очистить Amazon" @click.native="clearS3" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import PrimaryButton from '~/components/Button/PrimaryButton'
 import PageHeader from '~/components/Pages/Card/PageHeader'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
-  components: { PageHeader },
+  components: { PrimaryButton, PageHeader },
 
   perimeters: [ViewPerimeter],
+
+  methods: {
+    ...mapActions({
+      clear: 'file/DELETE_ALL',
+    }),
+
+    clearS3() {
+      this.clear()
+    },
+  },
 }
 </script>
 

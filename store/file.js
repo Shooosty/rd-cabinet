@@ -27,4 +27,9 @@ export const actions = {
   CLEAR({ commit }) {
     commit('CLEAR')
   },
+
+  DELETE_ALL({ commit }) {
+    this.$axios.post(`api/s3/delete`)
+    commit('CLEAR')
+  },
 }

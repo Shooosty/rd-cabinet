@@ -194,7 +194,8 @@
                                       deleteLoadedPhoto(
                                         section,
                                         index,
-                                        image.ID
+                                        image.ID,
+                                        image.nameS3
                                       )
                                     "
                                   />
@@ -628,6 +629,7 @@ export default {
       delete: 'person/DELETE',
       uploadPhoto: 'photo/CREATE',
       removePhoto: 'photo/DELETE',
+      removeOnS3: 'photo/DELETE_ON_S3',
       clearPhotos: 'photo/CLEAR',
       createFile: 'file/CREATE',
       clearFiles: 'file/CLEAR',
@@ -771,6 +773,7 @@ export default {
       const arr = this.photos.filter((p) => p.personId === id)
       for (const i of arr) {
         await this.removePhoto(i.ID)
+        await this.removeOnS3(i.nameS3)
       }
     },
 
@@ -804,7 +807,7 @@ export default {
       }
     },
 
-    async deleteLoadedPhoto(name, index, id) {
+    async deleteLoadedPhoto(name, index, id, nameS3) {
       if (confirm('Подтверждаете удаление?')) {
         const i = this.photos.findIndex((p) => p.ID === id)
         if (i > -1) {
@@ -817,6 +820,7 @@ export default {
         try {
           this.error = null
           await this.removePhoto(id)
+          await this.removeOnS3(nameS3)
         } catch (e) {
           this.error = e.response.data
         } finally {

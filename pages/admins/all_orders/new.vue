@@ -333,10 +333,7 @@ export default {
               } finally {
                 await this.clearFiles()
                 if (this.error == null) {
-                  setTimeout(
-                    () => this.$router.push({ path: '/admins/all_orders' }),
-                    2000
-                  )
+                  this.$router.push({ path: '/admins/all_orders' })
                   this.$notification.success('Создан новый заказ', {
                     timer: 3,
                     position: 'topRight',

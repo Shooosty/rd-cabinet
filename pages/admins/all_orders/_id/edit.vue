@@ -34,6 +34,7 @@ export default {
     await this.fetchOrder()
     await this.fetchUsers()
     await this.fetchPersons()
+    await this.fetchPhotos()
   },
 
   data() {
@@ -85,6 +86,7 @@ export default {
             if (confirm('Подтверждаете удаление?')) {
               try {
                 this.error = null
+                await this.deleteAllOrderPhotos
                 await this.delete(this.resource.ID)
               } catch (e) {
                 this.error = e.response.data
@@ -126,6 +128,7 @@ export default {
       getResource: 'order/itemById',
       users: 'user/items',
       persons: 'person/items',
+      photos: 'photo/items',
     }),
 
     orderNumber() {
@@ -139,10 +142,27 @@ export default {
     ...mapActions({
       update: 'order/UPDATE',
       delete: 'order/DELETE',
+      removeOnS3: 'photo/DELETE_ON_S3',
+      removePhoto: 'photo/DELETE',
     }),
 
     async fetchUsers() {
       await this.$store.dispatch('user/GET_ALL')
+    },
+
+    async deleteAllOrderPhotos() {
+      const arr = this.photos
+      for (const i of arr) {
+        await this.removePhoto(i.ID)
+        await this.removeOnS3(i.nameS3)
+      }
+    },
+
+    async fetchPhotos() {
+      await this.$store.dispatch(
+        'photo/GET_ALL_BY_ORDER_ID',
+        this.$route.params.id
+      )
     },
 
     async fetchOrder() {

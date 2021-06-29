@@ -36,6 +36,11 @@ export const actions = {
       })
   },
 
+  DELETE_ON_S3({ commit }, name) {
+    this.$axios.post(`api/files/${name}`)
+    commit('CLEAR')
+  },
+
   GET({ commit }, objectId) {
     return this.$axios.$get(`api/photos/${objectId}`).then((response) => {
       commit('CREATE_OR_UPDATE_PHOTOS', response.data)
