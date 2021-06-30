@@ -74,9 +74,6 @@
             <div class="flex-column data-email">
               <div class="label">телефон</div>
               <div class="d-flex">
-                <span class="d-flex align-items-center">
-                  <span>+7 </span>
-                </span>
                 <input
                   v-model="resource.phone"
                   v-phone

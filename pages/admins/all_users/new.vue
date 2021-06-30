@@ -64,6 +64,10 @@
             </div>
           </div>
           <div class="pure"></div>
+          <div v-if="!$v.employee.email.minLength" class="error">
+            Почта должна содержать минимум
+            {{ $v.employee.email.$params.minLength.min }} символов.
+          </div>
         </div>
 
         <div class="form-control-email mt-3 d-flex flex-column">

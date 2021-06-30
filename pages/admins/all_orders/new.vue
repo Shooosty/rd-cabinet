@@ -13,6 +13,10 @@
                 v-model.trim="$v.order.address.$model"
                 placeholder="Введите адрес"
               />
+              <div v-if="!$v.order.address.minLength" class="error">
+                Адрес должен содержать минимум
+                {{ $v.order.address.$params.minLength.min }} символов.
+              </div>
             </div>
           </b-col>
           <b-col xl="6" lg="6" md="12" sm="12" class="p-3">
@@ -489,7 +493,8 @@ export default {
   color: $success-color;
 }
 
-.remove-date-btn {
+.remove-date-btn,
+.error {
   font-size: $font-size-xs;
   color: $danger-color;
 }

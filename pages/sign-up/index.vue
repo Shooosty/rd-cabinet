@@ -23,7 +23,7 @@
           <div class="pure"></div>
         </div>
 
-        <div class="form-control-email d-flex flex-column">
+        <div class="form-control-email mt-3 d-flex flex-column">
           <div class="d-flex">
             <div class="flex-column data-email">
               <div class="label">фамилия</div>
@@ -61,6 +61,10 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div v-if="!$v.user.email.minLength" class="error">
+            Email должен содержать минимум
+            {{ $v.user.email.$params.minLength.min }} символов.
           </div>
           <div class="pure"></div>
         </div>
@@ -115,6 +119,10 @@
               </div>
             </div>
             <div class="pure"></div>
+            <div v-if="!$v.user.password.minLength" class="error">
+              Пароль должен содержать минимум
+              {{ $v.user.password.$params.minLength.min }} символов.
+            </div>
           </div>
         </div>
 
@@ -140,6 +148,9 @@
               </div>
             </div>
             <div class="pure"></div>
+            <div v-if="!$v.acceptPassword.sameAsPassword" class="error">
+              Пароли не совпадают
+            </div>
           </div>
         </div>
       </div>
@@ -279,4 +290,10 @@ export default {
 
 <style lang="scss" scoped>
 @import '~/assets/stylesheets/auth-page';
+@import '~/assets/stylesheets/default';
+
+.error {
+  font-size: $font-size-xs;
+  color: $danger-color;
+}
 </style>

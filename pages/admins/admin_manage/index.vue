@@ -18,13 +18,38 @@ export default {
 
   perimeters: [ViewPerimeter],
 
+  data() {
+    return {
+      error: null,
+    }
+  },
+
   methods: {
     ...mapActions({
       clear: 'file/DELETE_ALL',
     }),
 
-    clearS3() {
-      this.clear()
+    async clearS3() {
+      if (confirm('ВСЕ файлы хранилища Amazon будут удалены! Продолжить?')) {
+        await this.clear()
+        try {
+          this.error = null
+        } catch (e) {
+          this.error = e.response.data
+        } finally {
+          if (this.error == null) {
+            this.$notification.success('Хранилище очищено', {
+              timer: 2,
+              position: 'topRight',
+            })
+          } else {
+            this.$notification.error('Не удалось очистить хранилище', {
+              timer: 3,
+              position: 'topRight',
+            })
+          }
+        }
+      }
     },
   },
 }
