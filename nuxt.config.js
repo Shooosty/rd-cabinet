@@ -118,6 +118,11 @@ export default {
 
     strategies: {
       local: {
+        token: {
+          property: 'token',
+          maxAge: 9999999,
+          global: true,
+        },
         endpoints: {
           login: {
             url: '/auth/sign-in',

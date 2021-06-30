@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
@@ -92,16 +92,12 @@ export default {
     },
   },
 
-  computed: {
-    ...mapState('file', {
-      docFile: (state) => state.items[0].url,
-    }),
-  },
-
   methods: {
     ...mapActions({
-      createFile: 'file/CREATE',
-      clearFiles: 'file/CLEAR',
+      createContract: 'contract/CREATE',
+      clearContract: 'contract/CLEAR',
+      createAttachContract: 'attachContract/CREATE',
+      clearAttachContract: 'attachContract/CLEAR',
     }),
 
     deleteContract(fileRecord) {
@@ -116,16 +112,15 @@ export default {
       }
     },
 
-    async saveAttachmentContract() {
+    saveAttachmentContract() {
       try {
         this.error = null
         const file = this.$refs.attContract._data.fileRecords[0].file
-        await this.createFile(file)
-        this.resource.attachmentContract = this.docFile
+        this.createAttachContract(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        this.clearAttachContract()
 
         if (this.error == null) {
           this.$notification.success(
@@ -144,16 +139,15 @@ export default {
       }
     },
 
-    async saveContract() {
+    saveContract() {
       try {
         this.error = null
         const file = this.$refs.contract._data.fileRecords[0].file
-        await this.createFile(file)
-        this.resource.contract = this.docFile
+        this.createContract(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        this.clearContract()
 
         if (this.error == null) {
           this.$notification.success(

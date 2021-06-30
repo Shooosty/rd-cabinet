@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import JSZip from 'jszip'
 import JSZipUtils from 'jszip-utils'
 import { saveAs } from 'file-saver'
@@ -92,10 +92,6 @@ export default {
   },
 
   computed: {
-    ...mapState('file', {
-      layoutFile: (state) => state.items[0].url,
-    }),
-
     ...mapGetters({
       photos: 'photo/items',
     }),
@@ -103,8 +99,8 @@ export default {
 
   methods: {
     ...mapActions({
-      createFile: 'file/CREATE',
-      clearFiles: 'file/CLEAR',
+      createFile: 'layout/CREATE',
+      clearFiles: 'layout/CLEAR',
     }),
 
     urlToPromise(url) {
@@ -150,19 +146,18 @@ export default {
       )
     },
 
-    async saveLayout() {
+    saveLayout() {
       try {
         this.error = null
         const file = this.$refs.layout._data.fileRecords[0].file
-        await this.createFile(file)
-        this.resource.layout = this.layoutFile
+        this.createFile(file)
       } catch (e) {
         this.error = e.response
       } finally {
         this.resource.layoutFormDate = this.$dayjs(new Date()).format(
           'YYYY-MM-DDTHH:mm'
         )
-        await this.clearFiles()
+        this.clearFiles()
 
         if (this.error == null) {
           this.$notification.success(

@@ -48,6 +48,7 @@ export default {
             try {
               this.error = null
               const updatedOrder = this.resource
+              updatedOrder.layout = this.$store.state.layout.file
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {

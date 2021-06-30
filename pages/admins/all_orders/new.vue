@@ -13,7 +13,7 @@
                 v-model.trim="$v.order.address.$model"
                 placeholder="Введите адрес"
               />
-              <div v-if="!$v.order.address.minLength" class="error">
+              <div v-if="!$v.order.address.minLength" class="error mt-1">
                 Адрес должен содержать минимум
                 {{ $v.order.address.$params.minLength.min }} символов.
               </div>
@@ -209,7 +209,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 import {
   maxLength,
@@ -327,6 +327,8 @@ export default {
                 newOrder.photographerId = newOrder.photographerId.ID
                 newOrder.managerId = newOrder.managerId.ID
                 newOrder.userId = newOrder.userId.ID
+                newOrder.contract = this.$store.state.contract.file
+                newOrder.attachmentContract = this.$store.state.attachContract.file
                 newOrder.dateTimes = this.photoDates.map((d) => {
                   return d.datetime
                 })
@@ -335,7 +337,6 @@ export default {
               } catch (e) {
                 this.error = e.response.data
               } finally {
-                await this.clearFiles()
                 if (this.error == null) {
                   this.$router.push({ path: '/admins/all_orders' })
                   this.$notification.success('Создан новый заказ', {
@@ -366,17 +367,15 @@ export default {
     ...mapGetters({
       users: 'user/items',
     }),
-
-    ...mapState('file', {
-      docFile: (state) => state.items[0].url,
-    }),
   },
 
   methods: {
     ...mapActions({
       create: 'order/CREATE',
-      createFile: 'file/CREATE',
-      clearFiles: 'file/CLEAR',
+      createContract: 'contract/CREATE',
+      clearContract: 'contract/CLEAR',
+      createAttachContract: 'attachContract/CREATE',
+      clearAttachContract: 'attachContract/CLEAR',
     }),
 
     customLabel(value) {
@@ -412,16 +411,14 @@ export default {
     },
 
     async saveContract() {
-      this.clearFiles()
       try {
         this.error = null
         const file = this.$refs.contract._data.fileRecords[0].file
-        await this.createFile(file)
-        this.order.contract = this.docFile
+        await this.createContract(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        await this.clearContract()
         if (this.error == null) {
           this.$notification.success(
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
@@ -443,12 +440,11 @@ export default {
       try {
         this.error = null
         const file = this.$refs.attContract._data.fileRecords[0].file
-        await this.createFile(file)
-        this.order.attachmentContract = this.docFile
+        await this.createAttachContract(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        await this.clearAttachContract()
 
         if (this.error == null) {
           this.$notification.success(

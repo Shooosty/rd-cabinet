@@ -263,9 +263,13 @@
                         <div
                           v-if="
                             ($isAllowed('viewForUser') &&
-                              resource.status === 'onTheFormation') ||
-                            form.changesAgree === 'accepted' ||
-                            $isAllowed('viewForEmployerAndAdmins')
+                              resource.status === 'onTheFormation' &&
+                              section !== 'text') ||
+                            (form.changesAgree === 'accepted' &&
+                              section !== 'text') ||
+                            $isAllowed(
+                              'viewForEmployerAndAdmins' && section !== 'text'
+                            )
                           "
                           class="mt-5"
                         >
@@ -351,10 +355,10 @@
                 v-if="
                   ($isAllowed('viewForUserAndPhotographer') &&
                     resource.status === 'photoDateApproved' &&
-                    section !== 'text') ||
+                    text.length <= 0) ||
                   ($isAllowed('viewForUserAndPhotographer') &&
                     resource.status === 'photoDateChecked' &&
-                    section !== 'text')
+                    text.length <= 0)
                 "
                 class="d-flex justify-content-center mt-3"
               >
@@ -515,7 +519,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import IconButton from '~/components/Button/IconButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import LocalizeMixin from '~/mixins/localize-mixin'
@@ -569,10 +573,6 @@ export default {
       photos: 'photo/items',
       personsV: 'person/items',
       newPersonId: 'person/personId',
-    }),
-
-    ...mapState('file', {
-      tzFile: (state) => state.items[0].url,
     }),
 
     personsComputed() {
@@ -737,7 +737,7 @@ export default {
         newPerson.orderId = this.resource.ID
 
         if (name === 'text') {
-          newPerson.tz = this.tzFile
+          newPerson.tz = this.$store.state.file.file
         }
 
         if (id) {
@@ -839,15 +839,15 @@ export default {
       }
     },
 
-    async saveTz(index) {
+    saveTz(index) {
       try {
         this.error = null
         const file = this.$refs.text[index].fileRecords[0].file
-        await this.createFile(file)
+        this.createFile(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        await this.clearFiles()
+        this.clearFiles()
 
         if (this.error == null) {
           this.$notification.success(

@@ -5,6 +5,7 @@ export default {
 
   CLEAR(state) {
     state.items = []
+    state.file = ''
     state.pagination = {}
   },
 
@@ -64,6 +65,48 @@ export default {
     }
 
     state.items.push(data)
+  },
+
+  CREATE_OR_UPDATE_CONTRACTS(state, data) {
+    let isUpdate = false
+    let items = []
+    items = state.items.map((item) => {
+      if (item.url === data) {
+        item = Object.assign({}, data)
+        isUpdate = true
+      }
+      return item
+    })
+
+    if (isUpdate) {
+      state.items = items
+      return
+    }
+
+    state.items.push(data)
+  },
+
+  CREATE_OR_UPDATE_ATTACH_CONTRACTS(state, data) {
+    let isUpdate = false
+    let items = []
+    items = state.items.map((item) => {
+      if (item.url === data) {
+        item = Object.assign({}, data)
+        isUpdate = true
+      }
+      return item
+    })
+
+    if (isUpdate) {
+      state.items = items
+      return
+    }
+
+    state.items.push(data)
+  },
+
+  CREATE_FILE(state, data) {
+    state.file = data
   },
 
   SET_PAGINATION_META(state, headers) {

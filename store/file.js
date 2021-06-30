@@ -2,8 +2,7 @@ import commonGetters from '~/helpers/getters-helper'
 import commonMutations from '~/helpers/mutations-helper'
 
 export const state = () => ({
-  items: [],
-  pagination: {},
+  file: '',
 })
 
 export const getters = { ...commonGetters }
@@ -11,6 +10,7 @@ export const mutations = { ...commonMutations }
 
 export const actions = {
   CREATE({ commit }, file) {
+    commit('CLEAR')
     const formData = new FormData()
     formData.append('file', file)
     this.$axios
@@ -20,7 +20,7 @@ export const actions = {
         },
       })
       .then((response) => {
-        commit('CREATE_OR_UPDATE_FILES', response.data)
+        commit('CREATE_FILE', response.data.url)
       })
   },
 

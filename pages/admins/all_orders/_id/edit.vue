@@ -54,6 +54,8 @@ export default {
               updatedOrder.photographerId = updatedOrder.photographerId.ID
               updatedOrder.userId = updatedOrder.userId.ID
               updatedOrder.managerId = updatedOrder.managerId.ID
+              updatedOrder.contract = this.$store.state.contract.file
+              updatedOrder.attachmentContract = this.$store.state.attachContract.file
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {
