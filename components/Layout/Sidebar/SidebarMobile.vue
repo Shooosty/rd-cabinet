@@ -37,11 +37,11 @@ export default {
           route: '/my_orders',
           govern: 'viewForEmployerAndUser',
         },
-        {
-          title: 'Мои бонусы',
-          route: '/my_bonuses',
-          govern: 'viewForUser',
-        },
+        // {
+        //   title: 'Мои бонусы',
+        //   route: '/my_bonuses',
+        //   govern: 'viewForUser',
+        // },
         {
           title: 'Мои профиль',
           route: '/personal_data',

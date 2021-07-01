@@ -43,6 +43,7 @@ export default {
         { key: 'number', label: '№', sortable: true },
         { key: 'dateTime', label: 'Дата первой съемки', sortable: true },
         { key: 'design', label: 'Дизайн обложки', sortable: true },
+        { key: 'userId', label: 'Клиент' },
         { key: 'status', label: 'Статус', sortable: true },
         { key: 'createdAt', label: 'Дата создания' },
       ],

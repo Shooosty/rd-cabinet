@@ -207,6 +207,7 @@
           <GeneralOrder
             :resource.sync="resource"
             :designers.sync="designers"
+            :clients.sync="clients"
             :photographers.sync="photographers"
             :managers.sync="managers"
             :is-edit-page="isEditPage"
@@ -328,6 +329,10 @@ export default {
       default: () => [],
     },
     designers: {
+      type: [Array],
+      default: () => [],
+    },
+    clients: {
       type: [Array],
       default: () => [],
     },

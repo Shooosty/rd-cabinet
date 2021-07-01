@@ -190,6 +190,22 @@
             </b-list-group>
           </v-tab>
 
+          <v-tab v-if="this.$auth.user.role !== 'user'" title="Клиент">
+            <b-list-group>
+              <b-list-group-item>
+                <b>Имя клиента:</b>
+                <span
+                  v-if="chosenClient"
+                  v-text="`${chosenClient.name} ${chosenClient.surname}`"
+                />
+              </b-list-group-item>
+              <b-list-group-item>
+                <b>Телефон клиента:</b>
+                <span v-if="chosenClient" v-text="chosenClient.phone" />
+              </b-list-group-item>
+            </b-list-group>
+          </v-tab>
+
           <v-tab title="Фотограф">
             <b-list-group>
               <b-list-group-item>
@@ -271,6 +287,10 @@ export default {
       type: [Array],
       default: () => [],
     },
+    clients: {
+      type: [Array],
+      default: () => [],
+    },
     managers: {
       type: [Array],
       default: () => [],
@@ -299,6 +319,12 @@ export default {
     chosenDesigner() {
       return this.designers.filter(
         (value) => value.ID === this.resource.designerId
+      )[0]
+    },
+
+    chosenClient() {
+      return this.clients.filter(
+        (value) => value.ID === this.resource.userId
       )[0]
     },
 

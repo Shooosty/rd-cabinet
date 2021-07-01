@@ -4,6 +4,7 @@
       v-if="resource"
       :resource.sync="resource"
       :managers.sync="managers"
+      :clients.sync="clients"
       :designers.sync="designers"
       :photographers.sync="photographers"
       :persons="persons"

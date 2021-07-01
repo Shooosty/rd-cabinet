@@ -56,6 +56,10 @@
           <span> {{ localizeOwners(data.value) }} </span>
         </template>
 
+        <template #cell(userId)="data">
+          <span> {{ userComputed(data.value) }} </span>
+        </template>
+
         <template #cell(role)="data">
           <span> {{ localizeRoles(data.value) }} </span>
         </template>
@@ -100,6 +104,12 @@ export default {
   methods: {
     onRowSelected(item) {
       this.$router.push(`/admins/${this.pageName}/${item[0].ID}`)
+    },
+
+    userComputed(id) {
+      const users = this.$store.state.user.items
+      const user = users.filter((u) => u.ID === id)[0]
+      return `${user.name} ${user.surname}`
     },
 
     parseCreatedAt(value) {
