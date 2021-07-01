@@ -118,10 +118,17 @@ export default {
 
     strategies: {
       local: {
+        scheme: 'refresh',
         token: {
           property: 'token',
-          maxAge: 9999999,
+          maxAge: 9999999999999999999999,
           global: true,
+        },
+        refreshToken: {
+          property: 'token',
+          data: 'refresh_token',
+          required: false,
+          maxAge: 60 * 60 * 24 * 30,
         },
         endpoints: {
           login: {
@@ -129,6 +136,7 @@ export default {
             method: 'post',
             propertyName: 'token',
           },
+          refresh: { url: '/auth/refresh', method: 'post' },
           logout: true,
         },
         autoFetchUser: false,
