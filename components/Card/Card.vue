@@ -16,6 +16,12 @@
                 <b-card-text class="text-left p-2">
                   <div>
                     <span>
+                      <fa :icon="['fas', `bookmark`]" />
+                    </span>
+                    <span class="ml-2" v-text="`№ ${card.number}`" />
+                  </div>
+                  <div class="mt-2">
+                    <span>
                       <fa :icon="['fas', `calendar`]" />
                     </span>
                     <span class="ml-2">

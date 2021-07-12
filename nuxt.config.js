@@ -68,6 +68,7 @@ export default {
               'faUserGraduate',
               'faFilePdf',
               'faTrash',
+              'faBookmark',
               'faBuilding',
               'faPrint',
               'faMagic',

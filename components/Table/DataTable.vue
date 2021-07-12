@@ -113,7 +113,6 @@ export default {
     userComputed(id) {
       if (this.users.length) {
         const user = this.users.filter((u) => u.ID === id)[0]
-        console.log(user)
         if (user) {
           return `${user.name} ${user.surname}`
         } else {

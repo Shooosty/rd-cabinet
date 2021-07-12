@@ -177,6 +177,7 @@ export default {
         { value: 'admin', text: 'Менеджер' },
         { value: 'photographer', text: 'Фотограф' },
         { value: 'designer', text: 'Дизайнер' },
+        { value: 'user', text: 'Клиент' },
       ],
 
       actions: [
