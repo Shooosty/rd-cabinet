@@ -102,7 +102,9 @@
                                 :disabled="
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted'
+                                  form.changesAgree !== 'accepted' &&
+                                  this.$auth.user.role !== 'admin' &&
+                                  this.$auth.user.role !== 'superadmin'
                                 "
                                 required
                                 type="text"
@@ -118,7 +120,9 @@
                                 :disabled="
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted'
+                                  form.changesAgree !== 'accepted' &&
+                                  this.$auth.user.role !== 'admin' &&
+                                  this.$auth.user.role !== 'superadmin'
                                 "
                                 required
                                 type="text"
@@ -134,7 +138,9 @@
                                 :disabled="
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted'
+                                  form.changesAgree !== 'accepted' &&
+                                  this.$auth.user.role !== 'admin' &&
+                                  this.$auth.user.role !== 'superadmin'
                                 "
                                 required
                                 type="text"
@@ -152,7 +158,9 @@
                               :disabled="
                                 resource.status !== 'photoDateApproved' &&
                                 resource.status !== 'onTheFormation' &&
-                                form.changesAgree !== 'accepted'
+                                form.changesAgree !== 'accepted' &&
+                                this.$auth.user.role !== 'admin' &&
+                                this.$auth.user.role !== 'superadmin'
                               "
                               required
                               type="text"
