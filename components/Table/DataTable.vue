@@ -78,11 +78,15 @@ export default {
 
   props: {
     items: {
-      type: Array,
+      type: [Array],
       required: true,
     },
+    users: {
+      type: [Array],
+      default: () => [],
+    },
     fields: {
-      type: Array,
+      type: [Array],
       required: true,
     },
     pageName: {
@@ -107,9 +111,15 @@ export default {
     },
 
     userComputed(id) {
-      const users = this.$store.state.user.items
-      const user = users.filter((u) => u.ID === id)[0]
-      return `${user.name} ${user.surname}`
+      if (this.users.length) {
+        const user = this.users.filter((u) => u.ID === id)[0]
+        console.log(user)
+        if (user) {
+          return `${user.name} ${user.surname}`
+        } else {
+          return 'не назначен'
+        }
+      }
     },
 
     parseCreatedAt(value) {

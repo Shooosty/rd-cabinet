@@ -8,12 +8,14 @@
             v-if="this.$auth.user.role === 'designer'"
             :items="ordersForDesigner"
             :fields="fields"
+            :users="users"
             :page-name="pageName"
           />
           <DataTable
             v-else
             :items="orders"
             :fields="fields"
+            :users="users"
             :page-name="pageName"
           />
         </div>
@@ -35,6 +37,7 @@ export default {
 
   async fetch() {
     await this.fetchOrders()
+    await this.fetchUsers()
   },
 
   data() {
@@ -63,6 +66,7 @@ export default {
   computed: {
     ...mapGetters({
       orders: 'order/items',
+      users: 'user/items',
       pagination: 'order/pagination',
     }),
 
@@ -76,6 +80,10 @@ export default {
   methods: {
     async fetchOrders() {
       await this.$store.dispatch('order/GET_ALL')
+    },
+
+    async fetchUsers() {
+      await this.$store.dispatch('user/GET_ALL')
     },
   },
 }
