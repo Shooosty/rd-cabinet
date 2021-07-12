@@ -267,9 +267,8 @@
                               section !== 'text') ||
                             (form.changesAgree === 'accepted' &&
                               section !== 'text') ||
-                            $isAllowed(
-                              'viewForEmployerAndAdmins' && section !== 'text'
-                            )
+                            ($isAllowed('viewForEmployerAndAdmins') &&
+                              section !== 'text')
                           "
                           class="mt-5"
                         >
