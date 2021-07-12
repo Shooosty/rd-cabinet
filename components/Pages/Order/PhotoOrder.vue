@@ -357,7 +357,8 @@
                     text.length <= 0) ||
                   ($isAllowed('viewForUserAndPhotographer') &&
                     resource.status === 'photoDateChecked' &&
-                    text.length <= 0)
+                    text.length <= 0) ||
+                  ($isAllowed('viewForAdmin') && text.length <= 0)
                 "
                 class="d-flex justify-content-center mt-3"
               >
