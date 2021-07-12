@@ -122,7 +122,6 @@
               <label>Выберите клиента</label>
               <multiselect
                 v-model="order.userId"
-                v-model.trim="$v.order.userId.$model"
                 :custom-label="customLabel"
                 selected-label="выбран"
                 deselect-label="убрать"
@@ -137,7 +136,6 @@
               <label>Выберите фотографа</label>
               <multiselect
                 v-model="order.photographerId"
-                v-model.trim="$v.order.photographerId.$model"
                 :custom-label="customLabel"
                 :options="photographers"
                 selected-label="выбран"
@@ -245,13 +243,7 @@ export default {
       sections: {
         required,
       },
-      userId: {
-        required,
-      },
       design: {
-        required,
-      },
-      photographerId: {
         required,
       },
       managerId: {
