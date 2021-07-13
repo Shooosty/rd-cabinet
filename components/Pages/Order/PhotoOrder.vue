@@ -59,20 +59,7 @@
                     <div
                       class="d-flex justify-content-start align-items-center ml-2"
                     >
-                      <span
-                        v-if="
-                          (form.name &&
-                            form.name &&
-                            form.middleName &&
-                            section === 'teachers') ||
-                          (form.name &&
-                            form.name &&
-                            form.middleName &&
-                            section === 'pupils')
-                        "
-                        :name="index"
-                        class="ml-2"
-                      >
+                      <span v-if="form.name" :name="index" class="ml-2">
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
                       </span>
                       <span
