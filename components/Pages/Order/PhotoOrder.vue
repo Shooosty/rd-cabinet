@@ -253,7 +253,9 @@
 
                         <div
                           v-show="
-                            $isAllowed('viewForUser') && section === 'pupils'
+                            ($isAllowed('viewForUser') &&
+                              section === 'pupils') ||
+                            ($isAllowed('viewForAdmin') && section === 'pupils')
                           "
                           class="mt-3"
                         >
@@ -313,7 +315,7 @@
                               type: 'Неправильный тип файла',
                               size: 'Недопустимый размер файла',
                             }"
-                            :accept="'.pdf, .doc'"
+                            :accept="'.pdf, .doc, .txt'"
                             :max-size="'10MB'"
                             :max-files="1"
                             :name="`photos-${index}`"

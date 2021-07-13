@@ -34,45 +34,6 @@
         </b-row>
 
         <b-row>
-          <b-col
-            v-for="(date, index) in photoDates"
-            :key="index"
-            xl="4"
-            lg="4"
-            md="6"
-            sm="12"
-            class="p-3"
-          >
-            <label for="datetime"
-              >Дата и время фотосъемки {{ index + 1 }}</label
-            >
-            <div class="d-flex">
-              <date-picker
-                id="datetime"
-                v-model="date.datetime"
-                type="datetime"
-                :disabled-date="datePickerDisabledRule"
-                value-type="format"
-                :open.sync="date.open"
-                format="YYYY-MM-DDTHH:mm"
-                placeholder="Выберите дату и время"
-              />
-              <IconButton
-                class="plus-date-btn ml-2"
-                icon="plus"
-                @click.native="addDate"
-              />
-              <IconButton
-                v-if="index > 0"
-                class="remove-date-btn ml-3"
-                icon="trash"
-                @click.native="removeDate(index)"
-              />
-            </div>
-          </b-col>
-        </b-row>
-
-        <b-row>
           <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
             <label for="contract">Загрузите копию договора</label>
             <VueFileAgent
@@ -192,7 +153,47 @@
           />
         </div>
 
+        <b-row>
+          <b-col
+            v-for="(date, index) in photoDates"
+            :key="index"
+            xl="4"
+            lg="4"
+            md="6"
+            sm="12"
+            class="p-3"
+          >
+            <label for="datetime"
+              >Дата и время фотосъемки {{ index + 1 }}</label
+            >
+            <div class="d-flex">
+              <date-picker
+                id="datetime"
+                v-model="date.datetime"
+                type="datetime"
+                :disabled-date="datePickerDisabledRule"
+                value-type="format"
+                :open.sync="date.open"
+                format="YYYY-MM-DDTHH:mm"
+                placeholder="Выберите дату и время"
+              />
+              <IconButton
+                class="plus-date-btn ml-2"
+                icon="plus"
+                @click.native="addDate"
+              />
+              <IconButton
+                v-if="index > 0"
+                class="remove-date-btn ml-3"
+                icon="trash"
+                @click.native="removeDate(index)"
+              />
+            </div>
+          </b-col>
+        </b-row>
+
         <div class="mt-5">
+          <span> Общая заметка к заказу </span>
           <b-form-textarea
             v-model="order.description"
             v-model.trim="$v.order.description.$model"

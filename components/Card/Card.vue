@@ -79,11 +79,19 @@ export default {
     },
 
     parseDate(value) {
-      return this.$dayjs(value).format('DD.MM.YYYY')
+      if (value) {
+        return this.$dayjs(value).format('DD.MM.YYYY')
+      } else {
+        return 'Дата формируется..'
+      }
     },
 
     parseTime(value) {
-      return this.$dayjs(value).format('HH:mm')
+      if (value) {
+        return this.$dayjs(value).format('HH:mm')
+      } else {
+        return 'Время формируется..'
+      }
     },
   },
 }

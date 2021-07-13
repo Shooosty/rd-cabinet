@@ -44,7 +44,7 @@ export default {
     return {
       fields: [
         { key: 'number', label: '№', sortable: true },
-        { key: 'dateTime', label: 'Дата первой съемки', sortable: true },
+        { key: 'dateTimes', label: 'Дата первой съемки' },
         { key: 'design', label: 'Дизайн обложки', sortable: true },
         { key: 'userId', label: 'Клиент' },
         { key: 'status', label: 'Статус', sortable: true },

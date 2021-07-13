@@ -80,7 +80,7 @@
                   placeholder="(555)555-55-55"
                   class="form-control width-email"
                   autocomplete="tel"
-                  maxlength="10"
+                  maxlength="12"
                   required
                   type="tel"
                 />

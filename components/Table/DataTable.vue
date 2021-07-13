@@ -36,8 +36,8 @@
           }}</nuxt-link>
         </template>
 
-        <template #cell(dateTime)="data">
-          <span> {{ parseDateTime(data.value[0]) }} </span>
+        <template #cell(dateTimes)="data">
+          <span> {{ parseDateTime(data.value) }} </span>
         </template>
 
         <template #cell(createdAt)="data">
@@ -126,7 +126,11 @@ export default {
     },
 
     parseDateTime(value) {
-      return this.$dayjs(value).format('DD.MM.YYYY')
+      if (value[0]) {
+        return this.$dayjs(value[0]).format('DD.MM.YYYY')
+      } else {
+        return 'Не назначена'
+      }
     },
   },
 }

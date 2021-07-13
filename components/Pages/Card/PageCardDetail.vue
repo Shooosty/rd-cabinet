@@ -13,7 +13,12 @@
       @click="toggleComment"
     >
       <div class="d-flex justify-content-start">
-        <span v-if="!isCommentsOpen"><b>Показать прогресс заказа</b></span>
+        <span v-if="!isCommentsOpen"
+          ><b
+            >Показать прогресс заказа. Сейчас статус заказа:
+            {{ localizeStatuses(resource.status) }}</b
+          ></span
+        >
         <span v-if="isCommentsOpen"><b>Скрыть прогресс заказа</b></span>
       </div>
 
@@ -273,6 +278,7 @@ import ProjectFiles from '~/components/Pages/Project/ProjectFiles'
 import GeneralProject from '~/components/Pages/Project/GeneralProject'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import DocumentsOrder from '~/components/Pages/Order/DocumentsOrder'
+import LocalizeMixin from '~/mixins/localize-mixin'
 
 export default {
   components: {
@@ -290,6 +296,8 @@ export default {
   },
 
   perimeters: [ViewPerimeter],
+
+  mixins: [LocalizeMixin],
 
   props: {
     cardTitle: {

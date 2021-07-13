@@ -216,10 +216,9 @@
                 <b>Дата и время фотосъемки:</b>
                 <span v-text="dateTimeFormatted(resource.dateTimes[0])" />
               </b-list-group-item>
-              <b-list-group-item>
+              <b-list-group-item v-if="chosenPhotographer">
                 <b>Имя фотографа:</b>
                 <span
-                  v-if="chosenPhotographer"
                   v-text="
                     `${chosenPhotographer.name} ${chosenPhotographer.surname}`
                   "
@@ -371,7 +370,11 @@ export default {
     },
 
     dateTimeFormatted(dateTime) {
-      return this.$dayjs(dateTime).format('DD.MM.YYYY HH:mm')
+      if (dateTime) {
+        return this.$dayjs(dateTime).format('DD.MM.YYYY HH:mm')
+      } else {
+        return 'Формируется'
+      }
     },
 
     datePickerDisabledRule(date) {
