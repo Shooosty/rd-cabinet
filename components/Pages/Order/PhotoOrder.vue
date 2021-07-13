@@ -59,8 +59,30 @@
                     <div
                       class="d-flex justify-content-start align-items-center ml-2"
                     >
-                      <span :name="index" class="ml-2">
+                      <span
+                        v-if="
+                          (form.name &&
+                            form.name &&
+                            form.middleName &&
+                            section === 'teachers') ||
+                          (form.name &&
+                            form.name &&
+                            form.middleName &&
+                            section === 'pupils')
+                        "
+                        :name="index"
+                        class="ml-2"
+                      >
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
+                      </span>
+                      <span
+                        v-else-if="
+                          section === 'pupils' || section === 'teachers'
+                        "
+                        :name="index"
+                        class="ml-2 red"
+                      >
+                        Раскройте и заполните!
                       </span>
                       <span
                         v-if="section !== 'text'"
@@ -362,13 +384,29 @@
               </div>
               <div
                 v-if="
-                  ($isAllowed('viewForUserAndPhotographer') &&
+                  ($isAllowed('viewForPhotographer') &&
                     resource.status === 'photoDateApproved' &&
                     text.length <= 0) ||
-                  ($isAllowed('viewForUserAndPhotographer') &&
+                  ($isAllowed('viewForPhotographer') &&
                     resource.status === 'photoDateChecked' &&
                     text.length <= 0) ||
-                  ($isAllowed('viewForAdmin') && text.length <= 0)
+                  ($isAllowed('viewForAdmin') && text.length <= 0) ||
+                  ($isAllowed('viewForUser') &&
+                    resource.status === 'photoDateApproved' &&
+                    text.length <= 0 &&
+                    section === 'pupils') ||
+                  ($isAllowed('viewForUser') &&
+                    resource.status === 'photoDateChecked' &&
+                    text.length <= 0 &&
+                    section === 'pupils') ||
+                  ($isAllowed('viewForUser') &&
+                    resource.status === 'photoDateApproved' &&
+                    text.length <= 0 &&
+                    section === 'teachers') ||
+                  ($isAllowed('viewForUser') &&
+                    resource.status === 'photoDateChecked' &&
+                    text.length <= 0 &&
+                    section === 'teachers')
                 "
                 class="d-flex justify-content-center mt-3"
               >
