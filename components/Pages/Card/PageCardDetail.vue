@@ -69,7 +69,9 @@
           Дизайнер правит макет
         </span>
 
-        <span v-if="resource.status === 'onProduction'"> В производстве </span>
+        <span v-if="resource.status === 'onProduction'">
+          В производстве. Вы можете скачать фото-архив во вкладке 'Макет'
+        </span>
 
         <span v-if="resource.status === 'done'">
           Ваш заказ находится в офисе. Ожидайте звонка от специалиста. Будем

@@ -58,7 +58,12 @@
         <span v-text="resource.designerDescription" />
       </b-list-group-item>
       <b-list-group-item
-        v-if="$isAllowed('viewForEmployerAndAdmins') && photos.length"
+        v-if="
+          ($isAllowed('viewForEmployerAndAdmins') && photos.length) ||
+          ($isAllowed('viewForUser') &&
+            photos.length &&
+            resource.status === 'onProduction')
+        "
       >
         <a href="#" @click="generateZip">Скачать архив фото</a>
       </b-list-group-item>
