@@ -303,7 +303,7 @@
                               size: 'Недопустимый размер файла',
                             }"
                             :accept="'image/*'"
-                            :max-size="'10MB'"
+                            :max-size="'20MB'"
                             :max-files="10"
                             :name="`photos-${index}`"
                             @beforedelete="deletePhoto($event, section, index)"

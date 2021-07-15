@@ -34,7 +34,7 @@
                 size: 'Недопустимый размер файла',
               }"
               :accept="'.pdf, .doc, .jpg, .jpeg'"
-              :max-size="'10MB'"
+              :max-size="'20MB'"
               :max-files="1"
               @select="saveContract"
               @beforedelete="deleteContract($event)"
@@ -54,7 +54,7 @@
                 size: 'Недопустимый размер файла',
               }"
               :accept="'.pdf, .doc, .jpg, .jpeg'"
-              :max-size="'10MB'"
+              :max-size="'20MB'"
               :max-files="1"
               @select="saveAttachmentContract"
               @beforedelete="deleteAttachmentContract($event)"
