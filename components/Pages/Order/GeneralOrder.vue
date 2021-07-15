@@ -251,6 +251,18 @@
                 />
                 <span v-else> не назначен </span>
               </b-list-group-item>
+              <b-list-group-item>
+                <b>Имя дизайнера:</b>
+                <span
+                  v-if="chosenDesigner"
+                  v-text="`${chosenDesigner.name} ${chosenDesigner.surname}`"
+                />
+                <span v-else> не назначен </span>
+              </b-list-group-item>
+              <b-list-group-item v-if="chosenDesigner">
+                <b>Телефон дизайнера:</b>
+                <span v-text="'+7 (968) 761-04-44'" />
+              </b-list-group-item>
             </b-list-group>
           </v-tab>
         </vue-tabs>
