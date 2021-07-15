@@ -33,7 +33,7 @@
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
               }"
-              :accept="'.pdf, .doc'"
+              :accept="'.pdf, .doc, .jpg, .jpeg'"
               :max-size="'10MB'"
               :max-files="1"
               @select="saveContract"
@@ -53,7 +53,7 @@
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
               }"
-              :accept="'.pdf, .doc'"
+              :accept="'.pdf, .doc, .jpg, .jpeg'"
               :max-size="'10MB'"
               :max-files="1"
               @select="saveAttachmentContract"

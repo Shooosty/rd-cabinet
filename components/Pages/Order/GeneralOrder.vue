@@ -15,6 +15,22 @@
                 />
               </b-list-group-item>
               <b-list-group-item>
+                <div>
+                  <label>Разделы</label>
+                  <multiselect
+                    v-model="resource.sections"
+                    :options="sections"
+                    :multiple="true"
+                    :close-on-select="false"
+                    selected-label="выбран"
+                    deselect-label="убрать"
+                    select-label="выбрать"
+                    placeholder="выберите разделы"
+                    :custom-label="localizeSections"
+                  />
+                </div>
+              </b-list-group-item>
+              <b-list-group-item>
                 <label>Статус</label>
                 <multiselect
                   v-model="resource.status"
