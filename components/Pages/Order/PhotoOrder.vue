@@ -112,8 +112,7 @@
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
-                                  this.$auth.user.role !== 'admin' &&
-                                  this.$auth.user.role !== 'superadmin'
+                                  userRole === 'user'
                                 "
                                 required
                                 type="text"
@@ -130,8 +129,7 @@
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
-                                  this.$auth.user.role !== 'admin' &&
-                                  this.$auth.user.role !== 'superadmin'
+                                  userRole === 'user'
                                 "
                                 required
                                 type="text"
@@ -148,8 +146,7 @@
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
-                                  this.$auth.user.role !== 'admin' &&
-                                  this.$auth.user.role !== 'superadmin'
+                                  userRole === 'user'
                                 "
                                 required
                                 type="text"
@@ -168,8 +165,7 @@
                                 resource.status !== 'photoDateApproved' &&
                                 resource.status !== 'onTheFormation' &&
                                 form.changesAgree !== 'accepted' &&
-                                this.$auth.user.role !== 'admin' &&
-                                this.$auth.user.role !== 'superadmin'
+                                userRole === 'user'
                               "
                               required
                               type="text"
@@ -263,13 +259,16 @@
                         <div
                           v-show="
                             ($isAllowed('viewForUser') &&
-                              section === 'pupils') ||
+                              section === 'pupils' &&
+                              resource.status === 'photoDateApproved') ||
+                            ($isAllowed('viewForUser') &&
+                              section === 'pupils' &&
+                              resource.status === 'onTheFormation') ||
                             ($isAllowed('viewForAdmin') && section === 'pupils')
                           "
                           class="mt-3"
                         >
                           <b-form-checkbox
-                            v-if="resource.status === 'photoDateApproved'"
                             v-model="form.willBuy"
                             :name="`checkbox-${index}`"
                             value="accepted"
@@ -725,81 +724,87 @@ export default {
 
     async savePhotos(name, index, id) {
       const fileRecs = this.$refs[name][index].fileRecords
-      if (confirm('Сохранить изменения?')) {
-        this.clearPhotos()
-        for (const file of fileRecs) {
-          try {
-            this.error = null
-            const newFile = {
-              file: file.file,
-              personId: id,
-              orderId: this.$route.params.id,
-            }
-            await this.uploadPhoto(Object.assign({}, newFile))
-          } catch (e) {
-            this.error = e.response.data
-          } finally {
-            if (this.error == null) {
-              this.$notification.success(
-                `${file.file.name} сохранено на сервере`,
-                {
-                  timer: 2,
-                  position: 'topRight',
-                }
-              )
-            } else if (
-              this.error.message ===
-              'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
-            ) {
-              this.$notification.error(
-                'Фотография с таким именем уже загружена',
-                {
-                  timer: 3,
-                  position: 'topRight',
-                }
-              )
-            }
+      this.clearPhotos()
+      for (const file of fileRecs) {
+        try {
+          this.error = null
+          const newFile = {
+            file: file.file,
+            personId: id,
+            orderId: this.$route.params.id,
+          }
+          await this.uploadPhoto(Object.assign({}, newFile))
+        } catch (e) {
+          this.error = e.response.data
+        } finally {
+          if (this.error == null) {
+            this.$notification.success(
+              `${file.file.name} сохранено на сервере`,
+              {
+                timer: 2,
+                position: 'topRight',
+              }
+            )
+          } else if (
+            this.error.message ===
+            'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
+          ) {
+            this.$notification.error(
+              'Фотография с таким именем уже загружена',
+              {
+                timer: 3,
+                position: 'topRight',
+              }
+            )
           }
         }
       }
     },
 
     async savePerson(name, index, id) {
-      try {
-        this.error = null
-        const section = this.folder(name)
-        const newPerson = section[index]
-        newPerson.orderId = this.resource.ID
+      if (confirm('Сохранить изменения?')) {
+        try {
+          this.error = null
+          const section = this.folder(name)
+          const newPerson = section[index]
+          newPerson.orderId = this.resource.ID
 
-        if (name === 'text') {
-          newPerson.tz = this.$store.state.file.file
-        }
-
-        if (id) {
-          const fileRecs = this.$refs[name][index].fileRecords
-          if (fileRecs) {
-            await this.savePhotos(name, index, id)
-            newPerson.photosCount = fileRecs.length + newPerson.photosCount
-            this.$refs[name][index].fileRecords = []
+          if (name === 'text') {
+            newPerson.tz = this.$store.state.file.file
           }
-          await this.update(Object.assign({}, newPerson))
-        } else {
-          await this.create(Object.assign({}, newPerson))
-        }
-      } catch (e) {
-        this.error = e.response
-      } finally {
-        await this.clearPhotos()
-        if (this.error == null) {
-          this.$notification.success('Данные сохранены', {
-            timer: 3,
-            position: 'topRight',
-          })
-        } else {
-          this.$notification.error('Не удалось сохранить данные', {
-            timer: 3,
-            position: 'topRight',
-          })
+
+          if (id) {
+            const fileRecs = this.$refs[name][index].fileRecords
+            if (fileRecs) {
+              await this.savePhotos(name, index, id)
+              newPerson.photosCount = fileRecs.length + newPerson.photosCount
+              this.$refs[name][index].fileRecords = []
+            }
+            await this.update(Object.assign({}, newPerson))
+          } else {
+            await this.create(Object.assign({}, newPerson))
+            const fileRecs = this.$refs[name][index].fileRecords
+            if (fileRecs) {
+              await this.savePhotos(name, index, this.newPersonId)
+              newPerson.photosCount = fileRecs.length
+              this.$refs[name][index].fileRecords = []
+            }
+          }
+        } catch (e) {
+          this.error = e.response
+        } finally {
+          await this.clearPhotos()
+          if (this.error == null) {
+            this.$notification.success('Данные сохранены', {
+              timer: 3,
+              position: 'topRight',
+            })
+          } else {
+            this.$notification.error('Не удалось сохранить данные', {
+              timer: 3,
+              position: 'topRight',
+            })
+          }
         }
       }
     },

@@ -4,22 +4,7 @@
     <div class="mt-3 card-body bg-white">
       <div>
         <b-row>
-          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
-            <div>
-              <label for="address">Адрес фотосъемки</label>
-              <b-form-input
-                id="address"
-                v-model="order.address"
-                v-model.trim="$v.order.address.$model"
-                placeholder="Введите адрес"
-              />
-              <div v-if="!$v.order.address.minLength" class="error mt-1">
-                Адрес должен содержать минимум
-                {{ $v.order.address.$params.minLength.min }} символов.
-              </div>
-            </div>
-          </b-col>
-          <b-col xl="6" lg="6" md="12" sm="12" class="p-3">
+          <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
             <label for="number">Укажите номер договора</label>
             <b-form-input
               id="number"
@@ -148,17 +133,32 @@
             selected-label="выбран"
             deselect-label="убрать"
             select-label="выбрать"
-            placeholder="выберите разделы"
+            placeholder="выберите дизайн"
             :custom-label="localizeDesigns"
           />
         </div>
 
         <b-row>
+          <b-col xl="6" lg="6" md="6" sm="12" class="p-3">
+            <div>
+              <label for="address">Адрес фотосъемки</label>
+              <b-form-input
+                id="address"
+                v-model="order.address"
+                v-model.trim="$v.order.address.$model"
+                placeholder="Введите адрес"
+              />
+              <div v-if="!$v.order.address.minLength" class="error mt-1">
+                Адрес должен содержать минимум
+                {{ $v.order.address.$params.minLength.min }} символов.
+              </div>
+            </div>
+          </b-col>
           <b-col
             v-for="(date, index) in photoDates"
             :key="index"
-            xl="4"
-            lg="4"
+            xl="6"
+            lg="6"
             md="6"
             sm="12"
             class="p-3"
@@ -193,10 +193,20 @@
         </b-row>
 
         <div class="mt-5">
-          <span> Общая заметка к заказу </span>
+          <span class="mb-1"> Общая заметка к заказу </span>
           <b-form-textarea
             v-model="order.description"
             v-model.trim="$v.order.description.$model"
+            placeholder="Поле для заметок.."
+            rows="3"
+            max-rows="8"
+          />
+        </div>
+
+        <div class="mt-5">
+          <span class="mb-1"> Внутренняя заметка к заказу </span>
+          <b-form-textarea
+            v-model="order.initialDescription"
             placeholder="Поле для заметок.."
             rows="3"
             max-rows="8"
@@ -237,7 +247,6 @@ export default {
   validations: {
     order: {
       address: {
-        required,
         minLength: minLength(8),
         maxLength: maxLength(64),
       },
