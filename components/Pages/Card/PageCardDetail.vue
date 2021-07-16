@@ -3,7 +3,11 @@
     <PageHeader :card-title="cardTitle" :actions="actions" />
 
     <div
-      v-if="isOrderPage && resource.status !== 'closed'"
+      v-if="
+        isOrderPage &&
+        this.$auth.user.role === 'user' &&
+        resource.status !== 'closed'
+      "
       v-b-toggle.comments
       class="d-flex justify-content-between comments-toggle card-body bg-white mt-3 align-items-center"
       @click="toggleComment"
@@ -97,7 +101,7 @@
           :start-time="resource.preFormDate"
           :end-time="sevenDaysCountDown"
           :interval="6000"
-          :start-label="'Время на формирование'"
+          :start-label="'Время на формирование:'"
           :end-label="'Время на формирование'"
           label-position="begin"
           :end-text="'Время на формирование истекло!'"
@@ -113,6 +117,12 @@
             ><i>{{ scope.props.hourTxt }}</i>
             <span>{{ scope.props.minutes }}</span
             ><i>{{ scope.props.minutesTxt }}</i>
+          </template>
+
+          <template slot="start-label" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.startLabel }}
+            </span>
           </template>
 
           <template slot="end-text" slot-scope="scope">
@@ -141,6 +151,51 @@
           govern="viewForUser"
           :fn="toPrint"
         />
+      </div>
+    </div>
+
+    <div
+      v-if="
+        (isOrderPage && this.$auth.user.role !== 'user' && !isEditPage) ||
+        (isOrderPage && this.$auth.user.role !== 'photographer' && !isEditPage)
+      "
+      class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
+    >
+      <div v-if="resource.status === 'onTheFormation'" class="ml-2">
+        <vue-countdown-timer
+          :start-time="resource.preFormDate"
+          :end-time="sevenDaysCountDown"
+          :interval="6000"
+          :start-label="'Время на формирование:'"
+          :end-label="'Время на формирование'"
+          label-position="begin"
+          :end-text="'Время на формирование истекло!'"
+          :day-txt="' дней'"
+          :hour-txt="' часов'"
+          :minutes-txt="' минут'"
+          @start_callback="startCallBack('event started')"
+          @end_callback="endCallBack('event ended')"
+        >
+          <template slot="countdown" slot-scope="scope">
+            <span>{{ scope.props.days }}</span
+            ><i>{{ scope.props.dayTxt }}</i> <span>{{ scope.props.hours }}</span
+            ><i>{{ scope.props.hourTxt }}</i>
+            <span>{{ scope.props.minutes }}</span
+            ><i>{{ scope.props.minutesTxt }}</i>
+          </template>
+
+          <template slot="end-text" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.endText }}
+            </span>
+          </template>
+
+          <template slot="start-label" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.startLabel }}
+            </span>
+          </template>
+        </vue-countdown-timer>
       </div>
     </div>
 

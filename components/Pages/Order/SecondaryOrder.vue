@@ -1,5 +1,8 @@
 <template>
-  <div v-if="isEditPage" class="mt-3 card-body bg-white">
+  <div
+    v-if="isEditPage && $isAllowed('viewForEmployerAndAdmins')"
+    class="mt-3 card-body bg-white"
+  >
     <b-list-group>
       <b-list-group-item>
         <label for="description">Заметка</label>
@@ -12,7 +15,7 @@
         />
       </b-list-group-item>
 
-      <b-list-group-item v-show="$isAllowed('viewForEmployerAndAdmins')">
+      <b-list-group-item>
         <label for="initial-description">Внутренняя заметка</label>
         <b-form-textarea
           id="initial-description"
