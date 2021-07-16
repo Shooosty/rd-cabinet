@@ -3,20 +3,16 @@
     <PageHeader :card-title="cardTitle" :actions="actions" />
 
     <div
-      v-if="
-        isOrderPage &&
-        this.$auth.user.role === 'user' &&
-        resource.status !== 'closed'
-      "
+      v-if="isOrderPage && resource.status !== 'closed'"
       v-b-toggle.comments
       class="d-flex justify-content-between comments-toggle card-body bg-white mt-3 align-items-center"
       @click="toggleComment"
     >
       <div class="d-flex justify-content-start">
-        <span v-if="!isCommentsOpen"
-          ><b
-            >Показать прогресс заказа. Сейчас статус заказа:
-            {{ localizeStatuses(resource.status) }}</b
+        <span v-if="!isCommentsOpen">
+          <span> Показать прогресс заказа. </span>
+          <b
+            >Сейчас статус заказа: {{ localizeStatuses(resource.status) }}</b
           ></span
         >
         <span v-if="isCommentsOpen"><b>Скрыть прогресс заказа</b></span>

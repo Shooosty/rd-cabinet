@@ -176,6 +176,28 @@
                         </div>
 
                         <div
+                          v-show="
+                            ($isAllowed('viewForUser') &&
+                              section === 'pupils' &&
+                              resource.status === 'photoDateApproved') ||
+                            ($isAllowed('viewForUser') &&
+                              section === 'pupils' &&
+                              resource.status === 'onTheFormation') ||
+                            ($isAllowed('viewForAdmin') && section === 'pupils')
+                          "
+                          class="mt-3"
+                        >
+                          <b-form-checkbox
+                            v-model="form.willBuy"
+                            :name="`checkbox-${index}`"
+                            value="accepted"
+                            unchecked-value="not_accepted"
+                          >
+                            Этот альбом будет куплен
+                          </b-form-checkbox>
+                        </div>
+
+                        <div
                           v-if="
                             photos.length &&
                             $isAllowed('viewForEmployerAndAdmins')
@@ -254,28 +276,6 @@
                             <fa :icon="['fas', 'file-pdf']" />
                             <span> Текстовый файл </span>
                           </a>
-                        </div>
-
-                        <div
-                          v-show="
-                            ($isAllowed('viewForUser') &&
-                              section === 'pupils' &&
-                              resource.status === 'photoDateApproved') ||
-                            ($isAllowed('viewForUser') &&
-                              section === 'pupils' &&
-                              resource.status === 'onTheFormation') ||
-                            ($isAllowed('viewForAdmin') && section === 'pupils')
-                          "
-                          class="mt-3"
-                        >
-                          <b-form-checkbox
-                            v-model="form.willBuy"
-                            :name="`checkbox-${index}`"
-                            value="accepted"
-                            unchecked-value="not_accepted"
-                          >
-                            Этот альбом будет куплен
-                          </b-form-checkbox>
                         </div>
 
                         <div
