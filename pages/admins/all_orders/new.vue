@@ -15,6 +15,9 @@
               type="number"
               placeholder="Введите номер"
             />
+            <div v-if="!$v.order.number.required" class="error">
+              Это поле обязательное
+            </div>
           </b-col>
         </b-row>
 
@@ -105,6 +108,9 @@
                 placeholder="выберите менеджера"
               />
             </div>
+            <div v-if="!$v.order.managerId.required" class="error">
+              Это поле обязательное
+            </div>
           </b-col>
         </b-row>
 
@@ -122,6 +128,9 @@
             placeholder="выберите разделы"
             :custom-label="localizeSections"
           />
+          <div v-if="!$v.order.sections.required" class="error">
+            Это поле обязательное
+          </div>
         </div>
 
         <div class="mt-3">
@@ -136,6 +145,9 @@
             placeholder="выберите дизайн"
             :custom-label="localizeDesigns"
           />
+          <div v-if="!$v.order.design.required" class="error">
+            Это поле обязательное
+          </div>
         </div>
 
         <b-row>
@@ -477,6 +489,11 @@ export default {
 
 .card-body {
   border-radius: 5px;
+}
+
+.error {
+  font-size: $font-size-xs;
+  color: $danger-color;
 }
 
 .mx-datepicker {
