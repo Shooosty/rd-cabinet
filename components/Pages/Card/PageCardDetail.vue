@@ -29,13 +29,13 @@
     </div>
 
     <div
-      v-if="isOrderPage && this.$auth.user.role === 'user' && !isEditPage"
+      v-if="isOrderPage && this.$auth.user.role === 'user'"
       class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
     >
       <div>
         <fa :icon="['fas', 'info']" class="info-icon mr-2" />
         <span v-if="resource.status === 'photoDateApproved'">
-          Заполните разделы с моделями во вкладке "Фотографии"
+          Заполните разделы с моделями во вкладке "Модели"
         </span>
 
         <span v-if="resource.status === 'needAnotherPhotoDate'">
@@ -88,13 +88,33 @@
 
       <div v-if="resource.status === 'onTheFormation'">
         <LinkButton
+          v-b-modal.toFormation
           label="Сформировать"
           icon="magic"
           btn-class="black"
           govern="viewForUser"
-          :fn="toDesign"
         />
       </div>
+
+      <b-modal id="toFormation" centered hide-footer title="Вы уверены?">
+        <p class="my-4">
+          Вы собираетесь отправить заказ на формирование. Вы проверили имена
+          моделей и тех кто берет альбом? Убедитесь, что все верно - заказ
+          отправляется в работу!
+        </p>
+        <div class="d-inline-flex">
+          <LinkButton
+            label="Да, сформировать"
+            btn-class="success"
+            :fn="toDesign"
+          />
+          <LinkButton
+            label="Отмена"
+            btn-class="danger"
+            @click.native="$bvModal.hide('toFormation')"
+          />
+        </div>
+      </b-modal>
 
       <div v-if="resource.status === 'onTheFormation'" class="ml-2">
         <vue-countdown-timer
@@ -108,8 +128,6 @@
           :day-txt="' дней'"
           :hour-txt="' часов'"
           :minutes-txt="' минут'"
-          @start_callback="startCallBack('event started')"
-          @end_callback="endCallBack('event ended')"
         >
           <template slot="countdown" slot-scope="scope">
             <span>{{ scope.props.days }}</span
@@ -138,30 +156,68 @@
         class="d-inline-flex"
       >
         <LinkButton
+          v-b-modal.toDesign
           label="Вернуть дизайнеру"
           icon="magic"
           btn-class="black"
           govern="viewForUser"
-          :fn="toDesign"
         />
         <LinkButton
+          v-b-modal.toPrint
           label="В печать"
           icon="print"
           btn-class="black"
           govern="viewForUser"
-          :fn="toPrint"
         />
       </div>
+
+      <b-modal id="toDesign" centered hide-footer title="Вы уверены?">
+        <p class="my-4">Отправить дизайнеру на правки ?</p>
+        <div class="d-inline-flex">
+          <LinkButton
+            label="Да, отправить"
+            btn-class="success"
+            :fn="toDesign"
+          />
+          <LinkButton
+            label="Отмена"
+            btn-class="danger"
+            @click.native="$bvModal.hide('toDesign')"
+          />
+        </div>
+      </b-modal>
+
+      <b-modal id="toPrint" centered hide-footer title="Вы уверены?">
+        <p class="my-4">
+          Вы проверили макеты и вас все устроило? Дальнейшие правки не будут
+          приняты в работу. Макеты отправятся в печать после нажатия "Да, я
+          согласен"
+        </p>
+        <div class="d-inline-flex">
+          <LinkButton label="Да, отправить" btn-class="success" :fn="toPrint" />
+          <LinkButton
+            label="Отмена"
+            btn-class="danger"
+            @click.native="$bvModal.hide('toPrint')"
+          />
+        </div>
+      </b-modal>
     </div>
 
     <div
       v-if="
-        (isOrderPage && this.$auth.user.role !== 'user' && !isEditPage) ||
-        (isOrderPage && this.$auth.user.role !== 'photographer' && !isEditPage)
+        (isOrderPage &&
+          this.$auth.user.role !== 'user' &&
+          !isEditPage &&
+          resource.status === 'onTheFormation') ||
+        (isOrderPage &&
+          this.$auth.user.role !== 'photographer' &&
+          !isEditPage &&
+          resource.status === 'onTheFormation')
       "
       class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
     >
-      <div v-if="resource.status === 'onTheFormation'" class="ml-2">
+      <div class="ml-2">
         <vue-countdown-timer
           :start-time="resource.preFormDate"
           :end-time="sevenDaysCountDown"
@@ -271,6 +327,14 @@
             :is-edit-page="isEditPage"
           />
         </v-tab>
+        <v-tab title="Модели">
+          <ModelOrder
+            class="mt-3"
+            :resource.sync="resource"
+            :persons="persons"
+            :is-edit-page="isEditPage"
+          />
+        </v-tab>
         <v-tab title="Фотографии">
           <PhotoOrder
             class="mt-3"
@@ -327,6 +391,7 @@ import UserGeneral from '~/components/Pages/User/UserGeneral'
 import UserOrders from '~/components/Pages/User/UserOrders'
 import SecondaryOrder from '~/components/Pages/Order/SecondaryOrder'
 import PhotoOrder from '~/components/Pages/Order/PhotoOrder'
+import ModelOrder from '~/components/Pages/Order/ModelOrder'
 import ProjectFiles from '~/components/Pages/Project/ProjectFiles'
 import GeneralProject from '~/components/Pages/Project/GeneralProject'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
@@ -340,6 +405,7 @@ export default {
     DocumentsOrder,
     PageHeader,
     GeneralOrder,
+    ModelOrder,
     SecondaryOrder,
     ProjectFiles,
     GeneralProject,
@@ -424,13 +490,13 @@ export default {
       update: 'order/UPDATE',
     }),
 
-    startCallBack(x) {
-      console.log(x)
-    },
-
-    endCallBack(x) {
-      console.log(x)
-    },
+    // startCallBack(x) {
+    //   console.log(x)
+    // },
+    //
+    // endCallBack(x) {
+    //   console.log(x)
+    // },
 
     commentsShowed(c) {
       switch (this.resource.status) {
@@ -462,46 +528,43 @@ export default {
     },
 
     toDesign() {
-      if (confirm('Отправить в отдел дизайна?')) {
-        if (
-          this.persons.map((p) => {
-            return p.photosCount !== 0
-          })
-        ) {
-          try {
-            this.error = null
-            const updatedOrder = this.resource
-            updatedOrder.status = 'onDesign'
+      if (
+        this.persons.map((p) => {
+          return p.photosCount !== 0
+        })
+      ) {
+        try {
+          this.error = null
+          const updatedOrder = this.resource
+          updatedOrder.status = 'onDesign'
+          if (this.resource.status === 'onTheFormation') {
             updatedOrder.formDate = this.$dayjs(new Date()).format(
               'YYYY-MM-DD HH:mm'
             )
-
-            this.update(Object.assign({}, updatedOrder))
-          } catch (e) {
-            this.error = e.response
-          } finally {
-            if (this.error == null) {
-              setTimeout(() => this.$router.push({ path: '/my_orders' }), 2000)
-              this.$notification.success('Заказ передан дизайнеру', {
-                timer: 3,
-                position: 'topRight',
-              })
-            } else {
-              this.$notification.error('Не удалось передать заказ', {
-                timer: 3,
-                position: 'topRight',
-              })
-            }
           }
-        } else {
-          this.$notification.error(
-            'Нельзя передать заказ с моделями без фото',
-            {
+
+          this.update(Object.assign({}, updatedOrder))
+        } catch (e) {
+          this.error = e.response
+        } finally {
+          if (this.error == null) {
+            setTimeout(() => this.$router.push({ path: '/my_orders' }), 2000)
+            this.$notification.success('Заказ передан дизайнеру', {
               timer: 3,
               position: 'topRight',
-            }
-          )
+            })
+          } else {
+            this.$notification.error('Не удалось передать заказ', {
+              timer: 3,
+              position: 'topRight',
+            })
+          }
         }
+      } else {
+        this.$notification.error('Нельзя передать заказ с моделями без фото', {
+          timer: 3,
+          position: 'topRight',
+        })
       }
     },
 
@@ -563,28 +626,26 @@ export default {
     },
 
     toPrint() {
-      if (confirm('Отправить этот заказ в производство?')) {
-        try {
-          this.error = null
-          const updatedOrder = this.resource
-          updatedOrder.status = 'onProduction'
+      try {
+        this.error = null
+        const updatedOrder = this.resource
+        updatedOrder.status = 'onProduction'
 
-          this.update(Object.assign({}, updatedOrder))
-        } catch (e) {
-          this.error = e.response
-        } finally {
-          if (this.error == null) {
-            setTimeout(() => this.$router.push({ path: '/my_orders' }), 2000)
-            this.$notification.success('Заказ передан в печать', {
-              timer: 3,
-              position: 'topRight',
-            })
-          } else {
-            this.$notification.error('Не удалось передать заказ в печать', {
-              timer: 3,
-              position: 'topRight',
-            })
-          }
+        this.update(Object.assign({}, updatedOrder))
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        if (this.error == null) {
+          setTimeout(() => this.$router.push({ path: '/my_orders' }), 2000)
+          this.$notification.success('Заказ передан в печать', {
+            timer: 3,
+            position: 'topRight',
+          })
+        } else {
+          this.$notification.error('Не удалось передать заказ в печать', {
+            timer: 3,
+            position: 'topRight',
+          })
         }
       }
     },

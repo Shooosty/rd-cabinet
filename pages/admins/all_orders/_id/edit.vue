@@ -40,6 +40,20 @@ export default {
   data() {
     return {
       error: null,
+
+      defaultFormModels: {
+        name: '',
+        surname: '',
+        orderId: '',
+        middleName: '',
+        role: '',
+        type: '',
+        willBuy: 'not_accepted',
+        description: '',
+        photosCount: null,
+        changesAgree: 'not_accepted',
+      },
+
       actions: [
         {
           label: 'Сохранить',
@@ -54,10 +68,55 @@ export default {
               updatedOrder.photographerId = updatedOrder.photographerId.ID
               updatedOrder.userId = updatedOrder.userId.ID
               updatedOrder.managerId = updatedOrder.managerId.ID
-              updatedOrder.contract = this.$store.state.contract.file
-              updatedOrder.attachmentContract = this.$store.state.attachContract.file
+
+              if (this.$store.state.contract.file !== '') {
+                updatedOrder.contract = this.$store.state.contract.file
+              }
+
+              if (this.$store.state.attachContract.file !== '') {
+                updatedOrder.attachmentContract = this.$store.state.attachContract.file
+              }
+
+              if (this.$store.state.additionalContract.file !== '') {
+                updatedOrder.additionalContract = this.$store.state.additionalContract.file
+              }
+
+              if (this.$store.state.photoContract.file !== '') {
+                updatedOrder.photoContract = this.$store.state.photoContract.file
+              }
+
+              if (this.$store.state.file.file !== '') {
+                const arr = []
+                this.resource.tz.forEach((t) => {
+                  arr.push(t)
+                })
+                arr.push(this.$store.state.file.file)
+                updatedOrder.tz = arr
+              }
+
+              if (this.$store.state.layout.file !== '') {
+                updatedOrder.layout = this.$store.state.layout.file
+              }
 
               await this.update(Object.assign({}, updatedOrder))
+
+              if (updatedOrder.sections.includes('cover')) {
+                this.savePerson(
+                  this.resource.ID,
+                  'cover',
+                  'Фото учебного заведения'
+                )
+              }
+              if (updatedOrder.sections.includes('group')) {
+                this.savePerson(
+                  this.resource.ID,
+                  'group',
+                  'Общегрупповая фотография'
+                )
+              }
+              if (updatedOrder.sections.includes('reportage')) {
+                this.savePerson(this.resource.ID, 'reportage', 'Репортаж')
+              }
             } catch (e) {
               this.error = e.response.data
             } finally {
@@ -144,6 +203,7 @@ export default {
     ...mapActions({
       update: 'order/UPDATE',
       delete: 'order/DELETE',
+      createPerson: 'person/CREATE',
       removeOnS3: 'photo/DELETE_ON_S3',
       removePhoto: 'photo/DELETE',
     }),
@@ -158,6 +218,14 @@ export default {
         await this.removePhoto(i.ID)
         await this.removeOnS3(i.nameS3)
       }
+    },
+
+    async savePerson(id, type, name) {
+      const newPerson = this.defaultFormModels
+      newPerson.orderId = id
+      newPerson.surname = name
+      newPerson.type = type
+      await this.createPerson(Object.assign({}, newPerson))
     },
 
     async fetchPhotos() {

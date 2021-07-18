@@ -22,7 +22,7 @@
                   </div>
                   <div class="mt-2">
                     <span>
-                      <fa :icon="['fas', `calendar`]" />
+                      <fa :icon="['fas', `camera`]" />
                     </span>
                     <span class="ml-2">
                       {{ parseDate(card.dateTimes[0]) }}
@@ -75,7 +75,11 @@ export default {
 
   methods: {
     to(id) {
-      this.$router.push(`/${this.resourceName}/${id}`)
+      if (this.$auth.user.role === 'user') {
+        this.$router.push(`/${this.resourceName}/${id}/edit`)
+      } else {
+        this.$router.push(`/${this.resourceName}/${id}`)
+      }
     },
 
     parseDate(value) {

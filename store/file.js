@@ -25,11 +25,11 @@ export const actions = {
   },
 
   CLEAR({ commit }) {
-    commit('CLEAR')
+    commit('CLEAR_FILE')
   },
 
   DELETE_ALL({ commit }) {
     this.$axios.post(`api/s3/delete`)
-    commit('CLEAR')
+    commit('CLEAR_FILE')
   },
 }

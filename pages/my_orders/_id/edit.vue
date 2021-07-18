@@ -49,6 +49,7 @@ export default {
               this.error = null
               const updatedOrder = this.resource
               updatedOrder.layout = this.$store.state.layout.file
+              updatedOrder.photoContract = this.$store.state.photoContract.file
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {
@@ -75,7 +76,10 @@ export default {
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to: `/my_orders/${this.$route.params.id}`,
+          to:
+            this.$auth.user.role === 'user'
+              ? `/my_orders`
+              : `/my_orders/${this.$route.params.id}`,
           icon: 'window-close',
         },
       ],

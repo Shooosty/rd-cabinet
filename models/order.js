@@ -1,5 +1,5 @@
 export default {
-  sections: ['cover', 'teachers', 'pupils', 'group', 'reportage', 'text'],
+  sections: ['cover', 'teachers', 'pupils', 'group', 'reportage'],
 
   comments: [
     {
@@ -131,7 +131,6 @@ export default {
     'photoDateChecked',
     'onTheFormation',
     'onDesign',
-    'onTheFormation',
     'onEdits',
     'onProduction',
     'done',

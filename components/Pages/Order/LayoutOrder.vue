@@ -47,7 +47,7 @@
           <fa :icon="['fas', 'file-pdf']" />
           <span> Макет </span>
         </a>
-        <span v-else class="yellow"> на формировании </span>
+        <span v-else class="yellow"> формируется </span>
       </b-list-group-item>
       <b-list-group-item v-if="resource.layoutFormDate">
         <b> Дата формирования макета: </b>
@@ -65,7 +65,7 @@
             resource.status === 'onProduction')
         "
       >
-        <a href="#" @click="generateZip">Скачать архив фото</a>
+        <a href="#" @click="generateZip(resource.number)">Скачать архив фото</a>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -120,16 +120,16 @@ export default {
       })
     },
 
-    generateZip() {
+    generateZip(name) {
       const zip = new JSZip()
 
       this.photos.forEach((p) => {
-        zip.file(p.name, this.urlToPromise(p.url), { binary: true })
+        zip.file(p.nameS3, this.urlToPromise(p.url), { binary: true })
       })
 
       if (this.resource) {
         zip.generateAsync({ type: 'blob' }).then(function callback(blob) {
-          saveAs(blob, 'photos.zip')
+          saveAs(blob, `${name}.zip`)
         })
       }
     },

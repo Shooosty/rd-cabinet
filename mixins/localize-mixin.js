@@ -23,8 +23,6 @@ export default {
           return 'Общегрупповая фотография'
         case 'reportage':
           return 'Репортаж'
-        case 'text':
-          return 'Текстовая информация'
       }
     },
 

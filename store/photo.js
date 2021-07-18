@@ -26,11 +26,15 @@ export const actions = {
     const formData = new FormData()
     formData.append('file', file.file)
     this.$axios
-      .post(`api/photos/${file.personId}/${file.orderId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      .post(
+        `api/photos/${file.personId}/${file.orderId}/${file.fileName}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
       .then((response) => {
         commit('CREATE_OR_UPDATE_PHOTOS', response.data)
       })

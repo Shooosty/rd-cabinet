@@ -25,6 +25,6 @@ export const actions = {
   },
 
   CLEAR({ commit }) {
-    commit('CLEAR')
+    commit('CLEAR_FILE')
   },
 }

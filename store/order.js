@@ -3,6 +3,7 @@ import commonMutations from '~/helpers/mutations-helper'
 
 export const state = () => ({
   items: [],
+  orderId: '',
   pagination: {},
 })
 
@@ -49,6 +50,7 @@ export const actions = {
   CREATE({ commit }, object) {
     return this.$axios.$post('api/orders/', object).then((response) => {
       commit('CREATE_OR_UPDATE_ITEMS', response.data)
+      commit('SET_ORDER_ID', response.id)
     })
   },
 

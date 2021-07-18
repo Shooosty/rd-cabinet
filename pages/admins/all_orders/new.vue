@@ -300,6 +300,19 @@ export default {
         },
       ],
 
+      defaultFormModels: {
+        name: '',
+        surname: '',
+        orderId: '',
+        middleName: '',
+        role: '',
+        type: '',
+        willBuy: 'not_accepted',
+        description: '',
+        photosCount: null,
+        changesAgree: 'not_accepted',
+      },
+
       order: {
         status: 'photoDateApproved',
         number: '',
@@ -308,6 +321,7 @@ export default {
         photographerId: '',
         designerId: '',
         managerId: '',
+        tz: [],
         contract: '',
         attachmentContract: '',
         address: '',
@@ -348,9 +362,29 @@ export default {
                 })
 
                 await this.create(Object.assign({}, newOrder))
+
+                if (newOrder.sections.includes('cover')) {
+                  this.savePerson(
+                    this.newOrderId,
+                    'cover',
+                    'Фото учебного заведения'
+                  )
+                }
+                if (newOrder.sections.includes('group')) {
+                  this.savePerson(
+                    this.newOrderId,
+                    'group',
+                    'Общегрупповая фотография'
+                  )
+                }
+                if (newOrder.sections.includes('reportage')) {
+                  this.savePerson(this.newOrderId, 'reportage', 'Репортаж')
+                }
               } catch (e) {
                 this.error = e.response.data
               } finally {
+                this.clearContract()
+                this.clearAttachContract()
                 if (this.error == null) {
                   this.$router.push({ path: '/admins/all_orders' })
                   this.$notification.success('Создан новый заказ', {
@@ -380,6 +414,7 @@ export default {
   computed: {
     ...mapGetters({
       users: 'user/items',
+      newOrderId: 'order/orderId',
     }),
   },
 
@@ -387,6 +422,7 @@ export default {
     ...mapActions({
       create: 'order/CREATE',
       createContract: 'contract/CREATE',
+      createPerson: 'person/CREATE',
       clearContract: 'contract/CLEAR',
       createAttachContract: 'attachContract/CREATE',
       clearAttachContract: 'attachContract/CLEAR',
@@ -422,6 +458,14 @@ export default {
       today.setHours(0, 0, 0, 0)
 
       return date < today
+    },
+
+    async savePerson(id, type, name) {
+      const newPerson = this.defaultFormModels
+      newPerson.orderId = id
+      newPerson.surname = name
+      newPerson.type = type
+      await this.createPerson(Object.assign({}, newPerson))
     },
 
     async saveContract() {

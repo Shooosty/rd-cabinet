@@ -41,6 +41,46 @@
           @beforedelete="deleteAttachmentContract($event)"
         />
       </b-list-group-item>
+      <b-list-group-item>
+        <label for="attContract">Загрузите доп соглашение</label>
+        <VueFileAgent
+          ref="addContract"
+          :deletable="true"
+          :meta="true"
+          :theme="'list'"
+          :average-color="false"
+          :help-text="'Выберите или перетащите соглашение'"
+          :error-text="{
+            type: 'Неправильный тип файла',
+            size: 'Недопустимый размер файла',
+          }"
+          :accept="'.pdf, .doc, .jpg, .jpeg'"
+          :max-size="'10MB'"
+          :max-files="1"
+          @select="saveAdditionalContract"
+          @beforedelete="deleteAdditionalContract($event)"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
+        <label for="attContract">Загрузите акт съемки</label>
+        <VueFileAgent
+          ref="photoContract"
+          :deletable="true"
+          :meta="true"
+          :theme="'list'"
+          :average-color="false"
+          :help-text="'Выберите или перетащите акт'"
+          :error-text="{
+            type: 'Неправильный тип файла',
+            size: 'Недопустимый размер файла',
+          }"
+          :accept="'.pdf, .doc, .jpg, .jpeg'"
+          :max-size="'10MB'"
+          :max-files="1"
+          @select="savePhotoContract"
+          @beforedelete="deletePhotoContract($event)"
+        />
+      </b-list-group-item>
     </b-list-group>
   </div>
 
@@ -67,6 +107,30 @@
         >
           <fa :icon="['fas', 'file-pdf']" />
           <span> Приложение </span>
+        </a>
+        <span v-else class="red"> нет приложения </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Доп соглашение: </b>
+        <a
+          v-if="resource.additionalContract !== ''"
+          class="contract ml-1"
+          :href="resource.additionalContract"
+        >
+          <fa :icon="['fas', 'file-pdf']" />
+          <span> Доп соглашение </span>
+        </a>
+        <span v-else class="red"> нет доп соглашения </span>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b> Акт съемки: </b>
+        <a
+          v-if="resource.photoContract !== ''"
+          class="contract ml-1"
+          :href="resource.photoContract"
+        >
+          <fa :icon="['fas', 'file-pdf']" />
+          <span> Акт съемки </span>
         </a>
         <span v-else class="red"> нет приложения </span>
       </b-list-group-item>
@@ -98,6 +162,10 @@ export default {
       clearContract: 'contract/CLEAR',
       createAttachContract: 'attachContract/CREATE',
       clearAttachContract: 'attachContract/CLEAR',
+      createAdditionalContract: 'additionalContract/CREATE',
+      clearAdditionalContract: 'additionalContract/CLEAR',
+      createPhotoContract: 'photoContract/CREATE',
+      clearPhotoContract: 'photoContract/CLEAR',
     }),
 
     deleteContract(fileRecord) {
@@ -109,6 +177,18 @@ export default {
     deleteAttachmentContract(fileRecord) {
       if (confirm('Подтверждаете удаление?')) {
         this.$refs.attContract.deleteFileRecord(fileRecord)
+      }
+    },
+
+    deleteAdditionalContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.addContract.deleteFileRecord(fileRecord)
+      }
+    },
+
+    deletePhotoContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.photoContract.deleteFileRecord(fileRecord)
       }
     },
 
@@ -125,6 +205,60 @@ export default {
         if (this.error == null) {
           this.$notification.success(
             `${this.$refs.attContract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
+    },
+
+    saveAdditionalContract() {
+      try {
+        this.error = null
+        const file = this.$refs.addContract._data.fileRecords[0].file
+        this.createAdditionalContract(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        this.clearAdditionalContract()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.addContract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
+    },
+
+    savePhotoContract() {
+      try {
+        this.error = null
+        const file = this.$refs.photoContract._data.fileRecords[0].file
+        this.createPhotoContract(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        this.clearPhotoContract()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.photoContract._data.fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
               position: 'topRight',

@@ -10,7 +10,7 @@ export const mutations = { ...commonMutations }
 
 export const actions = {
   CREATE({ commit }, file) {
-    commit('CLEAR')
+    commit('CLEAR_FILE')
     const formData = new FormData()
     formData.append('file', file)
     this.$axios
@@ -25,6 +25,6 @@ export const actions = {
   },
 
   CLEAR({ commit }) {
-    commit('CLEAR')
+    commit('CLEAR_FILE')
   },
 }

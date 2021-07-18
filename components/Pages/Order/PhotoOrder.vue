@@ -23,7 +23,6 @@
               <fa v-if="section === 'cover'" :icon="['fas', 'building']" />
               <fa v-if="section === 'group'" :icon="['fas', 'users']" />
               <fa v-if="section === 'reportage'" :icon="['fas', 'images']" />
-              <fa v-if="section === 'text'" :icon="['fas', 'file-alt']" />
             </span>
             <span
               :name="section"
@@ -101,102 +100,6 @@
                   >
                     <b-card-body>
                       <b-card-text>
-                        <b-row
-                          v-if="section === 'pupils' || section === 'teachers'"
-                        >
-                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                            <div>
-                              <b-form-input
-                                v-model="form.surname"
-                                :disabled="
-                                  resource.status !== 'photoDateApproved' &&
-                                  resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted' &&
-                                  userRole === 'user'
-                                "
-                                required
-                                type="text"
-                                :name="`surname-${index}`"
-                                placeholder="Фамилия"
-                              />
-                            </div>
-                          </b-col>
-                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                            <div>
-                              <b-form-input
-                                v-model="form.name"
-                                :disabled="
-                                  resource.status !== 'photoDateApproved' &&
-                                  resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted' &&
-                                  userRole === 'user'
-                                "
-                                required
-                                type="text"
-                                :name="`name-${index}`"
-                                placeholder="Имя"
-                              />
-                            </div>
-                          </b-col>
-                          <b-col xl="4" lg="4" md="12" sm="12" class="mt-1">
-                            <div>
-                              <b-form-input
-                                v-model="form.middleName"
-                                :disabled="
-                                  resource.status !== 'photoDateApproved' &&
-                                  resource.status !== 'onTheFormation' &&
-                                  form.changesAgree !== 'accepted' &&
-                                  userRole === 'user'
-                                "
-                                required
-                                type="text"
-                                :name="`middlename-${index}`"
-                                placeholder="Отчество"
-                              />
-                            </div>
-                          </b-col>
-                        </b-row>
-
-                        <div v-if="section === 'teachers'" class="mt-3">
-                          <div>
-                            <b-form-input
-                              v-model="form.role"
-                              :disabled="
-                                resource.status !== 'photoDateApproved' &&
-                                resource.status !== 'onTheFormation' &&
-                                form.changesAgree !== 'accepted' &&
-                                userRole === 'user'
-                              "
-                              required
-                              type="text"
-                              :name="`role-${index}`"
-                              placeholder="Должность"
-                            />
-                          </div>
-                        </div>
-
-                        <div
-                          v-show="
-                            ($isAllowed('viewForUser') &&
-                              section === 'pupils' &&
-                              resource.status === 'photoDateApproved') ||
-                            ($isAllowed('viewForUser') &&
-                              section === 'pupils' &&
-                              resource.status === 'onTheFormation') ||
-                            ($isAllowed('viewForAdmin') && section === 'pupils')
-                          "
-                          class="mt-3"
-                        >
-                          <b-form-checkbox
-                            v-model="form.willBuy"
-                            :name="`checkbox-${index}`"
-                            value="accepted"
-                            unchecked-value="not_accepted"
-                          >
-                            Этот альбом будет куплен
-                          </b-form-checkbox>
-                        </div>
-
                         <div
                           v-if="
                             photos.length &&
@@ -221,7 +124,10 @@
                                     download
                                   />
                                 </div>
-                                <div class="delete-btn-container">
+                                <div
+                                  v-b-toggle="`collapse-${index}-${form.type}`"
+                                  class="delete-btn-container"
+                                >
                                   <IconButton
                                     icon="trash"
                                     class="delete-btn"
@@ -271,13 +177,6 @@
                           </b-form-checkbox>
                         </div>
 
-                        <div v-if="form.tz">
-                          <a :href="form.tz">
-                            <fa :icon="['fas', 'file-pdf']" />
-                            <span> Текстовый файл </span>
-                          </a>
-                        </div>
-
                         <div
                           v-if="
                             ($isAllowed('viewForUser') &&
@@ -310,93 +209,19 @@
                           />
                         </div>
 
-                        <div v-if="section === 'text' && !form.tz" class="mt-5">
-                          <h6>Загрузите текстовый файл</h6>
-                          <VueFileAgent
-                            ref="text"
-                            :multiple="true"
-                            :deletable="true"
-                            :meta="true"
-                            :average-color="false"
-                            :help-text="'Выберите или перетащите текстовый файл'"
-                            :error-text="{
-                              type: 'Неправильный тип файла',
-                              size: 'Недопустимый размер файла',
-                            }"
-                            :accept="'.pdf, .doc, .txt'"
-                            :max-size="'10MB'"
-                            :max-files="1"
-                            :name="`photos-${index}`"
-                            @select="saveTz(index)"
-                            @beforedelete="deletePhoto($event, section, index)"
+                        <div class="mt-3 d-flex justify-content-center">
+                          <PrimaryButton
+                            v-b-toggle="`collapse-${index}-${form.type}`"
+                            label="Загрузить фото"
+                            @click.native="
+                              updatePerson(section, index, form.ID)
+                            "
                           />
-                        </div>
-
-                        <div class="mt-3">
-                          <b-form-textarea
-                            v-model="form.description"
-                            placeholder="Поле для заметок.."
-                            rows="3"
-                            max-rows="8"
-                          />
-                        </div>
-
-                        <div
-                          class="d-flex align-items-center justify-content-between"
-                        >
-                          <div class="d-flex justify-content-start mt-4">
-                            <IconButton
-                              v-b-toggle="`collapse-${index}-${form.type}`"
-                              icon="save"
-                              @click.native="
-                                savePerson(section, index, form.ID)
-                              "
-                            />
-                          </div>
-                          <div class="d-flex justify-content-end mt-4">
-                            <IconButton
-                              icon="trash"
-                              class="remove-person-btn"
-                              @click.native="
-                                removePerson(section, index, form.ID)
-                              "
-                            />
-                          </div>
                         </div>
                       </b-card-text>
                     </b-card-body>
                   </b-collapse>
                 </b-card>
-              </div>
-              <div
-                v-if="
-                  ($isAllowed('viewForPhotographer') &&
-                    resource.status === 'photoDateApproved' &&
-                    text.length <= 0) ||
-                  ($isAllowed('viewForPhotographer') &&
-                    resource.status === 'photoDateChecked' &&
-                    text.length <= 0) ||
-                  ($isAllowed('viewForAdmin') && text.length <= 0) ||
-                  ($isAllowed('viewForUser') &&
-                    resource.status === 'photoDateApproved' &&
-                    text.length <= 0 &&
-                    section === 'pupils') ||
-                  ($isAllowed('viewForUser') &&
-                    resource.status === 'photoDateChecked' &&
-                    text.length <= 0 &&
-                    section === 'pupils') ||
-                  ($isAllowed('viewForUser') &&
-                    resource.status === 'photoDateApproved' &&
-                    text.length <= 0 &&
-                    section === 'teachers') ||
-                  ($isAllowed('viewForUser') &&
-                    resource.status === 'photoDateChecked' &&
-                    text.length <= 0 &&
-                    section === 'teachers')
-                "
-                class="d-flex justify-content-center mt-3"
-              >
-                <IconButton icon="plus" @click.native="addCard(section)" />
               </div>
             </b-card-text>
           </b-card-body>
@@ -555,11 +380,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import IconButton from '~/components/Button/IconButton'
+import PrimaryButton from '~/components/Button/PrimaryButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import LocalizeMixin from '~/mixins/localize-mixin'
 
 export default {
-  components: { IconButton },
+  components: { IconButton, PrimaryButton },
 
   perimeters: [ViewPerimeter],
 
@@ -578,25 +404,11 @@ export default {
 
   data() {
     return {
-      defaultFormModels: {
-        name: '',
-        surname: '',
-        orderId: '',
-        middleName: '',
-        role: '',
-        type: '',
-        willBuy: 'not_accepted',
-        description: '',
-        photosCount: null,
-        changesAgree: 'not_accepted',
-      },
-
       pupils: [],
       teachers: [],
       cover: [],
       group: [],
       reportage: [],
-      text: [],
 
       error: null,
     }
@@ -606,7 +418,6 @@ export default {
     ...mapGetters({
       photos: 'photo/items',
       personsV: 'person/items',
-      newPersonId: 'person/personId',
     }),
 
     personsComputed() {
@@ -647,20 +458,13 @@ export default {
             this.reportage.push(p)
           }
         }
-        if (p.type === 'text') {
-          if (!this.text.includes(p)) {
-            this.text.push(p)
-          }
-        }
       })
     },
   },
 
   methods: {
     ...mapActions({
-      create: 'person/CREATE',
       update: 'person/UPDATE',
-      delete: 'person/DELETE',
       uploadPhoto: 'photo/CREATE',
       removePhoto: 'photo/DELETE',
       removeOnS3: 'photo/DELETE_ON_S3',
@@ -681,29 +485,7 @@ export default {
           return this.group
         case 'reportage':
           return this.reportage
-        case 'text':
-          return this.text
       }
-    },
-
-    addCard(name) {
-      this.clearPhotos()
-      const newForm = this.defaultFormModels
-      newForm.type = name
-
-      if (name === 'cover') {
-        newForm.name = 'Фото учебного заведения'
-      } else if (name === 'group') {
-        newForm.name = 'Общегрупповая фотография'
-      } else if (name === 'reportage') {
-        newForm.name = 'Репортаж'
-      } else if (name === 'text') {
-        newForm.name = 'Текстовая информация'
-      } else {
-        newForm.name = ''
-      }
-
-      this.folder(name).push(Object.assign({}, newForm))
     },
 
     async fetchPhotos(id) {
@@ -722,16 +504,19 @@ export default {
       }
     },
 
-    async savePhotos(name, index, id) {
-      const fileRecs = this.$refs[name][index].fileRecords
+    async savePhotos(name, i, id, fileName) {
+      const fileRecs = this.$refs[name][i].fileRecords
       this.clearPhotos()
-      for (const file of fileRecs) {
+      for (const [index, file] of fileRecs.entries()) {
         try {
           this.error = null
           const newFile = {
             file: file.file,
             personId: id,
             orderId: this.$route.params.id,
+            fileName: `${this.localizeSections(name)}_${fileName || ''}_${
+              index + 1
+            }`,
           }
           await this.uploadPhoto(Object.assign({}, newFile))
         } catch (e) {
@@ -745,105 +530,52 @@ export default {
                 position: 'topRight',
               }
             )
-          } else if (
-            this.error.message ===
-            'pq: duplicate key value violates unique constraint \\"photos_name_uindex\\"'
-          ) {
-            this.$notification.error(
-              'Фотография с таким именем уже загружена',
-              {
-                timer: 3,
-                position: 'topRight',
-              }
+          } else {
+            this.$notification.error('Не удалось сохранить фото', {
+              timer: 3,
+              position: 'topRight',
+            })
+          }
+        }
+      }
+    },
+
+    async updatePerson(name, index, id) {
+      try {
+        this.error = null
+        const section = this.folder(name)
+        const newPerson = section[index]
+        newPerson.orderId = this.resource.ID
+
+        if (id) {
+          const fileRecs = this.$refs[name][index].fileRecords
+          if (fileRecs) {
+            await this.savePhotos(
+              name,
+              index,
+              id,
+              newPerson.surname + '_' + newPerson.name
             )
+            newPerson.photosCount = fileRecs.length + newPerson.photosCount
+            this.$refs[name][index].fileRecords = []
           }
+          await this.update(Object.assign({}, newPerson))
         }
-      }
-    },
-
-    async savePerson(name, index, id) {
-      if (confirm('Сохранить изменения?')) {
-        try {
-          this.error = null
-          const section = this.folder(name)
-          const newPerson = section[index]
-          newPerson.orderId = this.resource.ID
-
-          if (name === 'text') {
-            newPerson.tz = this.$store.state.file.file
-          }
-
-          if (id) {
-            const fileRecs = this.$refs[name][index].fileRecords
-            if (fileRecs) {
-              await this.savePhotos(name, index, id)
-              newPerson.photosCount = fileRecs.length + newPerson.photosCount
-              this.$refs[name][index].fileRecords = []
-            }
-            await this.update(Object.assign({}, newPerson))
-          } else {
-            await this.create(Object.assign({}, newPerson))
-            const fileRecs = this.$refs[name][index].fileRecords
-            if (fileRecs) {
-              await this.savePhotos(name, index, this.newPersonId)
-              newPerson.photosCount = fileRecs.length
-              this.$refs[name][index].fileRecords = []
-            }
-          }
-        } catch (e) {
-          this.error = e.response
-        } finally {
-          await this.clearPhotos()
-          if (this.error == null) {
-            this.$notification.success('Данные сохранены', {
-              timer: 3,
-              position: 'topRight',
-            })
-          } else {
-            this.$notification.error('Не удалось сохранить данные', {
-              timer: 3,
-              position: 'topRight',
-            })
-          }
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        await this.clearPhotos()
+        if (this.error == null) {
+          this.$notification.success('Данные сохранены', {
+            timer: 3,
+            position: 'topRight',
+          })
+        } else {
+          this.$notification.error('Не удалось сохранить данные', {
+            timer: 3,
+            position: 'topRight',
+          })
         }
-      }
-    },
-
-    async deleteAllPersonPhotos(id) {
-      const arr = this.photos.filter((p) => p.personId === id)
-      for (const i of arr) {
-        await this.removePhoto(i.ID)
-        await this.removeOnS3(i.nameS3)
-      }
-    },
-
-    async removePerson(name, index, id) {
-      if (id) {
-        if (confirm('Подтверждаете удаление?')) {
-          try {
-            this.error = null
-            await this.deleteAllPersonPhotos(id)
-            this.delete(id)
-          } catch (e) {
-            this.error = e.response
-          } finally {
-            this.folder(name).splice(index, 1)
-            this.clearPhotos()
-            if (this.error == null) {
-              this.$notification.success('Данные удалены', {
-                timer: 3,
-                position: 'topRight',
-              })
-            } else {
-              this.$notification.error('Не удалось удалить данные', {
-                timer: 3,
-                position: 'topRight',
-              })
-            }
-          }
-        }
-      } else {
-        this.folder(name).splice(index, 1)
       }
     },
 
@@ -875,33 +607,6 @@ export default {
               position: 'topRight',
             })
           }
-        }
-      }
-    },
-
-    saveTz(index) {
-      try {
-        this.error = null
-        const file = this.$refs.text[index].fileRecords[0].file
-        this.createFile(file)
-      } catch (e) {
-        this.error = e.response
-      } finally {
-        this.clearFiles()
-
-        if (this.error == null) {
-          this.$notification.success(
-            `${this.$refs.text[index].fileRecords[0].file.name} сохранен на сервере`,
-            {
-              timer: 2,
-              position: 'topRight',
-            }
-          )
-        } else {
-          this.$notification.error('Не удалось сохранить макет', {
-            timer: 3,
-            position: 'topRight',
-          })
         }
       }
     },
