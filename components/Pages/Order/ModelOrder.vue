@@ -389,6 +389,19 @@ export default {
     return {
       defaultSections: ['teachers', 'pupils'],
 
+      defaultFormModels: {
+        name: '',
+        surname: '',
+        orderId: '',
+        middleName: '',
+        role: '',
+        type: '',
+        willBuy: 'not_accepted',
+        description: '',
+        photosCount: null,
+        changesAgree: 'not_accepted',
+      },
+
       pupils: [],
       teachers: [],
 
