@@ -219,6 +219,10 @@
                 <b>Телефон клиента:</b>
                 <span v-if="chosenClient" v-text="chosenClient.phone" />
               </b-list-group-item>
+              <b-list-group-item>
+                <b>Почта клиента:</b>
+                <span v-if="chosenClient" v-text="chosenClient.email" />
+              </b-list-group-item>
             </b-list-group>
           </v-tab>
 

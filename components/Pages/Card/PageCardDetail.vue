@@ -34,6 +34,10 @@
     >
       <div>
         <fa :icon="['fas', 'info']" class="info-icon mr-2" />
+        <span v-if="resource.status === 'new'">
+          Ожидайте назначения съемки
+        </span>
+
         <span v-if="resource.status === 'photoDateApproved'">
           Заполните разделы с моделями во вкладке "Модели"
         </span>
@@ -335,7 +339,7 @@
             :is-edit-page="isEditPage"
           />
         </v-tab>
-        <v-tab title="Фотографии">
+        <v-tab v-if="resource.status !== 'new'" title="Фотографии">
           <PhotoOrder
             class="mt-3"
             :resource.sync="resource"
@@ -500,26 +504,28 @@ export default {
 
     commentsShowed(c) {
       switch (this.resource.status) {
-        case 'photoDateApproved':
+        case 'new':
           return c.slice(0, 1)
-        case 'needAnotherPhotoDate':
+        case 'photoDateApproved':
           return c.slice(0, 2)
-        case 'anotherPhotoDateApproved':
+        case 'needAnotherPhotoDate':
           return c.slice(0, 3)
-        case 'photoDateChecked':
+        case 'anotherPhotoDateApproved':
           return c.slice(0, 4)
-        case 'onTheFormation':
+        case 'photoDateChecked':
           return c.slice(0, 5)
-        case 'onDesign':
+        case 'onTheFormation':
           return c.slice(0, 6)
-        case 'onTheClientApprove':
+        case 'onDesign':
           return c.slice(0, 7)
-        case 'onEdits':
+        case 'onTheClientApprove':
           return c.slice(0, 8)
-        case 'onProduction':
+        case 'onEdits':
           return c.slice(0, 9)
-        case 'done':
+        case 'onProduction':
           return c.slice(0, 10)
+        case 'done':
+          return c.slice(0, 11)
       }
     },
 

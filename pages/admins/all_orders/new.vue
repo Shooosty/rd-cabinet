@@ -71,6 +71,26 @@
               Это поле обязательное
             </div>
           </b-col>
+          <b-list-group-item>
+            <label for="attContract">Загрузите доп соглашение</label>
+            <VueFileAgent
+              ref="addContract"
+              :deletable="true"
+              :meta="true"
+              :theme="'list'"
+              :average-color="false"
+              :help-text="'Выберите или перетащите соглашение'"
+              :error-text="{
+                type: 'Неправильный тип файла',
+                size: 'Недопустимый размер файла',
+              }"
+              :accept="'.pdf, .doc, .jpg, .jpeg'"
+              :max-size="'10MB'"
+              :max-files="1"
+              @select="saveAdditionalContract"
+              @beforedelete="deleteAdditionalContract($event)"
+            />
+          </b-list-group-item>
         </b-row>
 
         <b-row>
@@ -337,6 +357,7 @@ export default {
         managerId: '',
         tz: [],
         contract: '',
+        additionalContract: '',
         attachmentContract: '',
         address: '',
         preFormDate: '',
@@ -371,6 +392,7 @@ export default {
                 newOrder.userId = newOrder.userId.ID
                 newOrder.contract = this.$store.state.contract.file
                 newOrder.attachmentContract = this.$store.state.attachContract.file
+                newOrder.additionalContract = this.$store.state.additionalContract.file
                 newOrder.dateTimes = this.photoDates.map((d) => {
                   return d.datetime
                 })
@@ -439,6 +461,7 @@ export default {
     ...mapActions({
       create: 'order/CREATE',
       createContract: 'contract/CREATE',
+      createAdditionalContract: 'additionalContract/CREATE',
       createPerson: 'person/CREATE',
       clearContract: 'contract/CLEAR',
       clearAdditionalContract: 'additionalContract/CLEAR',
@@ -483,6 +506,12 @@ export default {
       }
     },
 
+    deleteAdditionalContract(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.addContract.deleteFileRecord(fileRecord)
+      }
+    },
+
     datePickerDisabledRule(date) {
       const today = new Date()
       today.setHours(0, 0, 0, 0)
@@ -510,6 +539,33 @@ export default {
         if (this.error == null) {
           this.$notification.success(
             `${this.$refs.contract._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить договор', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
+    },
+
+    saveAdditionalContract() {
+      try {
+        this.error = null
+        const file = this.$refs.addContract._data.fileRecords[0].file
+        this.createAdditionalContract(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        this.clearAdditionalContract()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.addContract._data.fileRecords[0].file.name} сохранен на сервере`,
             {
               timer: 2,
               position: 'topRight',
