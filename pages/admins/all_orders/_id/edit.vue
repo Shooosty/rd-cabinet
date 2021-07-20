@@ -99,22 +99,28 @@ export default {
               }
 
               await this.update(Object.assign({}, updatedOrder))
+              this.allFilesClear()
+              const cover = this.persons.filter((p) => p.type === 'cover')[0]
+              const group = this.persons.filter((p) => p.type === 'group')[0]
+              const reportage = this.persons.filter(
+                (p) => p.type === 'reportage'
+              )[0]
 
-              if (updatedOrder.sections.includes('cover')) {
+              if (updatedOrder.sections.includes('cover') && !cover) {
                 this.savePerson(
                   this.resource.ID,
                   'cover',
                   'Фото учебного заведения'
                 )
               }
-              if (updatedOrder.sections.includes('group')) {
+              if (updatedOrder.sections.includes('group') && !group) {
                 this.savePerson(
                   this.resource.ID,
                   'group',
                   'Общегрупповая фотография'
                 )
               }
-              if (updatedOrder.sections.includes('reportage')) {
+              if (updatedOrder.sections.includes('reportage') && !reportage) {
                 this.savePerson(this.resource.ID, 'reportage', 'Репортаж')
               }
             } catch (e) {
@@ -204,6 +210,11 @@ export default {
       update: 'order/UPDATE',
       delete: 'order/DELETE',
       createPerson: 'person/CREATE',
+      clearContract: 'contract/CLEAR',
+      clearAdditionalContract: 'additionalContract/CLEAR',
+      clearPhotoContract: 'photoContract/CLEAR',
+      clearFile: 'file/CLEAR',
+      clearLayout: 'layout/CLEAR',
       removeOnS3: 'photo/DELETE_ON_S3',
       removePhoto: 'photo/DELETE',
     }),
@@ -218,6 +229,15 @@ export default {
         await this.removePhoto(i.ID)
         await this.removeOnS3(i.nameS3)
       }
+    },
+
+    allFilesClear() {
+      this.clearContract()
+      this.clearAttachContract()
+      this.clearAdditionalContract()
+      this.clearPhotoContract()
+      this.clearFile()
+      this.clearLayout()
     },
 
     async savePerson(id, type, name) {

@@ -58,7 +58,11 @@
                     <div
                       class="d-flex justify-content-start align-items-center ml-2"
                     >
-                      <span v-if="form.name" :name="index" class="ml-2">
+                      <span
+                        v-if="form.name || form.surname"
+                        :name="index"
+                        class="ml-2"
+                      >
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
                       </span>
                       <span
@@ -556,10 +560,10 @@ export default {
               id,
               newPerson.surname + '_' + newPerson.name
             )
+            await this.update(Object.assign({}, newPerson))
             newPerson.photosCount = fileRecs.length + newPerson.photosCount
             this.$refs[name][index].fileRecords = []
           }
-          await this.update(Object.assign({}, newPerson))
         }
       } catch (e) {
         this.error = e.response

@@ -201,9 +201,11 @@
                           class="d-flex align-items-center justify-content-between"
                         >
                           <div class="d-flex justify-content-start mt-4">
-                            <IconButton
+                            <LinkButton
                               v-b-toggle="`collapse-${index}-${form.type}`"
                               icon="save"
+                              label="Сохранить"
+                              btn-class="success"
                               @click.native="
                                 savePerson(section, index, form.ID)
                               "
@@ -366,9 +368,10 @@ import { mapActions, mapGetters } from 'vuex'
 import IconButton from '~/components/Button/IconButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 import LocalizeMixin from '~/mixins/localize-mixin'
+import LinkButton from '~/components/Button/LinkButton'
 
 export default {
-  components: { IconButton },
+  components: { LinkButton, IconButton },
 
   perimeters: [ViewPerimeter],
 

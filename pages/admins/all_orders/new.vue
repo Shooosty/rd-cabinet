@@ -26,6 +26,7 @@
             <label for="contract">Загрузите копию договора</label>
             <VueFileAgent
               ref="contract"
+              v-model.trim="$v.order.contract.$model"
               :multiple="false"
               :deletable="true"
               :meta="true"
@@ -42,11 +43,15 @@
               @select="saveContract"
               @beforedelete="deleteContract($event)"
             />
+            <div v-if="!$v.order.contract.required" class="error">
+              Это поле обязательное
+            </div>
           </b-col>
           <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
             <label for="attContract">Загрузите приложение к договору</label>
             <VueFileAgent
               ref="attContract"
+              v-model.trim="$v.order.attachmentContract.$model"
               :deletable="true"
               :meta="true"
               :theme="'list'"
@@ -62,6 +67,9 @@
               @select="saveAttachmentContract"
               @beforedelete="deleteAttachmentContract($event)"
             />
+            <div v-if="!$v.order.attachmentContract.required" class="error">
+              Это поле обязательное
+            </div>
           </b-col>
         </b-row>
 
@@ -271,6 +279,12 @@ export default {
       managerId: {
         required,
       },
+      contract: {
+        required,
+      },
+      attachmentContract: {
+        required,
+      },
       number: {
         required,
         numeric,
@@ -381,10 +395,9 @@ export default {
                   this.savePerson(this.newOrderId, 'reportage', 'Репортаж')
                 }
               } catch (e) {
-                this.error = e.response.data
+                this.error = e.response
               } finally {
-                this.clearContract()
-                this.clearAttachContract()
+                this.allFilesClear()
                 if (this.error == null) {
                   this.$router.push({ path: '/admins/all_orders' })
                   this.$notification.success('Создан новый заказ', {
@@ -424,9 +437,22 @@ export default {
       createContract: 'contract/CREATE',
       createPerson: 'person/CREATE',
       clearContract: 'contract/CLEAR',
+      clearAdditionalContract: 'additionalContract/CLEAR',
+      clearPhotoContract: 'photoContract/CLEAR',
+      clearFile: 'file/CLEAR',
+      clearLayout: 'layout/CLEAR',
       createAttachContract: 'attachContract/CREATE',
       clearAttachContract: 'attachContract/CLEAR',
     }),
+
+    allFilesClear() {
+      this.clearContract()
+      this.clearAttachContract()
+      this.clearAdditionalContract()
+      this.clearPhotoContract()
+      this.clearFile()
+      this.clearLayout()
+    },
 
     customLabel(value) {
       return `${value.name} ${value.surname} ${value.email}`

@@ -122,7 +122,7 @@ export default {
         scheme: 'refresh',
         token: {
           property: 'token',
-          maxAge: 60 * 60 * 24 * 30,
+          maxAge: 99999999,
           global: true,
         },
         refreshToken: {
