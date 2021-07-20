@@ -69,6 +69,14 @@ export default {
               updatedOrder.userId = updatedOrder.userId.ID
               updatedOrder.managerId = updatedOrder.managerId.ID
 
+              if (
+                updatedOrder.photographerId &&
+                updatedOrder.address &&
+                updatedOrder.status === 'new'
+              ) {
+                updatedOrder.status = 'photoDateApproved'
+              }
+
               if (this.$store.state.contract.file !== '') {
                 updatedOrder.contract = this.$store.state.contract.file
               }

@@ -169,6 +169,8 @@ export default {
 
     localizeStatuses(status) {
       switch (status) {
+        case 'new':
+          return 'Cъемка не назначена'
         case 'photoDateApproved':
           return 'Cъемка назначена'
         case 'needAnotherPhotoDate':

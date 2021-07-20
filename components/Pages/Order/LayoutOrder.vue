@@ -2,6 +2,27 @@
   <div v-if="isEditPage && $isAllowed('viewForAdminAndDesigner')">
     <b-list-group>
       <b-list-group-item>
+        <label for="layoutCover">Загрузите обложку макета</label>
+        <VueFileAgent
+          ref="layoutCover"
+          :multiple="false"
+          :deletable="true"
+          :meta="true"
+          :theme="'list'"
+          :average-color="false"
+          :help-text="'Выберите или перетащите договор'"
+          :error-text="{
+            type: 'Неправильный тип файла',
+            size: 'Недопустимый размер файла',
+          }"
+          :accept="'.pdf, .doc'"
+          :max-size="'20MB'"
+          :max-files="1"
+          @select="saveLayoutCover"
+          @beforedelete="deleteLayoutCover($event)"
+        />
+      </b-list-group-item>
+      <b-list-group-item>
         <label for="layout">Загрузите макет</label>
         <VueFileAgent
           ref="layout"
@@ -16,11 +37,15 @@
             size: 'Недопустимый размер файла',
           }"
           :accept="'.pdf, .doc'"
-          :max-size="'10MB'"
+          :max-size="'20MB'"
           :max-files="1"
           @select="saveLayout"
           @beforedelete="deleteLayout($event)"
         />
+      </b-list-group-item>
+      <b-list-group-item>
+        <label for="other">Ссылка на яндекс Диск для остальных файлов</label>
+        <b-input id="other" v-model="resource.yandexDisc" />
       </b-list-group-item>
       <b-list-group-item>
         <label for="description">Заметка от Дизайнера</label>
@@ -48,6 +73,10 @@
           <span> Макет </span>
         </a>
         <span v-else class="yellow"> формируется </span>
+      </b-list-group-item>
+      <b-list-group-item v-if="resource.yandexDisc">
+        <b> Ссылка на яндекс Диск (остальные файлы): </b>
+        <a :href="resource.yandexDisc" />
       </b-list-group-item>
       <b-list-group-item v-if="resource.layoutFormDate">
         <b> Дата формирования макета: </b>
@@ -104,8 +133,10 @@ export default {
 
   methods: {
     ...mapActions({
-      createFile: 'layout/CREATE',
-      clearFiles: 'layout/CLEAR',
+      createLayout: 'layout/CREATE',
+      clearLayout: 'layout/CLEAR',
+      createLayoutCover: 'layoutCover/CREATE',
+      clearLayoutCover: 'layoutCover/CLEAR',
     }),
 
     urlToPromise(url) {
@@ -144,6 +175,12 @@ export default {
       }
     },
 
+    deleteLayoutCover(fileRecord) {
+      if (confirm('Подтверждаете удаление?')) {
+        this.$refs.layoutCover.deleteFileRecord(fileRecord)
+      }
+    },
+
     async fetchPhotos() {
       await this.$store.dispatch(
         'photo/GET_ALL_BY_ORDER_ID',
@@ -151,18 +188,45 @@ export default {
       )
     },
 
+    saveLayoutCover() {
+      try {
+        this.error = null
+        const file = this.$refs.layoutCover._data.fileRecords[0].file
+        this.createLayout(file)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        this.clearLayout()
+
+        if (this.error == null) {
+          this.$notification.success(
+            `${this.$refs.layoutCover._data.fileRecords[0].file.name} сохранен на сервере`,
+            {
+              timer: 2,
+              position: 'topRight',
+            }
+          )
+        } else {
+          this.$notification.error('Не удалось сохранить макет', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
+    },
+
     saveLayout() {
       try {
         this.error = null
         const file = this.$refs.layout._data.fileRecords[0].file
-        this.createFile(file)
+        this.createLayoutCover(file)
       } catch (e) {
         this.error = e.response
       } finally {
         this.resource.layoutFormDate = this.$dayjs(new Date()).format(
           'YYYY-MM-DDTHH:mm'
         )
-        this.clearFiles()
+        this.clearLayoutCover()
 
         if (this.error == null) {
           this.$notification.success(

@@ -328,7 +328,7 @@ export default {
       },
 
       order: {
-        status: 'photoDateApproved',
+        status: 'new',
         number: '',
         design: '',
         sections: [],
@@ -374,6 +374,10 @@ export default {
                 newOrder.dateTimes = this.photoDates.map((d) => {
                   return d.datetime
                 })
+
+                if (newOrder.photographerId && newOrder.address) {
+                  newOrder.status = 'photoDateApproved'
+                }
 
                 await this.create(Object.assign({}, newOrder))
 

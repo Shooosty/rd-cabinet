@@ -84,6 +84,7 @@
                               <b-form-input
                                 v-model="form.surname"
                                 :disabled="
+                                  resource.status !== 'new' &&
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
@@ -101,6 +102,7 @@
                               <b-form-input
                                 v-model="form.name"
                                 :disabled="
+                                  resource.status !== 'new' &&
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
@@ -118,6 +120,7 @@
                               <b-form-input
                                 v-model="form.middleName"
                                 :disabled="
+                                  resource.status !== 'new' &&
                                   resource.status !== 'photoDateApproved' &&
                                   resource.status !== 'onTheFormation' &&
                                   form.changesAgree !== 'accepted' &&
@@ -137,6 +140,7 @@
                             <b-form-input
                               v-model="form.role"
                               :disabled="
+                                resource.status !== 'new' &&
                                 resource.status !== 'photoDateApproved' &&
                                 resource.status !== 'onTheFormation' &&
                                 form.changesAgree !== 'accepted' &&
@@ -152,6 +156,9 @@
 
                         <div
                           v-show="
+                            ($isAllowed('viewForUser') &&
+                              section === 'pupils' &&
+                              resource.status === 'new') ||
                             ($isAllowed('viewForUser') &&
                               section === 'pupils' &&
                               resource.status === 'photoDateApproved') ||
@@ -233,6 +240,9 @@
                   ($isAllowed('viewForPhotographer') &&
                     resource.status === 'photoDateChecked') ||
                   $isAllowed('viewForAdmin') ||
+                  ($isAllowed('viewForUser') &&
+                    resource.status === 'new' &&
+                    section === 'pupils') ||
                   ($isAllowed('viewForUser') &&
                     resource.status === 'photoDateApproved' &&
                     section === 'pupils') ||
