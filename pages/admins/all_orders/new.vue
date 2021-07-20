@@ -90,20 +90,6 @@
           </b-col>
           <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
             <div>
-              <label>Выберите фотографа</label>
-              <multiselect
-                v-model="order.photographerId"
-                :custom-label="customLabel"
-                :options="photographers"
-                selected-label="выбран"
-                deselect-label="убрать"
-                select-label="выбрать"
-                placeholder="фотограф"
-              />
-            </div>
-          </b-col>
-          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
-            <div>
               <label>Выберите менеджера</label>
               <multiselect
                 v-model="order.managerId"
@@ -118,6 +104,20 @@
             </div>
             <div v-if="!$v.order.managerId.required" class="error">
               Это поле обязательное
+            </div>
+          </b-col>
+          <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
+            <div>
+              <label>Выберите фотографа</label>
+              <multiselect
+                v-model="order.photographerId"
+                :custom-label="customLabel"
+                :options="photographers"
+                selected-label="выбран"
+                deselect-label="убрать"
+                select-label="выбрать"
+                placeholder="фотограф"
+              />
             </div>
           </b-col>
         </b-row>
