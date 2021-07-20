@@ -23,8 +23,8 @@
                     :multiple="true"
                     :close-on-select="false"
                     selected-label="выбран"
-                    deselect-label="убрать"
-                    select-label="выбрать"
+                    select-label="нажмите, чтобы выбрать"
+                    deselect-label="нажмите, чтобы убрать"
                     placeholder="выберите разделы"
                     :custom-label="localizeSections"
                   />
@@ -36,8 +36,8 @@
                   v-model="resource.status"
                   :searchable="false"
                   selected-label="выбран"
-                  deselect-label="убрать"
-                  select-label="выбрать"
+                  select-label="нажмите, чтобы выбрать"
+                  deselect-label="нажмите, чтобы убрать"
                   :custom-label="localizeStatuses"
                   :options="statuses"
                   placeholder="статус заказа"
@@ -56,6 +56,7 @@
                   :options="managers"
                   selected-label="выбран"
                   select-label="нажмите, чтобы выбрать"
+                  deselect-label="нажмите, чтобы убрать"
                   placeholder="менеджер"
                 />
               </b-list-group-item>
@@ -129,6 +130,7 @@
                   :custom-label="customLabel"
                   selected-label="выбран"
                   select-label="нажмите, чтобы выбрать"
+                  deselect-label="нажмите, чтобы убрать"
                   placeholder="фотограф"
                 />
               </b-list-group-item>
@@ -145,6 +147,7 @@
                   :custom-label="customLabel"
                   selected-label="выбран"
                   select-label="нажмите, чтобы выбрать"
+                  deselect-label="нажмите, чтобы убрать"
                   placeholder="дизайнер"
                 />
               </b-list-group-item>

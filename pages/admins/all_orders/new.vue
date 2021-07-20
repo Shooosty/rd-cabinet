@@ -133,9 +133,8 @@
                 v-model="order.photographerId"
                 :custom-label="customLabel"
                 :options="photographers"
-                selected-label="выбран"
-                deselect-label="убрать"
-                select-label="выбрать"
+                select-label="нажмите, чтобы выбрать"
+                deselect-label="нажмите, чтобы убрать"
                 placeholder="фотограф"
               />
             </div>
@@ -151,8 +150,8 @@
             :multiple="true"
             :close-on-select="false"
             selected-label="выбран"
-            deselect-label="убрать"
-            select-label="выбрать"
+            select-label="нажмите, чтобы выбрать"
+            deselect-label="нажмите, чтобы убрать"
             placeholder="выберите разделы"
             :custom-label="localizeSections"
           />
@@ -168,8 +167,8 @@
             v-model.trim="$v.order.design.$model"
             :options="designs"
             selected-label="выбран"
-            deselect-label="убрать"
-            select-label="выбрать"
+            select-label="нажмите, чтобы выбрать"
+            deselect-label="нажмите, чтобы убрать"
             placeholder="выберите дизайн"
             :custom-label="localizeDesigns"
           />

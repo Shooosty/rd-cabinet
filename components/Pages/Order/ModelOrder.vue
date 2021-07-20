@@ -489,32 +489,30 @@ export default {
     },
 
     async savePerson(name, index, id) {
-      if (confirm('Сохранить изменения?')) {
-        try {
-          this.error = null
-          const section = this.folder(name)
-          const newPerson = section[index]
-          newPerson.orderId = this.resource.ID
+      try {
+        this.error = null
+        const section = this.folder(name)
+        const newPerson = section[index]
+        newPerson.orderId = this.resource.ID
 
-          if (id) {
-            await this.update(Object.assign({}, newPerson))
-          } else {
-            await this.create(Object.assign({}, newPerson))
-          }
-        } catch (e) {
-          this.error = e.response
-        } finally {
-          if (this.error == null) {
-            this.$notification.success('Данные сохранены', {
-              timer: 3,
-              position: 'topRight',
-            })
-          } else {
-            this.$notification.error('Не удалось сохранить данные', {
-              timer: 3,
-              position: 'topRight',
-            })
-          }
+        if (id) {
+          await this.update(Object.assign({}, newPerson))
+        } else {
+          await this.create(Object.assign({}, newPerson))
+        }
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        if (this.error == null) {
+          this.$notification.success('Данные сохранены', {
+            timer: 3,
+            position: 'topRight',
+          })
+        } else {
+          this.$notification.error('Не удалось сохранить данные', {
+            timer: 3,
+            position: 'topRight',
+          })
         }
       }
     },
