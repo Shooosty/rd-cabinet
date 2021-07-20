@@ -97,15 +97,14 @@ export default {
               if (this.$store.state.layout.file !== '') {
                 updatedOrder.layout = this.$store.state.layout.file
               }
-
-              await this.update(Object.assign({}, updatedOrder))
-              this.allFilesClear()
               const cover = this.persons.filter((p) => p.type === 'cover')[0]
               const group = this.persons.filter((p) => p.type === 'group')[0]
               const reportage = this.persons.filter(
                 (p) => p.type === 'reportage'
               )[0]
 
+              await this.update(Object.assign({}, updatedOrder))
+              this.allFilesClear()
               if (updatedOrder.sections.includes('cover') && !cover) {
                 this.savePerson(
                   this.resource.ID,
@@ -124,7 +123,7 @@ export default {
                 this.savePerson(this.resource.ID, 'reportage', 'Репортаж')
               }
             } catch (e) {
-              this.error = e.response.data
+              this.error = e.response
             } finally {
               if (this.error == null) {
                 setTimeout(
@@ -211,6 +210,7 @@ export default {
       delete: 'order/DELETE',
       createPerson: 'person/CREATE',
       clearContract: 'contract/CLEAR',
+      clearAttachContract: 'attachContract/CLEAR',
       clearAdditionalContract: 'additionalContract/CLEAR',
       clearPhotoContract: 'photoContract/CLEAR',
       clearFile: 'file/CLEAR',
