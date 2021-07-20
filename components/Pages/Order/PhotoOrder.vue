@@ -216,7 +216,7 @@
                         <div class="mt-3 d-flex justify-content-center">
                           <PrimaryButton
                             v-b-toggle="`collapse-${index}-${form.type}`"
-                            label="Загрузить фото"
+                            label="Сохранить"
                             @click.native="
                               updatePerson(section, index, form.ID)
                             "
