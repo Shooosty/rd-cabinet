@@ -125,6 +125,7 @@ export default {
   ],
 
   statuses: [
+    'new',
     'photoDateApproved',
     'needAnotherPhotoDate',
     'anotherPhotoDateApproved',
