@@ -81,6 +81,10 @@ export default {
                 updatedOrder.contract = this.$store.state.contract.file
               }
 
+              if (this.$store.state.layoutCover.file !== '') {
+                updatedOrder.layoutCover = this.$store.state.layoutCover.file
+              }
+
               if (this.$store.state.attachContract.file !== '') {
                 updatedOrder.attachmentContract = this.$store.state.attachContract.file
               }

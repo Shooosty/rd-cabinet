@@ -88,7 +88,7 @@
       </b-list-group-item>
       <b-list-group-item v-if="resource.yandexDisc">
         <b> Ссылка на яндекс Диск (остальные файлы): </b>
-        <a :href="resource.yandexDisc" />
+        <a target="_blank" :href="resource.yandexDisc">ссылка на файлы</a>
       </b-list-group-item>
       <b-list-group-item v-if="resource.layoutFormDate">
         <b> Дата формирования макета: </b>
