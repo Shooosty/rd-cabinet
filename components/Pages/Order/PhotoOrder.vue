@@ -500,9 +500,6 @@ export default {
     },
 
     deletePhoto(fileRecord, name, index) {
-      if (this.$refs.text[index]) {
-        this.$refs.text[index].deleteFileRecord(fileRecord)
-      }
       if (this.$refs[name][index]) {
         this.$refs[name][index].deleteFileRecord(fileRecord)
       }
