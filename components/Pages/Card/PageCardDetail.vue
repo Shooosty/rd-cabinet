@@ -4,9 +4,12 @@
 
     <div
       v-if="
-        isOrderPage &&
-        this.$auth.user.role === 'user' &&
-        resource.status !== 'closed'
+        (isOrderPage &&
+          userRole !== 'designer' &&
+          resource.status !== 'closed') ||
+        (isOrderPage &&
+          userRole !== 'photographer' &&
+          resource.status !== 'closed')
       "
       v-b-toggle.comments
       class="d-flex justify-content-between comments-toggle card-body bg-white mt-3 align-items-center"
@@ -19,7 +22,7 @@
             >Сейчас статус заказа: {{ localizeStatuses(resource.status) }}</b
           ></span
         >
-        <span v-if="isCommentsOpen"><b>Скрыть прогресс заказа</b></span>
+        <span v-if="isCommentsOpen"><span>Скрыть прогресс заказа</span></span>
       </div>
 
       <div class="d-flex justify-content-end">
@@ -351,7 +354,7 @@
             :is-edit-page="isEditPage"
           />
         </v-tab>
-        <v-tab title="Макет">
+        <v-tab v-if="userRole !== 'photographer'" title="Макет">
           <LayoutOrder :resource.sync="resource" :is-edit-page="isEditPage" />
         </v-tab>
         <v-tab title="Дополнительно">
@@ -485,20 +488,16 @@ export default {
     sevenDaysCountDown() {
       return this.$dayjs(this.resource.preFormDate).add(7, 'day').$d
     },
+
+    userRole() {
+      return this.$auth.user.role
+    },
   },
 
   methods: {
     ...mapActions({
       update: 'order/UPDATE',
     }),
-
-    // startCallBack(x) {
-    //   console.log(x)
-    // },
-    //
-    // endCallBack(x) {
-    //   console.log(x)
-    // },
 
     commentsShowed(c) {
       switch (this.resource.status) {
