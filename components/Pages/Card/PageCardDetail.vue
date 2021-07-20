@@ -233,8 +233,6 @@
           :day-txt="' дней'"
           :hour-txt="' часов'"
           :minutes-txt="' минут'"
-          @start_callback="startCallBack('event started')"
-          @end_callback="endCallBack('event ended')"
         >
           <template slot="countdown" slot-scope="scope">
             <span>{{ scope.props.days }}</span
