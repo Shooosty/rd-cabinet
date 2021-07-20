@@ -63,6 +63,18 @@
   <div v-else class="mt-3 card-body bg-white">
     <b-list-group>
       <b-list-group-item>
+        <b> Обложка макета: </b>
+        <a
+          v-if="resource.layoutCover !== ''"
+          class="layout ml-1"
+          :href="resource.layoutCover"
+        >
+          <fa :icon="['fas', 'file-pdf']" />
+          <span> Обложка макета </span>
+        </a>
+        <span v-else class="yellow"> формируется </span>
+      </b-list-group-item>
+      <b-list-group-item>
         <b> Макет: </b>
         <a
           v-if="resource.layout !== ''"

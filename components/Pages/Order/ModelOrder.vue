@@ -278,9 +278,9 @@
           type: 'Неправильный тип файла',
           size: 'Недопустимый размер файла',
         }"
-        :accept="'.pdf, .doc, .txt'"
+        :accept="'.pdf, .doc, .txt, .xls, docx, .xlx'"
         :max-size="'10MB'"
-        :max-files="10"
+        :max-files="1"
         name="text"
         @select="saveTz"
         @beforedelete="deleteTz($event)"
