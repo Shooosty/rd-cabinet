@@ -227,6 +227,7 @@ export default {
       clearPhotoContract: 'photoContract/CLEAR',
       clearFile: 'file/CLEAR',
       clearLayout: 'layout/CLEAR',
+      clearLayoutCover: 'layoutCover/CLEAR',
       removeOnS3: 'photo/DELETE_ON_S3',
       removePhoto: 'photo/DELETE',
     }),
@@ -250,6 +251,7 @@ export default {
       this.clearPhotoContract()
       this.clearFile()
       this.clearLayout()
+      this.clearLayoutCover()
     },
 
     async savePerson(id, type, name) {
