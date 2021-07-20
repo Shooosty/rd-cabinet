@@ -71,7 +71,7 @@
               Это поле обязательное
             </div>
           </b-col>
-          <b-list-group-item>
+          <b-col xl="12" lg="12" md="12" sm="12" class="p-3">
             <label for="attContract">Загрузите доп соглашение</label>
             <VueFileAgent
               ref="addContract"
@@ -90,7 +90,7 @@
               @select="saveAdditionalContract"
               @beforedelete="deleteAdditionalContract($event)"
             />
-          </b-list-group-item>
+          </b-col>
         </b-row>
 
         <b-row>
