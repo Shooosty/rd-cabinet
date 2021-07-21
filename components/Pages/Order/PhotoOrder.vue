@@ -200,13 +200,13 @@
                             :deletable="true"
                             :meta="true"
                             :average-color="false"
-                            :help-text="'Выберите или перетащите фотографии'"
+                            :help-text="'Выберите или перетащите фотографии.  Максимальный размер файла - 25мб.'"
                             :error-text="{
                               type: 'Неправильный тип файла',
                               size: 'Недопустимый размер файла',
                             }"
                             :accept="'image/*'"
-                            :max-size="'20MB'"
+                            :max-size="'25MB'"
                             :max-files="10"
                             :name="`photos-${index}`"
                             @beforedelete="deletePhoto($event, section, index)"
@@ -557,8 +557,8 @@ export default {
               id,
               newPerson.surname + '_' + newPerson.name
             )
-            await this.update(Object.assign({}, newPerson))
             newPerson.photosCount = fileRecs.length + newPerson.photosCount
+            await this.update(Object.assign({}, newPerson))
             this.$refs[name][index].fileRecords = []
           }
         }

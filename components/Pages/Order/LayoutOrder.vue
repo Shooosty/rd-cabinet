@@ -10,13 +10,13 @@
           :meta="true"
           :theme="'list'"
           :average-color="false"
-          :help-text="'Выберите или перетащите договор'"
+          :help-text="'Выберите или перетащите обложку макета. Максимальный размер файла - 20мб'"
           :error-text="{
             type: 'Неправильный тип файла',
             size: 'Недопустимый размер файла',
           }"
           :accept="'.pdf, .doc'"
-          :max-size="'20MB'"
+          :max-size="'25MB'"
           :max-files="1"
           @select="saveLayoutCover"
           @beforedelete="deleteLayoutCover($event)"
@@ -31,13 +31,13 @@
           :meta="true"
           :theme="'list'"
           :average-color="false"
-          :help-text="'Выберите или перетащите договор'"
+          :help-text="'Выберите или перетащите макет. Максимальный размер файла - 20мб.'"
           :error-text="{
             type: 'Неправильный тип файла',
             size: 'Недопустимый размер файла',
           }"
           :accept="'.pdf, .doc'"
-          :max-size="'20MB'"
+          :max-size="'25MB'"
           :max-files="1"
           @select="saveLayout"
           @beforedelete="deleteLayout($event)"

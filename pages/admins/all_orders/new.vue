@@ -32,7 +32,7 @@
               :meta="true"
               :theme="'list'"
               :average-color="false"
-              :help-text="'Выберите или перетащите договор'"
+              :help-text="'Выберите или перетащите договор. Максимальный размер файла - 20мб'"
               :error-text="{
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
@@ -56,7 +56,7 @@
               :meta="true"
               :theme="'list'"
               :average-color="false"
-              :help-text="'Выберите или перетащите приложение'"
+              :help-text="'Выберите или перетащите приложение. Максимальный размер файла - 20мб'"
               :error-text="{
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
@@ -79,7 +79,7 @@
               :meta="true"
               :theme="'list'"
               :average-color="false"
-              :help-text="'Выберите или перетащите соглашение'"
+              :help-text="'Выберите или перетащите соглашение. Максимальный размер файла - 10мб'"
               :error-text="{
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
@@ -99,6 +99,7 @@
               <label>Выберите клиента</label>
               <multiselect
                 v-model="order.userId"
+                v-model.trim="$v.order.userId.$model"
                 :custom-label="customLabel"
                 selected-label="выбран"
                 deselect-label="убрать"
@@ -106,6 +107,9 @@
                 :options="clients"
                 placeholder="клиент"
               />
+              <div v-if="!$v.order.userId.required" class="error">
+                Это поле обязательное
+              </div>
             </div>
           </b-col>
           <b-col xl="4" lg="4" md="6" sm="12" class="p-3">
@@ -293,6 +297,9 @@ export default {
         required,
       },
       design: {
+        required,
+      },
+      userId: {
         required,
       },
       managerId: {
