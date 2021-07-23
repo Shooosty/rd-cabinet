@@ -204,11 +204,11 @@ export default {
       try {
         this.error = null
         const file = this.$refs.layoutCover._data.fileRecords[0].file
-        this.createLayout(file)
+        this.createLayoutCover(file)
       } catch (e) {
         this.error = e.response
       } finally {
-        this.clearLayout()
+        this.clearLayoutCover()
 
         if (this.error == null) {
           this.$notification.success(
@@ -231,14 +231,14 @@ export default {
       try {
         this.error = null
         const file = this.$refs.layout._data.fileRecords[0].file
-        this.createLayoutCover(file)
+        this.createLayout(file)
       } catch (e) {
         this.error = e.response
       } finally {
         this.resource.layoutFormDate = this.$dayjs(new Date()).format(
           'YYYY-MM-DDTHH:mm'
         )
-        this.clearLayoutCover()
+        this.clearLayout()
 
         if (this.error == null) {
           this.$notification.success(

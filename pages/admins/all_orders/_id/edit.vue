@@ -85,6 +85,10 @@ export default {
                 updatedOrder.layoutCover = this.$store.state.layoutCover.file
               }
 
+              if (this.$store.state.layout.file !== '') {
+                updatedOrder.layout = this.$store.state.layout.file
+              }
+
               if (this.$store.state.attachContract.file !== '') {
                 updatedOrder.attachmentContract = this.$store.state.attachContract.file
               }
@@ -106,9 +110,6 @@ export default {
                 updatedOrder.tz = arr
               }
 
-              if (this.$store.state.layout.file !== '') {
-                updatedOrder.layout = this.$store.state.layout.file
-              }
               const cover = this.persons.filter((p) => p.type === 'cover')[0]
               const group = this.persons.filter((p) => p.type === 'group')[0]
               const reportage = this.persons.filter(

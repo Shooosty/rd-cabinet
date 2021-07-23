@@ -48,8 +48,18 @@ export default {
             try {
               this.error = null
               const updatedOrder = this.resource
-              updatedOrder.layout = this.$store.state.layout.file
-              updatedOrder.photoContract = this.$store.state.photoContract.file
+
+              if (this.$store.state.layout.file !== '') {
+                updatedOrder.layout = this.$store.state.layout.file
+              }
+
+              if (this.$store.state.layoutCover.file !== '') {
+                updatedOrder.layoutCover = this.$store.state.layoutCover.file
+              }
+
+              if (this.$store.state.photoContract.file !== '') {
+                updatedOrder.photoContract = this.$store.state.photoContract.file
+              }
 
               await this.update(Object.assign({}, updatedOrder))
             } catch (e) {

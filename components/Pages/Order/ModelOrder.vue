@@ -209,7 +209,9 @@
                         >
                           <div class="d-flex justify-content-start mt-4">
                             <LinkButton
-                              v-b-toggle="`collapse-${index}-${form.type}`"
+                              v-b-toggle="
+                                `models-collapse-${index}-${form.type}`
+                              "
                               icon="save"
                               label="Сохранить"
                               btn-class="success"
@@ -278,7 +280,7 @@
           type: 'Неправильный тип файла',
           size: 'Недопустимый размер файла',
         }"
-        :accept="'.pdf, .doc, .txt, .xls, docx, .xlx'"
+        :accept="'.pdf, .doc, .txt, .xls, .docx, .xlx'"
         :max-size="'10MB'"
         :max-files="1"
         name="text"
