@@ -400,7 +400,7 @@ export default {
       if (dateTime) {
         return this.$dayjs(dateTime).format('DD.MM.YYYY HH:mm')
       } else {
-        return 'Формируется'
+        return 'Назначается'
       }
     },
 

@@ -656,7 +656,7 @@ export default {
 }
 
 .delete-btn {
-  font-size: $font-size-md;
+  font-size: $font-size-xl;
   color: $danger-color;
 
   &:hover {
@@ -666,7 +666,7 @@ export default {
 }
 
 .download-btn {
-  font-size: $font-size-md;
+  font-size: $font-size-xl;
   color: $success-color;
 
   &:hover {

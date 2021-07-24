@@ -79,13 +79,13 @@
               :meta="true"
               :theme="'list'"
               :average-color="false"
-              :help-text="'Выберите или перетащите соглашение. Максимальный размер файла - 10мб'"
+              :help-text="'Выберите или перетащите соглашение. Максимальный размер файла - 20мб'"
               :error-text="{
                 type: 'Неправильный тип файла',
                 size: 'Недопустимый размер файла',
               }"
               :accept="'.pdf, .doc, .jpg, .jpeg'"
-              :max-size="'10MB'"
+              :max-size="'20MB'"
               :max-files="1"
               @select="saveAdditionalContract"
               @beforedelete="deleteAdditionalContract($event)"

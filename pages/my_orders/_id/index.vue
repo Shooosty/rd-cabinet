@@ -98,7 +98,18 @@ export default {
                   'YYYY-MM-DD HH:mm'
                 )
 
-                await this.update(Object.assign({}, updatedOrder))
+                if (this.resource.photoContract) {
+                  await this.update(Object.assign({}, updatedOrder))
+                } else {
+                  this.error = 'Не загружен акт'
+                  this.$notification.warning(
+                    'Загрузите акт фотосъемки в документы!',
+                    {
+                      timer: 3,
+                      position: 'topRight',
+                    }
+                  )
+                }
               } catch (e) {
                 this.error = e.response.data
               } finally {
