@@ -137,6 +137,7 @@ export default {
     'onTheFormation',
     'onDesign',
     'onEdits',
+    'onTheClientApprove',
     'onProduction',
     'done',
     'closed',

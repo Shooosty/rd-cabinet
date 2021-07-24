@@ -72,6 +72,10 @@ export default {
               updatedOrder.photographerId = updatedOrder.photographerId.ID
               updatedOrder.userId = updatedOrder.userId.ID
               updatedOrder.managerId = updatedOrder.managerId.ID
+              updatedOrder.pupilsMin = parseInt(updatedOrder.pupilsMin)
+              updatedOrder.pupilsMax = parseInt(updatedOrder.pupilsMax)
+              updatedOrder.teachersMin = parseInt(updatedOrder.teachersMin)
+              updatedOrder.teachersMax = parseInt(updatedOrder.teachersMax)
 
               if (
                 updatedOrder.photographerId &&

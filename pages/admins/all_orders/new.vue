@@ -164,6 +164,62 @@
           </div>
         </div>
 
+        <b-row class="mt-3">
+          <b-col
+            v-if="order.sections.includes('pupils')"
+            xl="3"
+            lg="3"
+            md="6"
+            sm="12"
+          >
+            <label>Выберите минимальное кол-во фото для Студентов</label>
+            <b-input v-model="order.pupilsMin" min="1" max="10" type="number" />
+          </b-col>
+
+          <b-col
+            v-if="order.sections.includes('pupils')"
+            xl="3"
+            lg="3"
+            md="6"
+            sm="12"
+          >
+            <label>Выберите максимальное кол-во фото для Студентов</label>
+            <b-input v-model="order.pupilsMax" min="1" max="10" type="number" />
+          </b-col>
+
+          <b-col
+            v-if="order.sections.includes('teachers')"
+            xl="3"
+            lg="3"
+            md="6"
+            sm="12"
+          >
+            <label>Выберите минимальное кол-во фото для Преподавателей</label>
+            <b-input
+              v-model="order.teachersMin"
+              min="1"
+              max="10"
+              type="number"
+            />
+          </b-col>
+
+          <b-col
+            v-if="order.sections.includes('teachers')"
+            xl="3"
+            lg="3"
+            md="6"
+            sm="12"
+          >
+            <label>Выберите максимальное кол-во фото для Преподавателей</label>
+            <b-input
+              v-model="order.teachersMax"
+              min="1"
+              max="10"
+              type="number"
+            />
+          </b-col>
+        </b-row>
+
         <div class="mt-3">
           <label>Выберите дизайн альбома</label>
           <multiselect
@@ -363,6 +419,10 @@ export default {
         managerId: '',
         tz: [],
         contract: '',
+        pupilsMin: null,
+        pupilsMax: null,
+        teachersMin: null,
+        teachersMax: null,
         additionalContract: '',
         attachmentContract: '',
         address: '',
@@ -399,6 +459,10 @@ export default {
                 newOrder.contract = this.$store.state.contract.file
                 newOrder.attachmentContract = this.$store.state.attachContract.file
                 newOrder.additionalContract = this.$store.state.additionalContract.file
+                newOrder.pupilsMin = parseInt(newOrder.pupilsMin)
+                newOrder.pupilsMax = parseInt(newOrder.pupilsMax)
+                newOrder.teachersMin = parseInt(newOrder.teachersMin)
+                newOrder.teachersMax = parseInt(newOrder.teachersMax)
                 newOrder.dateTimes = this.photoDates.map((d) => {
                   return d.datetime
                 })

@@ -75,7 +75,11 @@
                         Раскройте и заполните!
                       </span>
                       <span
-                        v-if="section !== 'text'"
+                        v-if="
+                          section !== 'text' &&
+                          section !== 'pupils' &&
+                          section !== 'teachers'
+                        "
                         class="ml-3"
                         :class="{
                           green: form.photosCount > 0,
@@ -86,6 +90,39 @@
                           {{ form.photosCount }}
                         </span>
                       </span>
+
+                      <div v-if="section === 'pupils'">
+                        <span
+                          class="ml-3"
+                          :class="{
+                            green: form.photosCount >= resource.pupilsMin,
+                            red:
+                              form.photosCount < resource.pupilsMin ||
+                              form.photosCount > resource.pupilsMax,
+                          }"
+                        >
+                          <span v-text="form.photosCount" />
+                        </span>
+                        <span> из </span>
+                        <span class="green" v-text="resource.pupilsMax" />
+                      </div>
+
+                      <div v-if="section === 'teachers'">
+                        <span
+                          class="ml-3"
+                          :class="{
+                            green: form.photosCount >= resource.teachersMin,
+                            red:
+                              form.photosCount < resource.teachersMin ||
+                              form.photosCount > resource.teachersMax,
+                          }"
+                        >
+                          <span v-text="form.photosCount" />
+                        </span>
+                        <span> из </span>
+                        <span class="green" v-text="resource.teachersMax" />
+                      </div>
+
                       <div v-if="form.willBuy === 'accepted'" class="ml-3">
                         <fa :icon="['fas', 'money-bill']" class="icon-money" />
                       </div>
@@ -200,7 +237,7 @@
                             :deletable="true"
                             :meta="true"
                             :average-color="false"
-                            :help-text="'Выберите или перетащите фотографии.  Максимальный размер файла - 25мб.'"
+                            :help-text="'Максимальный размер файла - 25мб.'"
                             :error-text="{
                               type: 'Неправильный тип файла',
                               size: 'Недопустимый размер файла',
@@ -213,7 +250,14 @@
                           />
                         </div>
 
-                        <div class="mt-3 d-flex justify-content-center">
+                        <div
+                          v-if="
+                            resource.status !== 'onDesign' ||
+                            resource.status !== 'onProduction' ||
+                            resource.status !== 'done'
+                          "
+                          class="mt-3 d-flex justify-content-center"
+                        >
                           <PrimaryButton
                             v-b-toggle="`collapse-${index}-${form.type}`"
                             label="Сохранить"
@@ -298,7 +342,11 @@
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
                       </span>
                       <span
-                        v-if="section !== 'text'"
+                        v-if="
+                          section !== 'text' &&
+                          section !== 'pupils' &&
+                          section !== 'teachers'
+                        "
                         class="ml-3"
                         :class="{
                           green: form.photosCount > 0,
@@ -309,6 +357,38 @@
                           {{ form.photosCount }}
                         </span>
                       </span>
+
+                      <div v-if="section === 'pupils'">
+                        <span
+                          class="ml-3"
+                          :class="{
+                            green: form.photosCount >= resource.pupilsMin,
+                            red:
+                              form.photosCount < resource.pupilsMin ||
+                              form.photosCount > resource.pupilsMax,
+                          }"
+                        >
+                          <span v-text="form.photosCount" />
+                        </span>
+                        <span> из </span>
+                        <span class="green" v-text="resource.pupilsMax" />
+                      </div>
+
+                      <div v-if="section === 'teachers'">
+                        <span
+                          class="ml-3"
+                          :class="{
+                            green: form.photosCount >= resource.teachersMin,
+                            red:
+                              form.photosCount < resource.teachersMin ||
+                              form.photosCount > resource.teachersMax,
+                          }"
+                        >
+                          <span v-text="form.photosCount" />
+                        </span>
+                        <span> из </span>
+                        <span class="green" v-text="resource.teachersMax" />
+                      </div>
                       <div v-if="form.willBuy === 'accepted'" class="ml-3">
                         <fa :icon="['fas', 'money-bill']" class="icon-money" />
                       </div>

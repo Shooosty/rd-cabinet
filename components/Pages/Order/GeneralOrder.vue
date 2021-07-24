@@ -31,6 +31,83 @@
                 </div>
               </b-list-group-item>
               <b-list-group-item>
+                <b-row class="mt-3">
+                  <b-col
+                    v-if="resource.sections.includes('pupils')"
+                    xl="3"
+                    lg="3"
+                    md="6"
+                    sm="12"
+                  >
+                    <label
+                      >Выберите минимальное кол-во фото для Студентов</label
+                    >
+                    <b-input
+                      v-model="resource.pupilsMin"
+                      min="1"
+                      max="10"
+                      type="number"
+                    />
+                  </b-col>
+
+                  <b-col
+                    v-if="resource.sections.includes('pupils')"
+                    xl="3"
+                    lg="3"
+                    md="6"
+                    sm="12"
+                  >
+                    <label
+                      >Выберите максимальное кол-во фото для Студентов</label
+                    >
+                    <b-input
+                      v-model="resource.pupilsMax"
+                      min="1"
+                      max="10"
+                      type="number"
+                    />
+                  </b-col>
+
+                  <b-col
+                    v-if="resource.sections.includes('teachers')"
+                    xl="3"
+                    lg="3"
+                    md="6"
+                    sm="12"
+                  >
+                    <label
+                      >Выберите минимальное кол-во фото для
+                      Преподавателей</label
+                    >
+                    <b-input
+                      v-model="resource.teachersMin"
+                      min="1"
+                      max="10"
+                      type="number"
+                    />
+                  </b-col>
+
+                  <b-col
+                    v-if="resource.sections.includes('teachers')"
+                    xl="3"
+                    lg="3"
+                    md="6"
+                    sm="12"
+                  >
+                    <label
+                      >Выберите максимальное кол-во фото для
+                      Преподавателей</label
+                    >
+                    <b-input
+                      v-model="resource.teachersMin"
+                      min="1"
+                      max="10"
+                      type="number"
+                    />
+                  </b-col>
+                </b-row>
+              </b-list-group-item>
+              <b-list-group-item>
                 <label>Статус</label>
                 <multiselect
                   v-model="resource.status"
