@@ -15,7 +15,7 @@
         />
       </b-list-group-item>
 
-      <b-list-group-item>
+      <b-list-group-item v-show="$isAllowed('viewForAdmin')">
         <label for="initial-description">Внутренняя заметка</label>
         <b-form-textarea
           id="initial-description"

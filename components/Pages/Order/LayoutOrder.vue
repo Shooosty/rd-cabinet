@@ -45,7 +45,11 @@
       </b-list-group-item>
       <b-list-group-item>
         <label for="other">Ссылка на яндекс Диск для остальных файлов</label>
-        <b-input id="other" v-model="resource.yandexDisc" />
+        <b-input
+          id="other"
+          v-model="resource.yandexDisc"
+          placeholder="https://www.site.ru"
+        />
       </b-list-group-item>
       <b-list-group-item>
         <label for="description">Заметка от Дизайнера</label>

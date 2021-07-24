@@ -140,7 +140,10 @@ export default {
             } finally {
               if (this.error == null) {
                 setTimeout(
-                  () => this.$router.push({ path: '/admins/all_orders' }),
+                  () =>
+                    this.$router.push({
+                      path: `/admins/all_orders/${this.$route.params.id}`,
+                    }),
                   2000
                 )
                 this.$notification.success('Данные заказа обновлены', {
