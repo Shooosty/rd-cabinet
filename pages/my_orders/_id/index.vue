@@ -85,7 +85,11 @@ export default {
           icon: 'user-check',
           govern: 'viewForPhotographer',
           click: async () => {
-            if (confirm('Отправить клиенту?')) {
+            if (
+              confirm(
+                'Я подтверждаю, что произвёл фотосъёмку в соответствии с техническим заданием и передаю весь материал по списку, указанном в заказ наряде на съёмку'
+              )
+            ) {
               try {
                 this.error = null
                 const updatedOrder = this.resource

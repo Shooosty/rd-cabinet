@@ -5,6 +5,7 @@
       :resource.sync="resource"
       :managers.sync="managers"
       :clients.sync="clients"
+      :comments="comments"
       :designers.sync="designers"
       :photographers.sync="photographers"
       :persons="persons"
@@ -22,6 +23,7 @@ import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
+import Model from '~/models/order'
 
 export default {
   components: { PageCardDetail },
@@ -37,6 +39,8 @@ export default {
 
   data() {
     return {
+      ...Model,
+
       actions: [
         {
           label: 'К списку',

@@ -6,6 +6,7 @@
       :designers.sync="designers"
       :photographers.sync="photographers"
       :managers.sync="managers"
+      :comments="comments"
       :resource.sync="resource"
       :persons="persons"
       :actions="actions"
@@ -22,6 +23,7 @@ import PageCardDetail from '~/components/Pages/Card/PageCardDetail'
 import ResourceHelper from '~/helpers/resource-helper'
 import ResourceMixin from '~/mixins/resource-mixin'
 import UsersGroupByRoleMixin from '~/mixins/users-group-by-role-mixin'
+import Model from '~/models/order'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
@@ -39,6 +41,8 @@ export default {
 
   data() {
     return {
+      ...Model,
+
       error: null,
 
       defaultFormModels: {
