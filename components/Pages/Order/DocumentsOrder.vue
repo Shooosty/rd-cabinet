@@ -1,7 +1,12 @@
 <template>
-  <div v-if="isEditPage && $isAllowed('viewForAdmin')">
+  <div v-if="isEditPage && $isAllowed('viewForAdminAndPhotographer')">
     <b-list-group>
-      <b-list-group-item>
+      <b-list-group-item
+        v-if="
+          this.$auth.user.role === 'manager' ||
+          this.$auth.user.role === 'superadmin'
+        "
+      >
         <label for="contract">Загрузите копию договора</label>
         <VueFileAgent
           ref="contract"
@@ -21,7 +26,12 @@
           @beforedelete="deleteContract($event)"
         />
       </b-list-group-item>
-      <b-list-group-item>
+      <b-list-group-item
+        v-if="
+          this.$auth.user.role === 'manager' ||
+          this.$auth.user.role === 'superadmin'
+        "
+      >
         <label for="attContract">Загрузите приложение к договору</label>
         <VueFileAgent
           ref="attContract"
@@ -41,7 +51,12 @@
           @beforedelete="deleteAttachmentContract($event)"
         />
       </b-list-group-item>
-      <b-list-group-item>
+      <b-list-group-item
+        v-if="
+          this.$auth.user.role === 'manager' ||
+          this.$auth.user.role === 'superadmin'
+        "
+      >
         <label for="attContract">Загрузите доп соглашение</label>
         <VueFileAgent
           ref="addContract"

@@ -120,6 +120,10 @@ export default {
           return 'Числа'
         case 'zodiac':
           return 'Знаки Зодиака'
+        case 'individual':
+          return 'Индивидуал'
+        case 'avangard':
+          return 'Авангард'
         case 'release':
           return 'Выпуск'
         case 'quarter':

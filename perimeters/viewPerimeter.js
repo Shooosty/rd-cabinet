@@ -19,6 +19,10 @@ export default new BasePerimeter({
       return this.isSuperAdmin() || this.isDesigner() || this.isAdmin()
     },
 
+    'can viewForAdminAndPhotographer'() {
+      return this.isSuperAdmin() || this.isPhotographer() || this.isAdmin()
+    },
+
     'can viewForPhotographer'() {
       return this.isPhotographer()
     },

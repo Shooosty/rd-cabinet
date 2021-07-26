@@ -61,7 +61,17 @@ export default {
                 updatedOrder.photoContract = this.$store.state.photoContract.file
               }
 
+              if (this.$store.state.file.file !== '') {
+                const arr = []
+                this.resource.tz.forEach((t) => {
+                  arr.push(t)
+                })
+                arr.push(this.$store.state.file.file)
+                updatedOrder.tz = arr
+              }
+
               await this.update(Object.assign({}, updatedOrder))
+              this.allFilesClear()
             } catch (e) {
               this.error = e.response.data
             } finally {
@@ -91,7 +101,7 @@ export default {
           btnClass: 'secondary',
           to:
             this.$auth.user.role === 'user'
-              ? `/my_orders`
+              ? `/my_orders/edit`
               : `/my_orders/${this.$route.params.id}`,
           icon: 'window-close',
         },
@@ -116,10 +126,27 @@ export default {
   methods: {
     ...mapActions({
       update: 'order/UPDATE',
+      clearContract: 'contract/CLEAR',
+      clearAttachContract: 'attachContract/CLEAR',
+      clearAdditionalContract: 'additionalContract/CLEAR',
+      clearPhotoContract: 'photoContract/CLEAR',
+      clearFile: 'file/CLEAR',
+      clearLayout: 'layout/CLEAR',
+      clearLayoutCover: 'layoutCover/CLEAR',
     }),
 
     async fetchOrder() {
       await this.$store.dispatch('order/GET', this.$route.params.id)
+    },
+
+    allFilesClear() {
+      this.clearContract()
+      this.clearAttachContract()
+      this.clearAdditionalContract()
+      this.clearPhotoContract()
+      this.clearFile()
+      this.clearLayout()
+      this.clearLayoutCover()
     },
 
     async fetchUsers() {

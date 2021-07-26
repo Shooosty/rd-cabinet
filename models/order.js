@@ -63,6 +63,8 @@ export default {
     'forbesBlue',
     'forbesBrown',
     'people',
+    'individual',
+    'avangard',
     'retro',
     'urban',
     'emerald',
