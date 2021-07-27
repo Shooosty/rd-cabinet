@@ -39,9 +39,7 @@
                     md="6"
                     sm="12"
                   >
-                    <label
-                      >Выберите минимальное кол-во фото для Студентов</label
-                    >
+                    <label>Минимальное кол-во фото для Студентов</label>
                     <b-input
                       v-model="resource.pupilsMin"
                       min="1"
@@ -57,9 +55,7 @@
                     md="6"
                     sm="12"
                   >
-                    <label
-                      >Выберите максимальное кол-во фото для Студентов</label
-                    >
+                    <label>Максимальное кол-во фото для Студентов</label>
                     <b-input
                       v-model="resource.pupilsMax"
                       min="1"
@@ -75,10 +71,7 @@
                     md="6"
                     sm="12"
                   >
-                    <label
-                      >Выберите минимальное кол-во фото для
-                      Преподавателей</label
-                    >
+                    <label>Минимальное кол-во фото для Преподавателей</label>
                     <b-input
                       v-model="resource.teachersMin"
                       min="1"
@@ -94,12 +87,9 @@
                     md="6"
                     sm="12"
                   >
-                    <label
-                      >Выберите максимальное кол-во фото для
-                      Преподавателей</label
-                    >
+                    <label>Максимальное кол-во фото для Преподавателей</label>
                     <b-input
-                      v-model="resource.teachersMin"
+                      v-model="resource.teachersMax"
                       min="1"
                       max="10"
                       type="number"
@@ -243,7 +233,7 @@
                 <b>Номер договора:</b>
                 <span v-text="resource.number" />
               </b-list-group-item>
-              <b-list-group-item>
+              <b-list-group-item v-if="resource.preFormDate">
                 <b>Дата выгрузки фотографий:</b>
                 <span
                   v-if="resource.preFormDate"
@@ -251,7 +241,7 @@
                 />
                 <span v-else>Не выгружены</span>
               </b-list-group-item>
-              <b-list-group-item>
+              <b-list-group-item v-if="resource.formDate">
                 <b>Дата формирования заказа:</b>
                 <span
                   v-if="resource.formDate"

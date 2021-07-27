@@ -474,21 +474,25 @@ export default {
                 await this.create(Object.assign({}, newOrder))
 
                 if (newOrder.sections.includes('cover')) {
-                  this.savePerson(
+                  await this.savePerson(
                     this.newOrderId,
                     'cover',
                     'Фото учебного заведения'
                   )
                 }
                 if (newOrder.sections.includes('group')) {
-                  this.savePerson(
+                  await this.savePerson(
                     this.newOrderId,
                     'group',
                     'Общегрупповая фотография'
                   )
                 }
                 if (newOrder.sections.includes('reportage')) {
-                  this.savePerson(this.newOrderId, 'reportage', 'Репортаж')
+                  await this.savePerson(
+                    this.newOrderId,
+                    'reportage',
+                    'Репортаж'
+                  )
                 }
               } catch (e) {
                 this.error = e.response
