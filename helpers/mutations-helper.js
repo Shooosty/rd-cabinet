@@ -68,7 +68,7 @@ export default {
   DELETE(state, data) {
     const index = state.items.findIndex((item) => item.ID === data.ID)
     if (index !== -1) {
-      state.list.splice(index, 1)
+      state.items.splice(index, 1)
     }
   },
 }

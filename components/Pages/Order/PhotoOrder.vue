@@ -252,9 +252,11 @@
 
                         <div
                           v-if="
-                            resource.status !== 'onDesign' ||
-                            resource.status !== 'onProduction' ||
-                            resource.status !== 'done'
+                            ($isAllowed('viewForUser') &&
+                              resource.status === 'onTheFormation') ||
+                            ($isAllowed('viewForUser') &&
+                              resource.status === 'onTheClientApprove') ||
+                            $isAllowed('viewForEmployerAndAdmins')
                           "
                           class="mt-3 d-flex justify-content-center"
                         >

@@ -112,7 +112,7 @@ export default {
   auth: {
     cookie: {
       options: {
-        expires: 365,
+        maxAge: 2147483647,
         secure: process.env.NODE_ENV === 'production',
       },
     },
@@ -122,14 +122,12 @@ export default {
         scheme: 'refresh',
         token: {
           property: 'token',
-          maxAge: 99999999,
           global: true,
         },
         refreshToken: {
           property: 'token',
           data: 'refresh_token',
           required: false,
-          maxAge: 60 * 60 * 24 * 30,
         },
         endpoints: {
           login: {

@@ -113,7 +113,7 @@
           <LinkButton
             label="Да, сформировать"
             btn-class="success"
-            :fn="toDesign"
+            @click.native="toDesign"
           />
           <LinkButton
             label="Отмена"
@@ -184,7 +184,7 @@
           <LinkButton
             label="Да, отправить"
             btn-class="success"
-            :fn="toDesign"
+            @click.native="toDesign"
           />
           <LinkButton
             label="Отмена"
@@ -201,7 +201,11 @@
           согласен"
         </p>
         <div class="d-inline-flex">
-          <LinkButton label="Да, отправить" btn-class="success" :fn="toPrint" />
+          <LinkButton
+            label="Да, отправить"
+            btn-class="success"
+            @click.native="toPrint"
+          />
           <LinkButton
             label="Отмена"
             btn-class="danger"
@@ -539,19 +543,18 @@ export default {
         try {
           this.error = null
           const updatedOrder = this.resource
-          updatedOrder.status = 'onDesign'
           if (this.resource.status === 'onTheFormation') {
             updatedOrder.formDate = this.$dayjs(new Date()).format(
               'YYYY-MM-DD HH:mm'
             )
           }
-
+          updatedOrder.status = 'onDesign'
           this.update(Object.assign({}, updatedOrder))
         } catch (e) {
           this.error = e.response
         } finally {
           if (this.error == null) {
-            setTimeout(() => this.$router.push({ path: '/my_orders' }), 2000)
+            setTimeout(() => this.$router.push({ path: '/my_orders' }), 1000)
             this.$notification.success('Заказ передан дизайнеру', {
               timer: 3,
               position: 'topRight',

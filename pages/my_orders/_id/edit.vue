@@ -43,6 +43,7 @@ export default {
         {
           label: 'Сохранить',
           btnClass: 'success',
+          govern: 'viewForEmployerAndAdmins',
           icon: 'save',
           click: async () => {
             try {
@@ -99,10 +100,15 @@ export default {
         {
           label: 'Отмена',
           btnClass: 'secondary',
-          to:
-            this.$auth.user.role === 'user'
-              ? `/my_orders/edit`
-              : `/my_orders/${this.$route.params.id}`,
+          govern: 'viewForEmployerAndAdmins',
+          to: `/my_orders/${this.$route.params.id}`,
+          icon: 'window-close',
+        },
+        {
+          label: 'К заказам',
+          btnClass: 'secondary',
+          govern: 'viewForUser',
+          to: `/my_orders`,
           icon: 'window-close',
         },
       ],
