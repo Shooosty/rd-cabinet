@@ -42,7 +42,7 @@
             <Card :cards="editDesignerItems" :resource-name="resourceName" />
           </v-tab>
           <v-tab title="Все">
-            <Card :cards="items" :resource-name="resourceName" />
+            <Card :cards="allDesignerItems" :resource-name="resourceName" />
           </v-tab>
         </vue-tabs>
       </div>
@@ -113,11 +113,23 @@ export default {
     },
 
     activeDesignerItems() {
-      return this.items.filter((order) => order.status === 'onDesign')
+      return this.items.filter(
+        (order) =>
+          order.status === 'onDesign' && order.designerId === this.$auth.user.ID
+      )
+    },
+
+    allDesignerItems() {
+      return this.items.filter(
+        (order) => order.designerId === this.$auth.user.ID
+      )
     },
 
     editDesignerItems() {
-      return this.items.filter((order) => order.status === 'onEdits')
+      return this.items.filter(
+        (order) =>
+          order.status === 'onEdits' && order.designerId === this.$auth.user.ID
+      )
     },
 
     addPhotoDateItems() {

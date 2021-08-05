@@ -43,7 +43,7 @@ export default {
           return this.orders
         case 'designer':
           return this.orders.filter(
-            (order) => order.status === 'onDesign' || order.status === 'onEdits'
+            (order) => order.designerId === this.$auth.user.ID
           )
         case 'photographer':
           return this.orders.filter(

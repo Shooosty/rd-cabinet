@@ -102,6 +102,29 @@
         <b>Заметка от дизайнера:</b>
         <span v-text="resource.designerDescription" />
       </b-list-group-item>
+      <b-list-group-item v-if="resource.layoutClientDescription">
+        <b>Правки от клиента:</b>
+        <span v-text="resource.layoutClientDescription" />
+      </b-list-group-item>
+      <b-list-group-item
+        v-if="
+          $isAllowed('viewForUser') && resource.status === 'onTheClientApprove'
+        "
+      >
+        <label for="descriptionClient">Правки от клиента</label>
+        <b-form-textarea
+          id="descriptionClient"
+          v-model="resource.layoutClientDescription"
+          placeholder="Поле для заметок дизайнера.."
+          rows="3"
+          max-rows="8"
+        />
+        <PrimaryButton
+          class="mt-2"
+          label="Сохранить"
+          @click.native="orderUpdate"
+        />
+      </b-list-group-item>
       <b-list-group-item
         v-if="
           ($isAllowed('viewForEmployerAndAdmins') && photos.length) ||
@@ -121,9 +144,11 @@ import { mapActions, mapGetters } from 'vuex'
 import JSZip from 'jszip'
 import JSZipUtils from 'jszip-utils'
 import { saveAs } from 'file-saver'
+import PrimaryButton from '@/components/Button/PrimaryButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
+  components: { PrimaryButton },
   perimeters: [ViewPerimeter],
 
   props: {
@@ -151,6 +176,7 @@ export default {
     ...mapActions({
       createLayout: 'layout/CREATE',
       clearLayout: 'layout/CLEAR',
+      updateOrder: 'order/UPDATE',
       createLayoutCover: 'layoutCover/CREATE',
       clearLayoutCover: 'layoutCover/CLEAR',
     }),
@@ -179,6 +205,14 @@ export default {
           saveAs(blob, `${name}.zip`)
         })
       }
+    },
+
+    async orderUpdate() {
+      const updatedOrder = this.resource
+      updatedOrder.layoutClientDescription = [
+        updatedOrder.layoutClientDescription,
+      ]
+      await this.updateOrder(this.resource)
     },
 
     dateTimeFormatted(dateTime) {
