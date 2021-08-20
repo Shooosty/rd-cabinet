@@ -65,6 +65,10 @@ export default {
     }
   },
 
+  SET_PROGRESS(state, data) {
+    state.progress = data
+  },
+
   DELETE(state, data) {
     const index = state.items.findIndex((item) => item.ID === data.ID)
     if (index !== -1) {

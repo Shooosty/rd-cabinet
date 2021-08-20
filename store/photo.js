@@ -3,6 +3,7 @@ import commonMutations from '~/helpers/mutations-helper'
 
 export const state = () => ({
   items: [],
+  progress: null,
   pagination: {},
 })
 
@@ -22,14 +23,20 @@ export const actions = {
     commit('SET_ITEMS', response.data.data)
   },
 
-  CREATE({ commit }, file) {
+  async CREATE({ commit }, file) {
     const formData = new FormData()
     formData.append('file', file.file)
-    this.$axios
+    await this.$axios
       .post(
         `api/photos/${file.personId}/${file.orderId}/${file.fileName}`,
         formData,
         {
+          onUploadProgress(progressEvent) {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            )
+            commit('SET_PROGRESS', percentCompleted)
+          },
           headers: {
             'Content-Type': 'multipart/form-data',
           },

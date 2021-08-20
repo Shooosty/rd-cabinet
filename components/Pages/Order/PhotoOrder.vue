@@ -127,6 +127,14 @@
                         <fa :icon="['fas', 'money-bill']" class="icon-money" />
                       </div>
                     </div>
+                    <div v-if="isProgressView" class="align-self-center w-50">
+                      <b-progress
+                        :value="progress"
+                        :max="100"
+                        show-progress
+                        animated
+                      ></b-progress>
+                    </div>
                     <div class="d-flex justify-content-end">
                       <IconButton
                         icon="chevron-down"
@@ -495,6 +503,7 @@ export default {
       cover: [],
       group: [],
       reportage: [],
+      isProgressView: false,
 
       error: null,
     }
@@ -504,6 +513,7 @@ export default {
     ...mapGetters({
       photos: 'photo/items',
       personsV: 'person/items',
+      progress: 'photo/progress',
     }),
 
     personsComputed() {
@@ -601,11 +611,13 @@ export default {
               index + 1
             }`,
           }
+          this.isProgressView = true
           await this.uploadPhoto(Object.assign({}, newFile))
         } catch (e) {
           this.error = e.response.data
         } finally {
           if (this.error == null) {
+            this.progress = 0
             this.$notification.success(
               `${file.file.name} сохранено на сервере`,
               {
@@ -626,6 +638,7 @@ export default {
     async updatePerson(name, index, id) {
       try {
         this.error = null
+        this.isProgressView = false
         const section = this.folder(name)
         const newPerson = section[index]
         newPerson.orderId = this.resource.ID
