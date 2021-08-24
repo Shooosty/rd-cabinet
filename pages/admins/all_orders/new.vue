@@ -472,31 +472,10 @@ export default {
                 }
 
                 await this.create(Object.assign({}, newOrder))
-
-                if (newOrder.sections.includes('cover')) {
-                  await this.savePerson(
-                    this.newOrderId,
-                    'cover',
-                    'Фото учебного заведения'
-                  )
-                }
-                if (newOrder.sections.includes('group')) {
-                  await this.savePerson(
-                    this.newOrderId,
-                    'group',
-                    'Общегрупповая фотография'
-                  )
-                }
-                if (newOrder.sections.includes('reportage')) {
-                  await this.savePerson(
-                    this.newOrderId,
-                    'reportage',
-                    'Репортаж'
-                  )
-                }
               } catch (e) {
                 this.error = e.response
               } finally {
+                await this.createSections()
                 this.allFilesClear()
                 if (this.error == null) {
                   this.$router.push({ path: '/admins/all_orders' })
@@ -557,6 +536,26 @@ export default {
 
     customLabel(value) {
       return `${value.name} ${value.surname} ${value.email}`
+    },
+
+    async createSections() {
+      if (this.order.sections.includes('cover')) {
+        await this.savePerson(
+          this.newOrderId,
+          'cover',
+          'Фото учебного заведения'
+        )
+      }
+      if (this.order.sections.includes('group')) {
+        await this.savePerson(
+          this.newOrderId,
+          'group',
+          'Общегрупповая фотография'
+        )
+      }
+      if (this.order.sections.includes('reportage')) {
+        await this.savePerson(this.newOrderId, 'reportage', 'Репортаж')
+      }
     },
 
     addDate() {
