@@ -626,11 +626,11 @@ export default {
       }
     },
 
-    saveAdditionalContract() {
+    async saveAdditionalContract() {
       try {
         this.error = null
         const file = this.$refs.addContract._data.fileRecords[0].file
-        this.createAdditionalContract(file)
+        await this.createAdditionalContract(file)
       } catch (e) {
         this.error = e.response
       } finally {

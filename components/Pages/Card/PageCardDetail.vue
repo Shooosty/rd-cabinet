@@ -59,11 +59,11 @@
         </span>
 
         <span v-if="resource.status === 'onDesign'">
-          Дизайнер формирует макет
+          Дизайнер формирует макета
         </span>
 
         <span v-if="resource.status === 'onTheFormation'">
-          Отредактируйте заказ, добавив все недостующие материалы и нажмите
+          Отредактируйте заказ, добавив все недостающие материалы и нажмите
         </span>
 
         <span v-if="resource.status === 'onTheClientApprove'">

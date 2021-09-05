@@ -4,6 +4,7 @@
     :resource.sync="resource"
     :comments="comments"
     :managers.sync="managers"
+    :clients.sync="clients"
     :designers.sync="designers"
     :photographers.sync="photographers"
     :actions="actions"
