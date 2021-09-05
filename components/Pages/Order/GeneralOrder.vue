@@ -39,7 +39,7 @@
                     md="6"
                     sm="12"
                   >
-                    <label>Минимальное кол-во фото для Студентов</label>
+                    <label>Минимальное кол-во личных кадров</label>
                     <b-input
                       v-model="resource.pupilsMin"
                       min="1"
@@ -55,7 +55,7 @@
                     md="6"
                     sm="12"
                   >
-                    <label>Максимальное кол-во фото для Студентов</label>
+                    <label>Максимальное кол-во личных кадров</label>
                     <b-input
                       v-model="resource.pupilsMax"
                       min="1"

@@ -76,7 +76,7 @@
           <fa :icon="['fas', 'file-pdf']" />
           <span> Обложка макета </span>
         </a>
-        <span v-else class="yellow"> формируется </span>
+        <!--        <span v-else class="yellow"> формируется </span>-->
       </b-list-group-item>
       <b-list-group-item>
         <b> Макет: </b>
@@ -88,7 +88,7 @@
           <fa :icon="['fas', 'file-pdf']" />
           <span> Макет </span>
         </a>
-        <span v-else class="yellow"> формируется </span>
+        <!--        <span v-else class="yellow"> формируется </span>-->
       </b-list-group-item>
       <b-list-group-item v-if="resource.yandexDisc">
         <b> Ссылка на яндекс Диск (остальные файлы): </b>

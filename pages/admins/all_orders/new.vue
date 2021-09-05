@@ -172,7 +172,7 @@
             md="6"
             sm="12"
           >
-            <label>Выберите минимальное кол-во фото для Студентов</label>
+            <label>Выберите минимальное кол-во личных кадров</label>
             <b-input v-model="order.pupilsMin" min="1" max="10" type="number" />
           </b-col>
 
@@ -183,7 +183,7 @@
             md="6"
             sm="12"
           >
-            <label>Выберите максимальное кол-во фото для Студентов</label>
+            <label>Выберите максимальное кол-во личных кадров</label>
             <b-input v-model="order.pupilsMax" min="1" max="10" type="number" />
           </b-col>
 
