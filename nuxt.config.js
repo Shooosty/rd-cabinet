@@ -27,6 +27,7 @@ export default {
     { src: '~/plugins/vue-file-agent', mode: 'client' },
     { src: '~/plugins/vue-horizontal-timeline', mode: 'client' },
     { src: '~/plugins/vue-countdown-timer', mode: 'client' },
+    { src: '~/plugins/axios', mode: 'client' },
   ],
 
   components: true,
@@ -99,11 +100,7 @@ export default {
     plugins: ['utc', 'timezone'],
   },
 
-  loading: {
-    color: '#00908c',
-    failedColor: '#ff2c61',
-    height: '2px',
-  },
+  loading: '~/components/Generic/Loader.vue',
 
   router: {
     middleware: ['auth', 'vue-kindergarten'],

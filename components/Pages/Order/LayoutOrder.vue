@@ -193,18 +193,20 @@ export default {
       })
     },
 
-    generateZip(name) {
+    async generateZip(name) {
       const zip = new JSZip()
 
-      this.photos.forEach((p) => {
+      await this.photos.forEach((p) => {
+        this.$nuxt.$loading.start()
         zip.file(p.nameS3, this.urlToPromise(p.url), { binary: true })
       })
 
       if (this.resource) {
-        zip.generateAsync({ type: 'blob' }).then(function callback(blob) {
+        await zip.generateAsync({ type: 'blob' }).then(function callback(blob) {
           saveAs(blob, `${name}.zip`)
         })
       }
+      this.$nuxt.$loading.finish()
     },
 
     async orderUpdate() {
