@@ -102,21 +102,27 @@
         <b>Заметка от дизайнера:</b>
         <span v-text="resource.designerDescription" />
       </b-list-group-item>
-      <b-list-group-item v-if="resource.layoutClientDescription">
+      <b-list-group-item v-if="resource.layoutClientDescription.length">
         <b>Правки от клиента:</b>
-        <span v-text="resource.layoutClientDescription" />
+        <div
+          v-for="(item, index) in resource.layoutClientDescription"
+          :key="index"
+          class="mt-3"
+        >
+          <span v-text="item" />
+        </div>
       </b-list-group-item>
       <b-list-group-item
         v-if="
           $isAllowed('viewForUser') && resource.status === 'onTheClientApprove'
         "
       >
-        <label for="descriptionClient">Правки от клиента</label>
+        <b>Добавить правки</b>
         <b-form-textarea
-          id="descriptionClient"
-          v-model="resource.layoutClientDescription"
-          placeholder="Поле для заметок дизайнера.."
+          v-model="layoutClientDescription"
+          placeholder="Поле для заметок дизайнеру.."
           rows="3"
+          class="mt-3"
           max-rows="8"
         />
         <PrimaryButton
@@ -144,7 +150,7 @@ import { mapActions, mapGetters } from 'vuex'
 import JSZip from 'jszip'
 import JSZipUtils from 'jszip-utils'
 import { saveAs } from 'file-saver'
-import PrimaryButton from '@/components/Button/PrimaryButton'
+import PrimaryButton from '~/components/Button/PrimaryButton'
 import ViewPerimeter from '~/perimeters/viewPerimeter'
 
 export default {
@@ -164,6 +170,12 @@ export default {
 
   async fetch() {
     await this.fetchPhotos()
+  },
+
+  data() {
+    return {
+      layoutClientDescription: '',
+    }
   },
 
   computed: {
@@ -211,10 +223,18 @@ export default {
 
     async orderUpdate() {
       const updatedOrder = this.resource
-      updatedOrder.layoutClientDescription = [
-        updatedOrder.layoutClientDescription,
-      ]
-      await this.updateOrder(this.resource)
+      const today = this.$dayjs(new Date()).format('YYYY-MM-DD, HH:mm')
+      if (updatedOrder.layoutClientDescription.length) {
+        updatedOrder.layoutClientDescription.push(
+          `${this.layoutClientDescription} - ${today}`
+        )
+      } else {
+        updatedOrder.layoutClientDescription = []
+        updatedOrder.layoutClientDescription.push(
+          `${this.layoutClientDescription} - ${today}`
+        )
+      }
+      await this.updateOrder(updatedOrder)
     },
 
     dateTimeFormatted(dateTime) {

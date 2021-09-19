@@ -418,6 +418,7 @@ export default {
         designerId: '',
         managerId: '',
         tz: [],
+        layoutClientDescription: [],
         contract: '',
         pupilsMin: null,
         pupilsMax: null,
