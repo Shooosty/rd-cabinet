@@ -1,3 +1,5 @@
+import tr from "vue2-datepicker/locale/es/tr";
+
 export default {
   ssr: false,
 
@@ -133,7 +135,7 @@ export default {
             propertyName: 'token',
           },
           refresh: { url: '/auth/refresh', method: 'post' },
-          logout: true,
+          logout: false,
         },
         autoFetchUser: false,
         tokenType: false,

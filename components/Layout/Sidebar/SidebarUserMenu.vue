@@ -20,10 +20,7 @@
                 </n-link>
               </b-nav-item>
               <b-nav-item class="d-flex justify-content-center mt-2">
-                <PrimaryButton
-                  label="Выйти"
-                  @click.native="$nuxt.$auth.logout"
-                />
+                <PrimaryButton label="Выйти" @click.native="logout" />
               </b-nav-item>
             </b-nav>
           </nav>
@@ -43,6 +40,12 @@ export default {
   computed: {
     userEmail() {
       return this.$auth.user.email
+    },
+  },
+
+  methods: {
+    async logout() {
+      await this.$auth.logout()
     },
   },
 }
