@@ -59,7 +59,8 @@ export default {
               }
 
               if (this.$store.state.photoContract.file !== '') {
-                updatedOrder.photoContract = this.$store.state.photoContract.file
+                updatedOrder.photoContract =
+                  this.$store.state.photoContract.file
               }
 
               if (this.$store.state.file.file !== '') {

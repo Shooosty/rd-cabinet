@@ -5,7 +5,15 @@
         v-if="fn"
         :govern="govern"
         :href="to"
-        class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+        class="
+          btn
+          ml-2
+          d-inline-flex
+          align-items-center
+          justify-content-center
+          pt-0
+          pb-0
+        "
         :class="type(btnClass)"
         @click.prevent="fn && fn.call()"
       >
@@ -25,7 +33,15 @@
         v-else
         :govern="govern"
         :to="to"
-        class="btn ml-2 d-inline-flex align-items-center justify-content-center pt-0 pb-0"
+        class="
+          btn
+          ml-2
+          d-inline-flex
+          align-items-center
+          justify-content-center
+          pt-0
+          pb-0
+        "
         :class="type(btnClass)"
       >
         <span

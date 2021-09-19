@@ -12,7 +12,15 @@
           resource.status !== 'closed')
       "
       v-b-toggle.comments
-      class="d-flex justify-content-between comments-toggle card-body bg-white mt-3 align-items-center"
+      class="
+        d-flex
+        justify-content-between
+        comments-toggle
+        card-body
+        bg-white
+        mt-3
+        align-items-center
+      "
       @click="toggleComment"
     >
       <div class="d-flex justify-content-start">
@@ -33,7 +41,14 @@
 
     <div
       v-if="isOrderPage && this.$auth.user.role === 'user'"
-      class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
     >
       <div>
         <fa :icon="['fas', 'info']" class="info-icon mr-2" />
@@ -226,7 +241,14 @@
           !isEditPage &&
           resource.status === 'onTheFormation')
       "
-      class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
     >
       <div class="ml-2">
         <vue-countdown-timer
@@ -268,7 +290,14 @@
       v-if="
         isOrderPage && this.$auth.user.role === 'photographer' && !isEditPage
       "
-      class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
     >
       <div>
         <fa :icon="['fas', 'info']" class="info-icon mr-2" />

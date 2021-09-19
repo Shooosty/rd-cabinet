@@ -10,7 +10,12 @@
         <b-card-header
           v-b-toggle="`collapse-${section}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header"
+          class="
+            d-flex
+            align-content-center
+            justify-content-between
+            collapse-header
+          "
           role="tab"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
@@ -51,12 +56,22 @@
                   <b-card-header
                     v-b-toggle="`collapse-${index}-${form.type}`"
                     header-tag="header"
-                    class="d-flex align-content-center justify-content-between collapse-header"
+                    class="
+                      d-flex
+                      align-content-center
+                      justify-content-between
+                      collapse-header
+                    "
                     role="tab"
                     @click="fetchPhotos(form.ID)"
                   >
                     <div
-                      class="d-flex justify-content-start align-items-center ml-2"
+                      class="
+                        d-flex
+                        justify-content-start
+                        align-items-center
+                        ml-2
+                      "
                     >
                       <span
                         v-if="form.name || form.surname"
@@ -299,7 +314,12 @@
         <b-card-header
           v-b-toggle="`collapse-${section}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header"
+          class="
+            d-flex
+            align-content-center
+            justify-content-between
+            collapse-header
+          "
           role="tab"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
@@ -341,12 +361,22 @@
                   <b-card-header
                     v-b-toggle="`collapse-${index}-${form.type}`"
                     header-tag="header"
-                    class="d-flex align-content-center justify-content-between collapse-header"
+                    class="
+                      d-flex
+                      align-content-center
+                      justify-content-between
+                      collapse-header
+                    "
                     role="tab"
                     @click="fetchPhotos(form.ID)"
                   >
                     <div
-                      class="d-flex justify-content-start align-items-center ml-2"
+                      class="
+                        d-flex
+                        justify-content-start
+                        align-items-center
+                        ml-2
+                      "
                     >
                       <span :name="index" class="ml-2">
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}

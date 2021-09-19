@@ -458,8 +458,10 @@ export default {
                 newOrder.managerId = newOrder.managerId.ID
                 newOrder.userId = newOrder.userId.ID
                 newOrder.contract = this.$store.state.contract.file
-                newOrder.attachmentContract = this.$store.state.attachContract.file
-                newOrder.additionalContract = this.$store.state.additionalContract.file
+                newOrder.attachmentContract =
+                  this.$store.state.attachContract.file
+                newOrder.additionalContract =
+                  this.$store.state.additionalContract.file
                 newOrder.pupilsMin = parseInt(newOrder.pupilsMin)
                 newOrder.pupilsMax = parseInt(newOrder.pupilsMax)
                 newOrder.teachersMin = parseInt(newOrder.teachersMin)

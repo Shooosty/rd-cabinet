@@ -98,15 +98,18 @@ export default {
               }
 
               if (this.$store.state.attachContract.file !== '') {
-                updatedOrder.attachmentContract = this.$store.state.attachContract.file
+                updatedOrder.attachmentContract =
+                  this.$store.state.attachContract.file
               }
 
               if (this.$store.state.additionalContract.file !== '') {
-                updatedOrder.additionalContract = this.$store.state.additionalContract.file
+                updatedOrder.additionalContract =
+                  this.$store.state.additionalContract.file
               }
 
               if (this.$store.state.photoContract.file !== '') {
-                updatedOrder.photoContract = this.$store.state.photoContract.file
+                updatedOrder.photoContract =
+                  this.$store.state.photoContract.file
               }
 
               if (this.$store.state.file.file !== '') {

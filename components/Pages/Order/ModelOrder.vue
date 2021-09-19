@@ -10,7 +10,12 @@
         <b-card-header
           v-b-toggle="`models-collapse-${section}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header"
+          class="
+            d-flex
+            align-content-center
+            justify-content-between
+            collapse-header
+          "
           role="tab"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
@@ -48,11 +53,21 @@
                   <b-card-header
                     v-b-toggle="`models-collapse-${index}-${form.type}`"
                     header-tag="header"
-                    class="d-flex align-content-center justify-content-between collapse-header"
+                    class="
+                      d-flex
+                      align-content-center
+                      justify-content-between
+                      collapse-header
+                    "
                     role="tab"
                   >
                     <div
-                      class="d-flex justify-content-start align-items-center ml-2"
+                      class="
+                        d-flex
+                        justify-content-start
+                        align-items-center
+                        ml-2
+                      "
                     >
                       <span v-if="form.name" :name="index" class="ml-2">
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}
@@ -205,7 +220,11 @@
                         </div>
 
                         <div
-                          class="d-flex align-items-center justify-content-between"
+                          class="
+                            d-flex
+                            align-items-center
+                            justify-content-between
+                          "
                         >
                           <div class="d-flex justify-content-start mt-4">
                             <LinkButton
@@ -301,7 +320,12 @@
         <b-card-header
           v-b-toggle="`collapse-${section}`"
           header-tag="header"
-          class="d-flex align-content-center justify-content-between collapse-header"
+          class="
+            d-flex
+            align-content-center
+            justify-content-between
+            collapse-header
+          "
           role="tab"
         >
           <div class="d-flex justify-content-start align-items-center ml-2">
@@ -339,11 +363,21 @@
                   <b-card-header
                     v-b-toggle="`collapse-${index}-${form.type}`"
                     header-tag="header"
-                    class="d-flex align-content-center justify-content-between collapse-header"
+                    class="
+                      d-flex
+                      align-content-center
+                      justify-content-between
+                      collapse-header
+                    "
                     role="tab"
                   >
                     <div
-                      class="d-flex justify-content-start align-items-center ml-2"
+                      class="
+                        d-flex
+                        justify-content-start
+                        align-items-center
+                        ml-2
+                      "
                     >
                       <span :name="index" class="ml-2">
                         {{ form.surname }} {{ form.name }} {{ form.middleName }}

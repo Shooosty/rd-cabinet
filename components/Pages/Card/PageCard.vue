@@ -4,7 +4,14 @@
       <page-header :card-title="cardTitle" :actions="actions" />
       <div
         v-if="this.$auth.user.role === 'user'"
-        class="d-flex card-body bg-white justify-content-center mt-3 align-items-center"
+        class="
+          d-flex
+          card-body
+          bg-white
+          justify-content-center
+          mt-3
+          align-items-center
+        "
       >
         <fa :icon="['fas', 'info']" class="info-icon mr-2" />
         <span class="ml-2">

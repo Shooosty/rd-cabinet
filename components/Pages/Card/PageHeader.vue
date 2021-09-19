@@ -1,6 +1,12 @@
 <template>
   <div
-    class="d-flex justify-content-between align-items-center card-header bg-white"
+    class="
+      d-flex
+      justify-content-between
+      align-items-center
+      card-header
+      bg-white
+    "
   >
     <div class="d-flex justify-content-start">
       <span class="card-title">

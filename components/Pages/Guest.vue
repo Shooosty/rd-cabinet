@@ -1,7 +1,14 @@
 <template>
   <div class="guest d-flex align-items-stretch">
     <div
-      class="group d-flex justify-content-center align-items-center shadow-lg bg-white"
+      class="
+        group
+        d-flex
+        justify-content-center
+        align-items-center
+        shadow-lg
+        bg-white
+      "
     >
       <div class="sign-content p-5">
         <div class="d-flex flex-column mb-5">
