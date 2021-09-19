@@ -266,7 +266,7 @@
                               size: 'Недопустимый размер файла',
                             }"
                             :accept="'image/*'"
-                            :max-size="'25MB'"
+                            :max-size="'20MB'"
                             :max-files="10"
                             :name="`photos-${index}`"
                             @beforedelete="deletePhoto($event, section, index)"
@@ -632,17 +632,25 @@ export default {
       this.clearPhotos()
       for (const [index, file] of fileRecs.entries()) {
         try {
-          this.error = null
-          const newFile = {
-            file: file.file,
-            personId: id,
-            orderId: this.$route.params.id,
-            fileName: `${this.localizeSections(name)}_${fileName || ''}_${
-              index + 1
-            }`,
+          if (file.error.size) {
+            this.$notification.warning('Слишком большой файл', {
+              timer: 3,
+              position: 'topRight',
+            })
+            this.error = 'bigSize'
+          } else {
+            this.error = null
+            const newFile = {
+              file: file.file,
+              personId: id,
+              orderId: this.$route.params.id,
+              fileName: `${this.localizeSections(name)}_${fileName || ''}_${
+                index + 1
+              }`,
+            }
+            this.isProgressView = true
+            await this.uploadPhoto(Object.assign({}, newFile))
           }
-          this.isProgressView = true
-          await this.uploadPhoto(Object.assign({}, newFile))
         } catch (e) {
           this.error = e.response.data
         } finally {
@@ -674,7 +682,9 @@ export default {
         newPerson.orderId = this.resource.ID
 
         if (id) {
-          const fileRecs = this.$refs[name][index].fileRecords
+          const fileRecs = this.$refs[name][index].fileRecords.filter(
+            (i) => !i.error
+          )
           if (fileRecs) {
             await this.savePhotos(
               name,
@@ -707,10 +717,6 @@ export default {
 
     async deleteLoadedPhoto(name, index, id, nameS3) {
       if (confirm('Подтверждаете удаление?')) {
-        const i = this.photos.findIndex((p) => p.ID === id)
-        if (i > -1) {
-          this.photos.splice(i, 1)
-        }
         const section = this.folder(name)
         const newPerson = section[index]
         newPerson.photosCount = newPerson.photosCount - 1
