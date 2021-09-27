@@ -1,6 +1,18 @@
 <template>
-  <div v-if="loading" class="loading-page">
-    <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+  <div>
+    <div v-if="loading" class="loading-page">
+      <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
+    </div>
+
+    <div v-if="percent" class="loading-page">
+      <b-progress
+        :value="percent"
+        :max="100"
+        class="progress-rd"
+        variant="success"
+        striped
+      />
+    </div>
   </div>
 </template>
 
@@ -11,6 +23,8 @@ export default {
   data() {
     return {
       loading: false,
+
+      percent: null,
     }
   },
 
@@ -20,9 +34,15 @@ export default {
       this.loading = true
     },
 
+    progress(value) {
+      // С помощью this.$nuxt.$loading.progress() можно вызвать лоадер
+      this.percent = value
+    },
+
     finish() {
       // С помощью this.$nuxt.$loading.finish() можно прервать лоадер
       this.loading = false
+      this.percent = null
     },
   },
 }
@@ -39,5 +59,9 @@ export default {
   background: rgba(255, 255, 255, 0.8);
   text-align: center;
   padding-top: 200px;
+}
+
+.progress-rd {
+  margin: 20rem;
 }
 </style>
