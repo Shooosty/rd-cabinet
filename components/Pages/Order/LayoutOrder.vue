@@ -193,18 +193,25 @@ export default {
       clearLayoutCover: 'layoutCover/CLEAR',
     }),
 
-    async urlToPromise(url, percent, max) {
-      await JSZipUtils.getBinaryContent(url + '?not-from-cache-please').finally(
-        () => {
-          window.$nuxt.$root.$loading.progress(percent, max)
-        }
-      )
+    urlToPromise(url, percent, max) {
+      return new Promise((resolve, reject) => {
+        JSZipUtils.getBinaryContent(url + '?not-from-cache-please', {
+          callback(err, data) {
+            if (err) {
+              reject(err)
+            } else {
+              window.$nuxt.$root.$loading.progress(percent, max)
+              resolve(data)
+            }
+          },
+        })
+      })
     },
 
-    async generateZip(name) {
+    generateZip(name) {
       const zip = new JSZip()
 
-      await this.photos.forEach(async (p, index) => {
+      this.photos.forEach(async (p, index) => {
         const max = this.photos.length
         await zip.file(p.nameS3, this.urlToPromise(p.url, index, max), {
           binary: true,
@@ -212,7 +219,7 @@ export default {
       })
 
       if (this.resource) {
-        await zip.generateAsync({ type: 'blob' }).then(function callback(blob) {
+        zip.generateAsync({ type: 'blob' }).then(function callback(blob) {
           saveAs(blob, `${name}.zip`)
           window.$nuxt.$root.$loading.finish()
         })
