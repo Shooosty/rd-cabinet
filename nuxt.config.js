@@ -1,5 +1,3 @@
-import tr from "vue2-datepicker/locale/es/tr";
-
 export default {
   ssr: false,
 

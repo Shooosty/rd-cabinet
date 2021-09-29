@@ -260,14 +260,14 @@
                             :deletable="true"
                             :meta="true"
                             :average-color="false"
-                            :help-text="'Максимальный размер файла - 25мб.'"
+                            :help-text="'Максимальный размер файла - 20мб.'"
                             :error-text="{
                               type: 'Неправильный тип файла',
                               size: 'Недопустимый размер файла',
                             }"
                             :accept="'image/*'"
                             :max-size="'20MB'"
-                            :max-files="10"
+                            :max-files="100"
                             :name="`photos-${index}`"
                             @beforedelete="deletePhoto($event, section, index)"
                           />
@@ -640,6 +640,7 @@ export default {
             this.error = 'bigSize'
           } else {
             this.error = null
+            console.log(file.file)
             const newFile = {
               file: file.file,
               personId: id,
@@ -648,6 +649,7 @@ export default {
                 index + 1
               }`,
             }
+            console.log(newFile)
             this.isProgressView = true
             await this.uploadPhoto(Object.assign({}, newFile))
           }
