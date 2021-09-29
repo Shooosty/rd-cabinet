@@ -7,7 +7,9 @@
     <div v-if="percent" class="loading-page">
       <b-progress
         :value="percent"
-        :max="100"
+        :max="max"
+        show-progress
+        animated
         class="progress-rd"
         variant="success"
         striped
@@ -24,6 +26,8 @@ export default {
     return {
       loading: false,
 
+      max: null,
+
       percent: null,
     }
   },
@@ -34,9 +38,11 @@ export default {
       this.loading = true
     },
 
-    progress(value) {
+    progress(percent, max) {
       // С помощью this.$nuxt.$loading.progress() можно вызвать лоадер
-      this.percent = value
+      this.percent = percent
+
+      this.max = max
     },
 
     finish() {

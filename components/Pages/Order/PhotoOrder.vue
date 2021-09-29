@@ -640,7 +640,6 @@ export default {
             this.error = 'bigSize'
           } else {
             this.error = null
-            console.log(file.file)
             const newFile = {
               file: file.file,
               personId: id,
@@ -649,7 +648,6 @@ export default {
                 index + 1
               }`,
             }
-            console.log(newFile)
             this.isProgressView = true
             await this.uploadPhoto(Object.assign({}, newFile))
           }
