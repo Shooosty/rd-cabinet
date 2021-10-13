@@ -178,7 +178,11 @@
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <b-img class="image" :src="image.url" />
+                                <nuxt-img
+                                  quality="1"
+                                  class="image"
+                                  :src="image.url"
+                                />
                                 <span v-text="image.name" />
                                 <div class="download-btn-container">
                                   <IconButton
@@ -214,15 +218,21 @@
                           v-if="photos.length && $isAllowed('viewForUser')"
                           class="mt-3"
                         >
-                          <div class="gallery-for-user">
-                            <div
-                              v-for="image in photos"
-                              :key="image.id"
-                              class="gallery-panel-for-user"
-                            >
-                              <b-img class="image locked" :src="image.url" />
+                          <Photoswipe
+                            auto
+                            :options="{ shareEl: false }"
+                            class="gallery-panel-for-user"
+                          >
+                            <div v-for="image in photos" :key="image.id">
+                              <nuxt-img
+                                v-pswp="image.url"
+                                quality="1"
+                                class="user-image"
+                                :src="image.url"
+                                alt="#"
+                              />
                             </div>
-                          </div>
+                          </Photoswipe>
                         </div>
 
                         <div
@@ -461,7 +471,11 @@
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <b-img class="image" :src="image.url" />
+                                <nuxt-img
+                                  quality="1"
+                                  class="image"
+                                  :src="image.url"
+                                />
                               </div>
                             </div>
                           </div>
@@ -484,7 +498,11 @@
                               :key="image.id"
                               class="gallery-panel-for-user"
                             >
-                              <b-img class="image locked" :src="image.url" />
+                              <nuxt-img
+                                quality="1"
+                                class="image locked"
+                                :src="image.url"
+                              />
                             </div>
                           </div>
                         </div>
@@ -865,7 +883,7 @@ export default {
   border-radius: 0.75rem;
 }
 
-.gallery-for-user {
+.gallery-panel-for-user {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
   grid-gap: 1rem;
@@ -873,7 +891,7 @@ export default {
   margin: 5rem auto;
 }
 
-.gallery-panel-for-user .image {
+.user-image {
   width: 100%;
   height: 11vw;
   object-fit: cover;

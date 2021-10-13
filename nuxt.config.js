@@ -23,6 +23,7 @@ export default {
     { src: '~/plugins/vue-kindergarten', mode: 'client' },
     { src: '~/plugins/vue2-datepicker', mode: 'client' },
     { src: '~/plugins/vue-notification', mode: 'client' },
+    { src: '~/plugins/vue-pswipe', mode: 'client' },
     { src: '~/plugins/vuelidate', mode: 'client' },
     { src: '~/plugins/vue-file-agent', mode: 'client' },
     { src: '~/plugins/vue-horizontal-timeline', mode: 'client' },
@@ -32,13 +33,18 @@ export default {
 
   components: true,
 
-  buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/stylelint-module'],
+  buildModules: [
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/stylelint-module',
+    '@nuxt/image',
+  ],
 
   modules: [
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
+    '@nuxt/image',
     '@nuxtjs/dayjs',
     [
       'nuxt-fontawesome',

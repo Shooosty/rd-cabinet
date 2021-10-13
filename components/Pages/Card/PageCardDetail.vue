@@ -288,6 +288,155 @@
 
     <div
       v-if="
+        isOrderPage &&
+        this.$auth.user.role !== 'designer' &&
+        !isEditPage &&
+        resource.status === 'onDesign'
+      "
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
+    >
+      <div class="ml-2">
+        <vue-countdown-timer
+          :start-time="resource.preFormDate"
+          :end-time="layoutDaysCountDown"
+          :interval="6000"
+          :start-label="'Время на формирование макета:'"
+          :end-label="'Время на формирование макета'"
+          label-position="begin"
+          :end-text="'Время на формирование макета истекло!'"
+          :day-txt="' дней'"
+          :hour-txt="' часов'"
+          :minutes-txt="' минут'"
+        >
+          <template slot="countdown" slot-scope="scope">
+            <span>{{ scope.props.days }}</span
+            ><i>{{ scope.props.dayTxt }}</i> <span>{{ scope.props.hours }}</span
+            ><i>{{ scope.props.hourTxt }}</i>
+            <span>{{ scope.props.minutes }}</span
+            ><i>{{ scope.props.minutesTxt }}</i>
+          </template>
+
+          <template slot="end-text" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.endText }}
+            </span>
+          </template>
+
+          <template slot="start-label" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.startLabel }}
+            </span>
+          </template>
+        </vue-countdown-timer>
+      </div>
+    </div>
+
+    <div
+      v-if="isOrderPage && !isEditPage && resource.status === 'onProduction'"
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
+    >
+      <div class="ml-2">
+        <vue-countdown-timer
+          :start-time="resource.preFormDate"
+          :end-time="inPrintLayoutDaysCountDown"
+          :interval="6000"
+          :start-label="'Время на изготовление:'"
+          :end-label="'Время на изготовление'"
+          label-position="begin"
+          :end-text="'Время на изготовление истекло!'"
+          :day-txt="' дней'"
+          :hour-txt="' часов'"
+          :minutes-txt="' минут'"
+        >
+          <template slot="countdown" slot-scope="scope">
+            <span>{{ scope.props.days }}</span
+            ><i>{{ scope.props.dayTxt }}</i> <span>{{ scope.props.hours }}</span
+            ><i>{{ scope.props.hourTxt }}</i>
+            <span>{{ scope.props.minutes }}</span
+            ><i>{{ scope.props.minutesTxt }}</i>
+          </template>
+
+          <template slot="end-text" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.endText }}
+            </span>
+          </template>
+
+          <template slot="start-label" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.startLabel }}
+            </span>
+          </template>
+        </vue-countdown-timer>
+      </div>
+    </div>
+
+    <div
+      v-if="
+        (isOrderPage && !isEditPage && resource.status === 'onEdits') ||
+        (isOrderPage && !isEditPage && resource.status === 'onTheClientApprove')
+      "
+      class="
+        d-flex
+        card-body
+        bg-white
+        justify-content-center
+        mt-3
+        align-items-center
+      "
+    >
+      <div class="ml-2">
+        <vue-countdown-timer
+          :start-time="resource.preFormDate"
+          :end-time="correctLayoutDaysCountDown"
+          :interval="6000"
+          :start-label="'Время на правки:'"
+          :end-label="'Время на правки'"
+          label-position="begin"
+          :end-text="'Время на правки истекло!'"
+          :day-txt="' дней'"
+          :hour-txt="' часов'"
+          :minutes-txt="' минут'"
+        >
+          <template slot="countdown" slot-scope="scope">
+            <span>{{ scope.props.days }}</span
+            ><i>{{ scope.props.dayTxt }}</i> <span>{{ scope.props.hours }}</span
+            ><i>{{ scope.props.hourTxt }}</i>
+            <span>{{ scope.props.minutes }}</span
+            ><i>{{ scope.props.minutesTxt }}</i>
+          </template>
+
+          <template slot="end-text" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.endText }}
+            </span>
+          </template>
+
+          <template slot="start-label" slot-scope="scope">
+            <span class="red">
+              {{ scope.props.startLabel }}
+            </span>
+          </template>
+        </vue-countdown-timer>
+      </div>
+    </div>
+
+    <div
+      v-if="
         isOrderPage && this.$auth.user.role === 'photographer' && !isEditPage
       "
       class="
@@ -520,6 +669,18 @@ export default {
   computed: {
     sevenDaysCountDown() {
       return this.$dayjs(this.resource.preFormDate).add(7, 'day').$d
+    },
+
+    layoutDaysCountDown() {
+      return this.$dayjs(this.resource.preFormDate).add(28, 'day').$d
+    },
+
+    correctLayoutDaysCountDown() {
+      return this.$dayjs(this.resource.preFormDate).add(5, 'day').$d
+    },
+
+    inPrintLayoutDaysCountDown() {
+      return this.$dayjs(this.resource.preFormDate).add(5, 'day').$d
     },
 
     userRole() {

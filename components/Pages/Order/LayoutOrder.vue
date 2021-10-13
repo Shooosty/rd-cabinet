@@ -51,14 +51,42 @@
           placeholder="https://www.site.ru"
         />
       </b-list-group-item>
+      <b-list-group-item v-if="resource.designerDescription.length">
+        <b>Заметки от дизайнера:</b>
+        <div
+          v-for="(item, index) in resource.designerDescription"
+          :key="index"
+          class="mt-3"
+        >
+          <span> &bull; </span>
+          <span v-text="item" />
+        </div>
+      </b-list-group-item>
+      <b-list-group-item v-if="resource.layoutClientDescription.length">
+        <b>Правки от клиента:</b>
+        <div
+          v-for="(item, index) in resource.layoutClientDescription"
+          :key="index"
+          class="mt-3"
+        >
+          <span> &bull; </span>
+          <span v-text="item" />
+        </div>
+      </b-list-group-item>
       <b-list-group-item>
         <label for="description">Заметка от Дизайнера</label>
+        <b>Добавить заметку</b>
         <b-form-textarea
-          id="description"
-          v-model="resource.designerDescription"
-          placeholder="Поле для заметок дизайнера.."
+          v-model="designerText"
+          placeholder="Поле для заметок дизайнеру.."
           rows="3"
+          class="mt-3"
           max-rows="8"
+        />
+        <PrimaryButton
+          class="mt-2"
+          label="Сохранить заметку"
+          @click.native="orderUpdate"
         />
       </b-list-group-item>
     </b-list-group>
@@ -98,9 +126,16 @@
         <b> Дата формирования макета: </b>
         <span v-text="dateTimeFormatted(resource.layoutFormDate)" />
       </b-list-group-item>
-      <b-list-group-item v-if="resource.designerDescription">
-        <b>Заметка от дизайнера:</b>
-        <span v-text="resource.designerDescription" />
+      <b-list-group-item v-if="resource.designerDescription.length">
+        <b>Заметки от дизайнера:</b>
+        <div
+          v-for="(item, index) in resource.designerDescription"
+          :key="index"
+          class="mt-3"
+        >
+          <span> &bull; </span>
+          <span v-text="item" />
+        </div>
       </b-list-group-item>
       <b-list-group-item v-if="resource.layoutClientDescription.length">
         <b>Правки от клиента:</b>
@@ -109,6 +144,7 @@
           :key="index"
           class="mt-3"
         >
+          <span> &bull; </span>
           <span v-text="item" />
         </div>
       </b-list-group-item>
@@ -119,7 +155,7 @@
       >
         <b>Добавить правки</b>
         <b-form-textarea
-          v-model="layoutClientDescription"
+          v-model="clientText"
           placeholder="Поле для заметок дизайнеру.."
           rows="3"
           class="mt-3"
@@ -127,7 +163,7 @@
         />
         <PrimaryButton
           class="mt-2"
-          label="Сохранить"
+          label="Сохранить заметку"
           @click.native="orderUpdate"
         />
       </b-list-group-item>
@@ -174,7 +210,9 @@ export default {
 
   data() {
     return {
-      layoutClientDescription: '',
+      clientText: '',
+      designerText: '',
+      error: null,
     }
   },
 
@@ -229,17 +267,40 @@ export default {
     async orderUpdate() {
       const updatedOrder = this.resource
       const today = this.$dayjs(new Date()).format('YYYY-MM-DD, HH:mm')
-      if (updatedOrder.layoutClientDescription.length) {
+      if (updatedOrder.layoutClientDescription.length && this.clientText) {
         updatedOrder.layoutClientDescription.push(
-          `${this.layoutClientDescription} - ${today}`
+          `${this.clientText} - ${today}`
         )
-      } else {
+      } else if (this.clientText) {
         updatedOrder.layoutClientDescription = []
         updatedOrder.layoutClientDescription.push(
-          `${this.layoutClientDescription} - ${today}`
+          `${this.clientText} - ${today}`
         )
       }
-      await this.updateOrder(updatedOrder)
+
+      if (updatedOrder.designerDescription.length && this.designerText) {
+        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
+      } else if (this.designerText) {
+        updatedOrder.designerDescription = []
+        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
+      }
+      try {
+        await this.updateOrder(updatedOrder)
+      } catch (e) {
+        this.error = e.response
+      } finally {
+        if (this.error == null) {
+          this.$notification.success('Заметка добавлена', {
+            timer: 3,
+            position: 'topRight',
+          })
+        } else {
+          this.$notification.error('Не удалось добавить заметку', {
+            timer: 3,
+            position: 'topRight',
+          })
+        }
+      }
     },
 
     dateTimeFormatted(dateTime) {

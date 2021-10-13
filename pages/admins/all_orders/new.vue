@@ -432,7 +432,7 @@ export default {
         layoutFormDate: '',
         userId: '',
         dateTimes: [],
-        designerDescription: '',
+        designerDescription: [],
         initialDescription: '',
         description: '',
       },
