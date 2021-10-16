@@ -491,7 +491,7 @@
       <b-card class="comment-card">
         <vue-horizontal-timeline
           :title-substr="31"
-          :items="commentsShowed(comments)"
+          :items="commentsShowed"
           line-color="#33333c"
         />
       </b-card>
@@ -662,6 +662,12 @@ export default {
   },
 
   computed: {
+    commentsShowed() {
+      return this.resource.statusHistory.map((i) =>
+        this.comments.find((c) => i === c.status)
+      )
+    },
+
     sevenDaysCountDown() {
       return this.$dayjs(this.resource.preFormDate).add(7, 'day').$d
     },
@@ -688,33 +694,6 @@ export default {
       update: 'order/UPDATE',
     }),
 
-    commentsShowed(c) {
-      switch (this.resource.status) {
-        case 'new':
-          return c.slice(0, 1)
-        case 'photoDateApproved':
-          return c.slice(0, 2)
-        case 'needAnotherPhotoDate':
-          return c.slice(0, 3)
-        case 'anotherPhotoDateApproved':
-          return c.slice(0, 4)
-        case 'photoDateChecked':
-          return c.slice(0, 5)
-        case 'onTheFormation':
-          return c.slice(0, 6)
-        case 'onDesign':
-          return c.slice(0, 7)
-        case 'onTheClientApprove':
-          return c.slice(0, 8)
-        case 'onEdits':
-          return c.slice(0, 9)
-        case 'onProduction':
-          return c.slice(0, 10)
-        case 'done':
-          return c.slice(0, 11)
-      }
-    },
-
     toggleComment() {
       this.isCommentsOpen = !this.isCommentsOpen
     },
@@ -738,7 +717,7 @@ export default {
             updatedOrder.status
           )
 
-          this.update(Object.assign({}, updatedOrder))
+          this.update(updatedOrder)
         } catch (e) {
           this.error = e.response
         } finally {
@@ -773,7 +752,7 @@ export default {
             updatedOrder.status
           )
 
-          this.update(Object.assign({}, updatedOrder))
+          this.update(updatedOrder)
         } catch (e) {
           this.error = e.response
         } finally {
@@ -803,7 +782,7 @@ export default {
             updatedOrder.status
           )
 
-          this.update(Object.assign({}, updatedOrder))
+          this.update(updatedOrder)
         } catch (e) {
           this.error = e.response
         } finally {
@@ -838,7 +817,7 @@ export default {
           'YYYY-MM-DD HH:mm'
         )
 
-        this.update(Object.assign({}, updatedOrder))
+        this.update(updatedOrder)
       } catch (e) {
         this.error = e.response
       } finally {

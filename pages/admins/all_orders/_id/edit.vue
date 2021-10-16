@@ -83,9 +83,9 @@ export default {
                 updatedOrder.status === 'new'
               ) {
                 updatedOrder.status = 'photoDateApproved'
-                updatedOrder.statusHistory = updatedOrder.statusHistory.push(
-                  updatedOrder.status
-                )
+                updatedOrder.statusHistory.push('photoDateApproved')
+              } else {
+                updatedOrder.statusHistory.push(updatedOrder.status)
               }
 
               if (this.$store.state.contract.file !== '') {
@@ -130,7 +130,7 @@ export default {
                 (p) => p.type === 'reportage'
               )[0]
 
-              await this.update(Object.assign({}, updatedOrder))
+              await this.update(updatedOrder)
               this.allFilesClear()
               if (updatedOrder.sections.includes('cover') && !cover) {
                 this.savePerson(

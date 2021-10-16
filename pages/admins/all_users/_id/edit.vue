@@ -41,7 +41,7 @@ export default {
               this.error = null
               const updatedUser = this.resource
 
-              await this.update(Object.assign({}, updatedUser))
+              await this.update(updatedUser)
             } catch (e) {
               this.error = e.response.data
             } finally {
