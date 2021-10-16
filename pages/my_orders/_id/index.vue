@@ -57,6 +57,10 @@ export default {
                 const updatedOrder = this.resource
                 updatedOrder.status = 'onTheClientApprove'
 
+                updatedOrder.layoutDate = this.$dayjs(new Date()).format(
+                  'YYYY-MM-DD HH:mm'
+                )
+
                 await this.update(Object.assign({}, updatedOrder))
               } catch (e) {
                 this.error = e.response.data

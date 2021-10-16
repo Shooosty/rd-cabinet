@@ -64,12 +64,10 @@ export default {
             if (confirm('Взять этот заказ на выполнение?')) {
               try {
                 this.error = null
-                const order = {
-                  ID: this.$route.params.id,
-                  designerId: this.$auth.user.ID,
-                }
+                const updatedOrder = this.resource
+                updatedOrder.designerId = this.$auth.user.ID
 
-                await this.update(order)
+                await this.update(updatedOrder)
               } catch (e) {
                 this.error = e.response.data
               } finally {

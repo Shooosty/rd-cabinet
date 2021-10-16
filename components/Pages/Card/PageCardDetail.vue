@@ -287,12 +287,7 @@
     </div>
 
     <div
-      v-if="
-        isOrderPage &&
-        this.$auth.user.role !== 'designer' &&
-        !isEditPage &&
-        resource.status === 'onDesign'
-      "
+      v-if="isOrderPage && !isEditPage && resource.status === 'onDesign'"
       class="
         d-flex
         card-body
@@ -304,7 +299,7 @@
     >
       <div class="ml-2">
         <vue-countdown-timer
-          :start-time="resource.preFormDate"
+          :start-time="resource.formDate"
           :end-time="layoutDaysCountDown"
           :interval="6000"
           :start-label="'Время на формирование макета:'"
@@ -351,7 +346,7 @@
     >
       <div class="ml-2">
         <vue-countdown-timer
-          :start-time="resource.preFormDate"
+          :start-time="resource.preProdDate"
           :end-time="inPrintLayoutDaysCountDown"
           :interval="6000"
           :start-label="'Время на изготовление:'"
@@ -401,7 +396,7 @@
     >
       <div class="ml-2">
         <vue-countdown-timer
-          :start-time="resource.preFormDate"
+          :start-time="resource.layoutDate"
           :end-time="correctLayoutDaysCountDown"
           :interval="6000"
           :start-label="'Время на правки:'"
@@ -672,15 +667,15 @@ export default {
     },
 
     layoutDaysCountDown() {
-      return this.$dayjs(this.resource.preFormDate).add(28, 'day').$d
+      return this.$dayjs(this.resource.formDate).add(28, 'day').$d
     },
 
     correctLayoutDaysCountDown() {
-      return this.$dayjs(this.resource.preFormDate).add(5, 'day').$d
+      return this.$dayjs(this.resource.layoutDate).add(5, 'day').$d
     },
 
     inPrintLayoutDaysCountDown() {
-      return this.$dayjs(this.resource.preFormDate).add(5, 'day').$d
+      return this.$dayjs(this.resource.preProdDate).add(5, 'day').$d
     },
 
     userRole() {
@@ -826,6 +821,9 @@ export default {
         this.error = null
         const updatedOrder = this.resource
         updatedOrder.status = 'onProduction'
+        updatedOrder.preProdDate = this.$dayjs(new Date()).format(
+          'YYYY-MM-DD HH:mm'
+        )
 
         this.update(Object.assign({}, updatedOrder))
       } catch (e) {
