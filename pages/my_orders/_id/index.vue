@@ -56,6 +56,9 @@ export default {
                 this.error = null
                 const updatedOrder = this.resource
                 updatedOrder.status = 'onTheClientApprove'
+                updatedOrder.statusHistory = updatedOrder.statusHistory.push(
+                  updatedOrder.status
+                )
 
                 updatedOrder.layoutDate = this.$dayjs(new Date()).format(
                   'YYYY-MM-DD HH:mm'
@@ -99,6 +102,10 @@ export default {
                 this.error = null
                 const updatedOrder = this.resource
                 updatedOrder.status = 'onTheFormation'
+                updatedOrder.statusHistory = updatedOrder.statusHistory.push(
+                  updatedOrder.status
+                )
+
                 updatedOrder.preFormDate = this.$dayjs(new Date()).format(
                   'YYYY-MM-DD HH:mm'
                 )

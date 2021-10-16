@@ -50,7 +50,9 @@ export default {
         { key: 'status', label: 'Статус', sortable: true },
         { key: 'createdAt', label: 'Дата создания' },
       ],
+
       pageName: 'all_orders',
+
       actions: [
         {
           label: 'Создать',

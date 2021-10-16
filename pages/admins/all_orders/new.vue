@@ -472,6 +472,9 @@ export default {
 
                 if (newOrder.photographerId && newOrder.address) {
                   newOrder.status = 'photoDateApproved'
+                  newOrder.statusHistory = newOrder.statusHistory.push(
+                    newOrder.status
+                  )
                 }
 
                 await this.create(Object.assign({}, newOrder))

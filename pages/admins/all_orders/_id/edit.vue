@@ -83,6 +83,9 @@ export default {
                 updatedOrder.status === 'new'
               ) {
                 updatedOrder.status = 'photoDateApproved'
+                updatedOrder.statusHistory = updatedOrder.statusHistory.push(
+                  updatedOrder.status
+                )
               }
 
               if (this.$store.state.contract.file !== '') {

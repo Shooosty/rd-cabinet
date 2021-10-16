@@ -29,6 +29,7 @@ export default {
   components: { PageCardDetail },
 
   mixins: [ResourceMixin, UsersGroupByRoleMixin],
+
   perimeters: [ViewPerimeter],
 
   async fetch() {
