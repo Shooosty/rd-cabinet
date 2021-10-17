@@ -663,9 +663,11 @@ export default {
 
   computed: {
     commentsShowed() {
-      return this.resource.statusHistory.map((i) =>
-        this.comments.find((c) => i === c.status)
-      )
+      return this.isOrderPage
+        ? this.resource.statusHistory.map((i) =>
+            this.comments.find((c) => i === c.status)
+          )
+        : []
     },
 
     sevenDaysCountDown() {
