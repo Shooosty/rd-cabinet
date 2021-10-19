@@ -178,11 +178,7 @@
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <nuxt-img
-                                  quality="1"
-                                  class="image"
-                                  :src="image.url"
-                                />
+                                <b-img-lazy class="image" :src="image.url" />
                                 <span v-text="image.name" />
                                 <div class="download-btn-container">
                                   <IconButton
@@ -224,9 +220,8 @@
                             class="gallery-panel-for-user"
                           >
                             <div v-for="image in photos" :key="image.id">
-                              <nuxt-img
+                              <b-img-lazy
                                 v-pswp="image.url"
-                                quality="1"
                                 class="user-image"
                                 :src="image.url"
                                 alt="#"
@@ -471,11 +466,7 @@
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <nuxt-img
-                                  quality="1"
-                                  class="image"
-                                  :src="image.url"
-                                />
+                                <b-img-lazy class="image" :src="image.url" />
                               </div>
                             </div>
                           </div>
@@ -498,8 +489,7 @@
                               :key="image.id"
                               class="gallery-panel-for-user"
                             >
-                              <nuxt-img
-                                quality="1"
+                              <b-img-lazy
                                 class="image locked"
                                 :src="image.url"
                               />
@@ -552,7 +542,6 @@ export default {
       group: [],
       reportage: [],
       isProgressView: false,
-
       error: null,
     }
   },
@@ -566,6 +555,10 @@ export default {
 
     personsComputed() {
       return this.personsV
+    },
+
+    personPhotosCount() {
+      return this.photos.length
     },
 
     userRole() {
@@ -646,6 +639,7 @@ export default {
     },
 
     async savePhotos(name, i, id, fileName) {
+      const indexNow = this.personPhotosCount
       const fileRecs = this.$refs[name][i].fileRecords
       this.clearPhotos()
       for (const [index, file] of fileRecs.entries()) {
@@ -663,11 +657,12 @@ export default {
               personId: id,
               orderId: this.$route.params.id,
               fileName: `${this.localizeSections(name)}_${fileName || ''}_${
-                index + 1
+                indexNow + index
               }`,
             }
             this.isProgressView = true
             await this.uploadPhoto(Object.assign({}, newFile))
+            this.isProgressView = false
           }
         } catch (e) {
           this.error = e.response.data

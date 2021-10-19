@@ -44,7 +44,6 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
     '@nuxtjs/auth',
-    '@nuxt/image',
     '@nuxtjs/dayjs',
     [
       'nuxt-fontawesome',

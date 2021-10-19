@@ -84,7 +84,9 @@ export default {
               ) {
                 updatedOrder.status = 'photoDateApproved'
                 updatedOrder.statusHistory.push('photoDateApproved')
-              } else {
+              } else if (
+                updatedOrder.statusHistory.lastItem !== updatedOrder.status
+              ) {
                 updatedOrder.statusHistory.push(updatedOrder.status)
               }
 
