@@ -715,9 +715,7 @@ export default {
             )
           }
           updatedOrder.status = 'onDesign'
-          updatedOrder.statusHistory = updatedOrder.statusHistory.push(
-            updatedOrder.status
-          )
+          updatedOrder.statusHistory.push(updatedOrder.status)
 
           this.update(updatedOrder)
         } catch (e) {
@@ -750,9 +748,7 @@ export default {
           this.error = null
           const updatedOrder = this.resource
           updatedOrder.status = 'photoDateChecked'
-          updatedOrder.statusHistory = updatedOrder.statusHistory.push(
-            updatedOrder.status
-          )
+          updatedOrder.statusHistory.push(updatedOrder.status)
 
           this.update(updatedOrder)
         } catch (e) {
@@ -780,9 +776,7 @@ export default {
           this.error = null
           const updatedOrder = this.resource
           updatedOrder.status = 'needAnotherPhotoDate'
-          updatedOrder.statusHistory = updatedOrder.statusHistory.push(
-            updatedOrder.status
-          )
+          updatedOrder.statusHistory.push(updatedOrder.status)
 
           this.update(updatedOrder)
         } catch (e) {
@@ -812,9 +806,7 @@ export default {
         this.error = null
         const updatedOrder = this.resource
         updatedOrder.status = 'onProduction'
-        updatedOrder.statusHistory = updatedOrder.statusHistory.push(
-          updatedOrder.status
-        )
+        updatedOrder.statusHistory.push(updatedOrder.status)
         updatedOrder.preProdDate = this.$dayjs(new Date()).format(
           'YYYY-MM-DD HH:mm'
         )
