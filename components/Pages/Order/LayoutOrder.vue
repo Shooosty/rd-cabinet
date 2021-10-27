@@ -267,22 +267,15 @@ export default {
     async orderUpdate() {
       const updatedOrder = this.resource
       const today = this.$dayjs(new Date()).format('YYYY-MM-DD, HH:mm')
-      if (updatedOrder.layoutClientDescription.length && this.clientText) {
-        updatedOrder.layoutClientDescription.push(
-          `${this.clientText} - ${today}`
-        )
-      } else if (this.clientText) {
-        updatedOrder.layoutClientDescription = []
-        updatedOrder.layoutClientDescription.push(
+      if (this.clientText) {
+        return updatedOrder.layoutClientDescription.push(
           `${this.clientText} - ${today}`
         )
       }
-
-      if (updatedOrder.designerDescription.length && this.designerText) {
-        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
-      } else if (this.designerText) {
-        updatedOrder.designerDescription = []
-        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
+      if (this.designerText) {
+        return updatedOrder.designerDescription.push(
+          `${this.designerText} - ${today}`
+        )
       }
       try {
         await this.updateOrder(updatedOrder)
