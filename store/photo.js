@@ -12,13 +12,11 @@ export const mutations = { ...commonMutations }
 
 export const actions = {
   async GET_ALL_BY_PERSON_ID({ commit }, objectId) {
-    commit('CLEAR')
     const response = await this.$axios.get(`api/persons/${objectId}/photos`)
     commit('SET_ITEMS', response.data.data)
   },
 
   async GET_ALL_BY_ORDER_ID({ commit }, objectId) {
-    commit('CLEAR')
     const response = await this.$axios.get(`api/orders/${objectId}/photos`)
     commit('SET_ITEMS', response.data.data)
   },

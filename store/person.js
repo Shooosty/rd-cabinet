@@ -11,14 +11,12 @@ export const mutations = { ...commonMutations }
 
 export const actions = {
   async GET_ALL({ commit }, params = {}) {
-    commit('CLEAR')
     const response = await this.$axios.get('api/persons/', params)
     commit('SET_PAGINATION_META', response.headers)
     commit('SET_ITEMS', response.data.data)
   },
 
   async GET_ALL_BY_ORDER_ID({ commit }, objectId) {
-    commit('CLEAR')
     const response = await this.$axios.get(`api/orders/${objectId}/persons`)
     commit('SET_PAGINATION_META', response.headers)
     commit('SET_ITEMS', response.data.data)

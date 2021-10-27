@@ -267,15 +267,22 @@ export default {
     async orderUpdate() {
       const updatedOrder = this.resource
       const today = this.$dayjs(new Date()).format('YYYY-MM-DD, HH:mm')
-      if (this.clientText) {
-        return updatedOrder.layoutClientDescription.push(
+      if (updatedOrder.layoutClientDescription.length && this.clientText) {
+        updatedOrder.layoutClientDescription.push(
+          `${this.clientText} - ${today}`
+        )
+      } else if (this.clientText) {
+        updatedOrder.layoutClientDescription = []
+        updatedOrder.layoutClientDescription.push(
           `${this.clientText} - ${today}`
         )
       }
-      if (this.designerText) {
-        return updatedOrder.designerDescription.push(
-          `${this.designerText} - ${today}`
-        )
+
+      if (updatedOrder.designerDescription.length && this.designerText) {
+        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
+      } else if (this.designerText) {
+        updatedOrder.designerDescription = []
+        updatedOrder.designerDescription.push(`${this.designerText} - ${today}`)
       }
       try {
         await this.updateOrder(updatedOrder)
@@ -287,6 +294,9 @@ export default {
             timer: 3,
             position: 'topRight',
           })
+          if (this.$auth.user.role === 'user') {
+            this.$router.app.refresh()
+          }
         } else {
           this.$notification.error('Не удалось добавить заметку', {
             timer: 3,
