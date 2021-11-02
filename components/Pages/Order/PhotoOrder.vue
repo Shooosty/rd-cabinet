@@ -171,14 +171,20 @@
                           "
                           class="mt-3"
                         >
-                          <div class="gallery">
-                            <div
+                          <ul class="gallery">
+                            <li
                               v-for="image in photos"
                               :key="image.id"
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <b-img-lazy class="image" :src="image.url" />
+                                <progressive-img
+                                  placeholder="Фото загружается.."
+                                  :blur="30"
+                                  :aspect-ratio="1.5"
+                                  class="image"
+                                  :src="image.url"
+                                />
                                 <span v-text="image.name" />
                                 <div class="download-btn-container">
                                   <IconButton
@@ -206,27 +212,36 @@
                                   />
                                 </div>
                               </div>
-                            </div>
-                          </div>
+                            </li>
+                          </ul>
                         </div>
 
                         <div
                           v-if="photos.length && $isAllowed('viewForUser')"
                           class="mt-3"
                         >
-                          <Photoswipe
-                            auto
-                            :options="{ shareEl: false }"
-                            class="gallery-panel-for-user"
-                          >
-                            <div v-for="image in photos" :key="image.id">
-                              <b-img-lazy
-                                v-pswp="image.url"
-                                class="user-image"
-                                :src="image.url"
-                                alt="#"
-                              />
-                            </div>
+                          <Photoswipe auto :options="{ shareEl: false }">
+                            <ul class="gallery">
+                              <li
+                                v-for="image in photos"
+                                :key="image.id"
+                                class="gallery-panel"
+                              >
+                                <div class="gallery-item">
+                                  <div class="gallery-image">
+                                    <progressive-img
+                                      v-pswp="image.url"
+                                      placeholder="Фото загружается.."
+                                      class="image"
+                                      :aspect-ratio="1.5"
+                                      :blur="30"
+                                      :src="image.url"
+                                      alt="#"
+                                    />
+                                  </div>
+                                </div>
+                              </li>
+                            </ul>
                           </Photoswipe>
                         </div>
 
@@ -459,17 +474,23 @@
                           "
                           class="mt-3"
                         >
-                          <div class="gallery">
-                            <div
+                          <ul class="gallery">
+                            <li
                               v-for="image in photos"
                               :key="image.id"
                               class="gallery-panel"
                             >
                               <div class="photo">
-                                <b-img-lazy class="image" :src="image.url" />
+                                <progressive-img
+                                  placeholder="Фото загружается.."
+                                  :blur="30"
+                                  :aspect-ratio="1.5"
+                                  class="image"
+                                  :src="image.url"
+                                />
                               </div>
-                            </div>
-                          </div>
+                            </li>
+                          </ul>
                         </div>
 
                         <div v-if="form.tz">
@@ -483,18 +504,21 @@
                           v-if="photos.length && $isAllowed('viewForUser')"
                           class="mt-3"
                         >
-                          <div class="gallery-for-user">
-                            <div
+                          <ul class="gallery">
+                            <li
                               v-for="image in photos"
                               :key="image.id"
-                              class="gallery-panel-for-user"
+                              class="gallery-panel"
                             >
-                              <b-img-lazy
+                              <progressive-img
+                                placeholder="Фото загружается.."
                                 class="image locked"
+                                :aspect-ratio="1.5"
+                                :blur="30"
                                 :src="image.url"
                               />
-                            </div>
-                          </div>
+                            </li>
+                          </ul>
                         </div>
                       </b-card-text>
                     </b-card-body>
@@ -766,10 +790,6 @@ export default {
   cursor: pointer;
 }
 
-.card-body {
-  min-height: 180px;
-}
-
 .card-header {
   border-bottom: none;
 }
@@ -864,33 +884,41 @@ export default {
 }
 
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-  grid-gap: 1rem;
-  max-width: 80rem;
-  margin: 5rem auto;
+  padding: 2rem;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: -25px;
 }
 
-.gallery-panel .image {
+.gallery-item {
+  position: relative;
+  border-radius: 4px;
+  background: #fff;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.gallery-panel {
+  width: calc(25% - 50px);
+  margin: 25px;
+}
+
+.gallery-image {
+  display: flex;
+  top: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
   width: 100%;
-  height: 22vw;
-  object-fit: cover;
-  border-radius: 0.75rem;
+  height: 100%;
 }
 
-.gallery-panel-for-user {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-  grid-gap: 1rem;
-  max-width: 40rem;
-  margin: 5rem auto;
-}
-
-.user-image {
-  width: 100%;
-  height: 11vw;
-  object-fit: cover;
-  border-radius: 0.75rem;
+.image {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .icon-money {

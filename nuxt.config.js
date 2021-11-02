@@ -29,6 +29,7 @@ export default {
     { src: '~/plugins/vue-horizontal-timeline', mode: 'client' },
     { src: '~/plugins/vue-countdown-timer', mode: 'client' },
     { src: '~/plugins/axios', mode: 'client' },
+    { src: '~/plugins/vue-progressive-image', mode: 'client' },
   ],
 
   components: true,
@@ -36,7 +37,6 @@ export default {
   buildModules: [
     '@nuxtjs/eslint-module',
     '@nuxtjs/stylelint-module',
-    '@nuxt/image',
   ],
 
   modules: [

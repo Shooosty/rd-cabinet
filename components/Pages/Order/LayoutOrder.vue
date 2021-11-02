@@ -204,10 +204,6 @@ export default {
     },
   },
 
-  async fetch() {
-    await this.fetchPhotos()
-  },
-
   data() {
     return {
       clientText: '',
@@ -246,8 +242,10 @@ export default {
       })
     },
 
-    generateZip(name) {
+    async generateZip(name) {
       const zip = new JSZip()
+
+      await this.fetchPhotos()
 
       this.photos.forEach(async (p, index) => {
         const max = this.photos.length
