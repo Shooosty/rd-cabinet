@@ -57,7 +57,8 @@
         </span>
 
         <span v-if="resource.status === 'photoDateApproved'">
-          Заполните разделы с моделями во вкладке "Модели"
+          Заполните ФИО выпускников и преподавателей в разделе "Модели", а также
+          отметьте галочками, кто покупает альбомы
         </span>
 
         <span v-if="resource.status === 'needAnotherPhotoDate'">

@@ -42,6 +42,7 @@ export const actions = {
       )
       .then((response) => {
         commit('CREATE_OR_UPDATE_PHOTOS', response.data)
+        commit('CLEAR_PROGRESS')
       })
   },
 

@@ -4,7 +4,19 @@
       <b-spinner variant="success" type="grow" label="Spinning"></b-spinner>
     </div>
 
-    <div v-if="percent" class="loading-page">
+    <div v-if="progressPercent" class="loading-page">
+      <b-progress
+        :value="progressPercent"
+        :max="max"
+        show-progress
+        animated
+        class="progress-rd"
+        variant="success"
+        striped
+      />
+    </div>
+
+    <div v-if="loader && percent" class="loading-page">
       <b-progress
         :value="percent"
         :max="max"
@@ -19,6 +31,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'Loader',
 
@@ -26,10 +40,18 @@ export default {
     return {
       loading: false,
 
+      loader: false,
+
       max: null,
 
       percent: null,
     }
+  },
+
+  computed: {
+    ...mapGetters({
+      progressPercent: 'photo/progress',
+    }),
   },
 
   methods: {
@@ -40,14 +62,15 @@ export default {
 
     progress(percent, max) {
       // С помощью this.$nuxt.$loading.progress() можно вызвать лоадер
+      this.loader = true
       this.percent = percent
-
       this.max = max
     },
 
     finish() {
       // С помощью this.$nuxt.$loading.finish() можно прервать лоадер
       this.loading = false
+      this.loader = false
       this.percent = null
     },
   },

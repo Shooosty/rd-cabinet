@@ -142,14 +142,6 @@
                         <fa :icon="['fas', 'money-bill']" class="icon-money" />
                       </div>
                     </div>
-                    <div v-if="isProgressView" class="align-self-center w-50">
-                      <b-progress
-                        :value="progress"
-                        :max="100"
-                        show-progress
-                        animated
-                      ></b-progress>
-                    </div>
                     <div class="d-flex justify-content-end">
                       <IconButton
                         icon="chevron-down"
@@ -171,49 +163,36 @@
                           "
                           class="mt-3"
                         >
-                          <ul class="gallery">
-                            <li
+                          <div class="grid-wrapper">
+                            <div
                               v-for="image in photos"
                               :key="image.id"
-                              class="gallery-panel"
+                              class="grid-wrapper-panel"
                             >
-                              <div class="photo">
-                                <progressive-img
-                                  placeholder="Фото загружается.."
-                                  :blur="30"
-                                  :aspect-ratio="1.5"
-                                  class="image"
-                                  :src="image.url"
+                              <b-img-lazy class="image" :src="image.url" />
+                              <div class="p-1">
+                                <span class="p-1" v-text="image.name" />
+                                <IconButton
+                                  icon="download"
+                                  class="download-btn"
+                                  :href="image.url"
+                                  download
                                 />
-                                <span v-text="image.name" />
-                                <div class="download-btn-container">
-                                  <IconButton
-                                    icon="download"
-                                    class="download-btn"
-                                    :href="image.url"
-                                    download
-                                  />
-                                </div>
-                                <div
-                                  v-b-toggle="`collapse-${index}-${form.type}`"
-                                  class="delete-btn-container"
-                                >
-                                  <IconButton
-                                    icon="trash"
-                                    class="delete-btn"
-                                    @click.native="
-                                      deleteLoadedPhoto(
-                                        section,
-                                        index,
-                                        image.ID,
-                                        image.nameS3
-                                      )
-                                    "
-                                  />
-                                </div>
+                                <IconButton
+                                  icon="trash"
+                                  class="delete-btn p-1"
+                                  @click.native="
+                                    deleteLoadedPhoto(
+                                      section,
+                                      index,
+                                      image.ID,
+                                      image.nameS3
+                                    )
+                                  "
+                                />
                               </div>
-                            </li>
-                          </ul>
+                            </div>
+                          </div>
                         </div>
 
                         <div
@@ -221,27 +200,15 @@
                           class="mt-3"
                         >
                           <Photoswipe auto :options="{ shareEl: false }">
-                            <ul class="gallery">
-                              <li
+                            <div class="grid-wrapper">
+                              <div
                                 v-for="image in photos"
                                 :key="image.id"
-                                class="gallery-panel"
+                                class="grid-wrapper-panel"
                               >
-                                <div class="gallery-item">
-                                  <div class="gallery-image">
-                                    <progressive-img
-                                      v-pswp="image.url"
-                                      placeholder="Фото загружается.."
-                                      class="image"
-                                      :aspect-ratio="1.5"
-                                      :blur="30"
-                                      :src="image.url"
-                                      alt="#"
-                                    />
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
+                                <b-img-lazy class="image" :src="image.url" />
+                              </div>
+                            </div>
                           </Photoswipe>
                         </div>
 
@@ -474,23 +441,15 @@
                           "
                           class="mt-3"
                         >
-                          <ul class="gallery">
-                            <li
+                          <div class="grid-wrapper">
+                            <div
                               v-for="image in photos"
                               :key="image.id"
-                              class="gallery-panel"
+                              class="grid-wrapper-panel"
                             >
-                              <div class="photo">
-                                <progressive-img
-                                  placeholder="Фото загружается.."
-                                  :blur="30"
-                                  :aspect-ratio="1.5"
-                                  class="image"
-                                  :src="image.url"
-                                />
-                              </div>
-                            </li>
-                          </ul>
+                              <b-img-lazy class="image" :src="image.url" />
+                            </div>
+                          </div>
                         </div>
 
                         <div v-if="form.tz">
@@ -504,21 +463,15 @@
                           v-if="photos.length && $isAllowed('viewForUser')"
                           class="mt-3"
                         >
-                          <ul class="gallery">
-                            <li
+                          <div class="grid-wrapper">
+                            <div
                               v-for="image in photos"
                               :key="image.id"
-                              class="gallery-panel"
+                              class="grid-wrapper-panel"
                             >
-                              <progressive-img
-                                placeholder="Фото загружается.."
-                                class="image locked"
-                                :aspect-ratio="1.5"
-                                :blur="30"
-                                :src="image.url"
-                              />
-                            </li>
-                          </ul>
+                              <b-img-lazy class="image" :src="image.url" />
+                            </div>
+                          </div>
                         </div>
                       </b-card-text>
                     </b-card-body>
@@ -565,7 +518,6 @@ export default {
       cover: [],
       group: [],
       reportage: [],
-      isProgressView: false,
       error: null,
     }
   },
@@ -574,7 +526,6 @@ export default {
     ...mapGetters({
       photos: 'photo/items',
       personsV: 'person/items',
-      progress: 'photo/progress',
     }),
 
     personsComputed() {
@@ -684,17 +635,16 @@ export default {
                 indexNow + index
               }`,
             }
-            this.isProgressView = true
             await this.uploadPhoto(Object.assign({}, newFile))
-            this.isProgressView = false
           }
         } catch (e) {
           this.error = e.response.data
         } finally {
           if (this.error == null) {
-            this.progress = 0
             this.$notification.success(
-              `${file.file.name} сохранено на сервере`,
+              `${file.file.name} сохранено на сервере. Прогресс ${index + 1}/${
+                fileRecs.length
+              } `,
               {
                 timer: 2,
                 position: 'topRight',
@@ -713,7 +663,6 @@ export default {
     async updatePerson(name, index, id) {
       try {
         this.error = null
-        this.isProgressView = false
         const section = this.folder(name)
         const newPerson = section[index]
         newPerson.orderId = this.resource.ID
@@ -820,7 +769,7 @@ export default {
 }
 
 .delete-btn {
-  font-size: $font-size-xl;
+  font-size: $font-size-sm;
   color: $danger-color;
 
   &:hover {
@@ -830,7 +779,7 @@ export default {
 }
 
 .download-btn {
-  font-size: $font-size-xl;
+  font-size: $font-size-sm;
   color: $success-color;
 
   &:hover {
@@ -883,42 +832,40 @@ export default {
   }
 }
 
-.gallery {
-  padding: 2rem;
-  list-style: none;
+.grid-wrapper-panel {
   display: flex;
   flex-wrap: wrap;
-  margin: -25px;
-}
-
-.gallery-item {
-  position: relative;
-  border-radius: 4px;
-  background: #fff;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.gallery-panel {
-  width: calc(25% - 50px);
-  margin: 25px;
-}
-
-.gallery-image {
-  display: flex;
-  top: 0;
-  right: 0;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  align-items: center;
 }
 
 .image {
-  max-width: 100%;
-  max-height: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  vertical-align: middle;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-auto-rows: 200px;
+  grid-auto-flow: dense;
+}
+
+.grid-wrapper .wide {
+  grid-column: span 2;
+}
+
+.grid-wrapper .tall {
+  grid-row: span 2;
+}
+
+.grid-wrapper .big {
+  grid-column: span 3;
+  grid-row: span 3;
 }
 
 .icon-money {

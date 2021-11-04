@@ -2,7 +2,7 @@ export default {
   ssr: false,
 
   head: {
-    title: 'Личный кабинет Rhinodesign',
+    title: 'Личный кабинет RHINODESIGN',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,15 +29,12 @@ export default {
     { src: '~/plugins/vue-horizontal-timeline', mode: 'client' },
     { src: '~/plugins/vue-countdown-timer', mode: 'client' },
     { src: '~/plugins/axios', mode: 'client' },
-    { src: '~/plugins/vue-progressive-image', mode: 'client' },
+    { src: '~/plugins/vue-progressive-image' },
   ],
 
   components: true,
 
-  buildModules: [
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/stylelint-module',
-  ],
+  buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/stylelint-module'],
 
   modules: [
     'bootstrap-vue/nuxt',
