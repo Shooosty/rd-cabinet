@@ -163,33 +163,38 @@
                           "
                           class="mt-3"
                         >
-                          <div class="grid-wrapper">
-                            <div
-                              v-for="image in photos"
-                              :key="image.id"
-                              class="grid-wrapper-panel"
-                            >
-                              <b-img-lazy class="image" :src="image.url" />
-                              <div class="p-1">
-                                <span class="p-1" v-text="image.name" />
-                                <IconButton
-                                  icon="download"
-                                  class="download-btn"
-                                  :href="image.url"
-                                  download
+                          <div class="p-5">
+                            <div class="grid-wrapper">
+                              <div
+                                v-for="image in photos"
+                                :key="image.id"
+                                class="grid-wrapper-panel"
+                              >
+                                <b-img-lazy
+                                  class="image"
+                                  :src="image.urlResize"
                                 />
-                                <IconButton
-                                  icon="trash"
-                                  class="delete-btn p-1"
-                                  @click.native="
-                                    deleteLoadedPhoto(
-                                      section,
-                                      index,
-                                      image.ID,
-                                      image.nameS3
-                                    )
-                                  "
-                                />
+                                <div class="p-1">
+                                  <span class="p-1" v-text="image.name" />
+                                  <IconButton
+                                    icon="download"
+                                    class="download-btn"
+                                    :href="image.url"
+                                    download
+                                  />
+                                  <IconButton
+                                    icon="trash"
+                                    class="delete-btn p-1"
+                                    @click.native="
+                                      deleteLoadedPhoto(
+                                        section,
+                                        index,
+                                        image.ID,
+                                        image.nameS3
+                                      )
+                                    "
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -206,7 +211,10 @@
                                 :key="image.id"
                                 class="grid-wrapper-panel"
                               >
-                                <b-img-lazy class="image" :src="image.url" />
+                                <b-img-lazy
+                                  class="image"
+                                  :src="image.urlResize"
+                                />
                               </div>
                             </div>
                           </Photoswipe>
@@ -447,7 +455,10 @@
                               :key="image.id"
                               class="grid-wrapper-panel"
                             >
-                              <b-img-lazy class="image" :src="image.url" />
+                              <b-img-lazy
+                                class="image"
+                                :src="image.urlResize"
+                              />
                             </div>
                           </div>
                         </div>
@@ -469,7 +480,10 @@
                               :key="image.id"
                               class="grid-wrapper-panel"
                             >
-                              <b-img-lazy class="image" :src="image.url" />
+                              <b-img-lazy
+                                class="image"
+                                :src="image.urlResize"
+                              />
                             </div>
                           </div>
                         </div>
@@ -574,9 +588,14 @@ export default {
     },
   },
 
+  created() {
+    this.clearProgress()
+  },
+
   methods: {
     ...mapActions({
       update: 'person/UPDATE',
+      clearProgress: 'photo/CLEAR_PROGRESS',
       uploadPhoto: 'photo/CREATE',
       removePhoto: 'photo/DELETE',
       removeOnS3: 'photo/DELETE_ON_S3',
@@ -640,6 +659,7 @@ export default {
         } catch (e) {
           this.error = e.response.data
         } finally {
+          this.clearProgress()
           if (this.error == null) {
             this.$notification.success(
               `${file.file.name} сохранено на сервере. Прогресс ${index + 1}/${
@@ -651,6 +671,7 @@ export default {
               }
             )
           } else {
+            this.clearProgress()
             this.$notification.error('Не удалось сохранить фото', {
               timer: 3,
               position: 'topRight',

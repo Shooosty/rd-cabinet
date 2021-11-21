@@ -57,6 +57,10 @@ export const actions = {
     })
   },
 
+  CLEAR_PROGRESS({ commit }) {
+    commit('CLEAR_PROGRESS')
+  },
+
   CLEAR({ commit }) {
     commit('CLEAR')
   },
