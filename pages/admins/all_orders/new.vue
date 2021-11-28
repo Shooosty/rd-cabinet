@@ -453,6 +453,7 @@ export default {
               })
             } else {
               try {
+                this.clearOrderId()
                 this.error = null
                 const newOrder = this.order
                 newOrder.photographerId = newOrder.photographerId.ID
@@ -528,6 +529,7 @@ export default {
       clearPhotoContract: 'photoContract/CLEAR',
       clearFile: 'file/CLEAR',
       clearLayout: 'layout/CLEAR',
+      clearOrderId: 'order/CLEAR_ORDER_ID',
       createAttachContract: 'attachContract/CREATE',
       clearAttachContract: 'attachContract/CLEAR',
     }),

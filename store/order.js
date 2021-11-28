@@ -12,7 +12,6 @@ export const mutations = { ...commonMutations }
 
 export const actions = {
   async GET_ALL({ commit }, params = {}) {
-    commit('CLEAR')
     const response = await this.$axios.get('api/orders/', params)
     commit('SET_PAGINATION_META', response.headers)
     commit('SET_ITEMS', response.data.data)
@@ -49,9 +48,12 @@ export const actions = {
 
   CREATE({ commit }, object) {
     return this.$axios.$post('api/orders/', object).then((response) => {
-      commit('CREATE_OR_UPDATE_ITEMS', response.data)
-      commit('SET_ORDER_ID', response.id)
+      commit('SET_ORDER_ID', response)
     })
+  },
+
+  CLEAR_ORDER_ID({ commit }) {
+    commit('CLEAR_ORDER_ID')
   },
 
   UPDATE({ commit }, object) {

@@ -10,7 +10,11 @@ export default {
   },
 
   SET_ORDER_ID(state, data) {
-    state.orderId = data
+    state.orderId = data.id
+  },
+
+  CLEAR_ORDER_ID(state) {
+    state.orderId = ''
   },
 
   CREATE_OR_UPDATE_ITEMS(state, data) {

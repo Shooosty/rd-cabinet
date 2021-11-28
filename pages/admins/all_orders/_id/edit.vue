@@ -279,7 +279,7 @@ export default {
       newPerson.orderId = id
       newPerson.surname = name
       newPerson.type = type
-      await this.createPerson(Object.assign({}, newPerson))
+      await this.createPerson(newPerson)
     },
 
     async fetchPhotos() {
